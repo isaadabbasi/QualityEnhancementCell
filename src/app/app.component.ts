@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
+// import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
 
 @Component({
   selector: 'app-root',
@@ -7,22 +7,22 @@ import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'a
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-    _root: FirebaseObjectObservable <any> = null;
-    persons: FirebaseObjectObservable<any> = null;
-    item: FirebaseObjectObservable<any>;
+    // _root: FirebaseObjectObservable <any> = null;
+    // persons: FirebaseObjectObservable<any> = null;
+    // item: FirebaseObjectObservable<any>;
     title = 'app works!';
 
-    constructor(public af: AngularFire) {
-      this.item = af.database.object('/persons/');
-    }
+    // constructor(public af: AngularFire) {
+    //   // this.item = af.database.object('/persons/');
+    // }
 
-    save(newName: string) {
-      this.item.set({ phone: newName });
-    }
+    // save(newName: string) {
+    //   this.item.set({ phone: newName });
+    // }
 
-    update(newSize: string) {
-      this.item.update({ address: newSize });
-    }
+    // update(newSize: string) {
+    //   this.item.update({ address: newSize });
+    // }
 
     ngOnInit(){}
 
