@@ -17,12 +17,10 @@ import {Component, OnInit, Input} from '@angular/core';
             </div>
             <div class="col-xs-12 col-md-9">
                 <p class="text-center">{{question}}</p> <hr>
-                <div class="text-center" style="margin:-10px auto"> 
-                    <input type="radio" name="question1" value="Strongly Agree">Strongly Agree &nbsp;
-                    <input type="radio" name="question1" value="Agree">Agree &nbsp;
-                    <input type="radio" name="question1" value="Average">Average &nbsp;
-                    <input type="radio" name="question1" value="Disagree">Disagree &nbsp;
-                    <input type="radio" name="question1" value="Strongly Disagree">Strongly Disagree
+                <div class="text-center"  style="margin:-10px auto"> 
+                    <div *ngFor="let opt of options" style="display:inline;">
+                        <input type="radio"  name="question1" value="{{opt}}">{{opt}} &nbsp;
+                    </div>
                 </div>
             </div>
         </div>
@@ -38,6 +36,8 @@ export class QuestionComponent implements OnInit{
     @Input() percentage = null;
     @Input() _id = null;
 
+    options: Array<String> = ['Strongly Agree', 'Agree', 'Average', 'Disagree', 'Strongly Disagree'];
+
     ngOnInit(){
         console.log('main form initialized');
     }
@@ -48,5 +48,5 @@ export class QuestionComponent implements OnInit{
     hideQuest(id: number){
         console.log('close tab #'+id);
     }
-    
+
 }
