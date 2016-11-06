@@ -5,11 +5,21 @@ import { QuestionComponent } from './quest.component'
 @Component({
     selector: 'main-form',
     template: `
-        <quest *ngFor="let quest of questions"
-        [percentage]="quest.percentage"
-        [question]="quest.question"
-        [_id]="quest.q_id"
-        ></quest>`,
+        <div class="questionare-body">
+            <div class="main-form-header">
+                <div >
+                    <img class="teacher-image img-circle" src="./shared/images/thumb.png">
+                </div>
+            </div>
+            <quest *ngFor="let quest of questions"
+            [percentage]="quest.percentage"
+            [question]="quest.question"
+            [_id]="quest.q_id"
+            ></quest>
+
+            <button (click)="getStudentRemarks()" class="pull-right btn btn-primary">Submit</button>
+        </div>  
+        `,
     styleUrls: ['main.component.css']
 })
 

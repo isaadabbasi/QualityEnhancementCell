@@ -9,7 +9,7 @@ import {Component, OnInit, Input} from '@angular/core';
                 <button class="btn-xs btn-danger" (click)="hideQuest(_id)">X</button>    
             </div>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" *ngIf="true">
             <div class="col-md-3">
                 <h1 class="text-center" [ngClass]="{'text-danger': percentage<40, 
                     'text-primary': percentage>=40 && percentage <=60,
@@ -19,7 +19,7 @@ import {Component, OnInit, Input} from '@angular/core';
                 <p class="text-center">{{question}}</p> <hr>
                 <div class="text-center"  style="margin:-10px auto"> 
                     <div *ngFor="let opt of options" style="display:inline;">
-                        <input type="radio"  name="question1" value="{{opt}}">{{opt}} &nbsp;
+                        <input type="radio"  name="{{_id}}" value="{{opt}}">{{opt}} &nbsp;
                     </div>
                 </div>
             </div>
