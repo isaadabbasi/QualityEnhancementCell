@@ -6,9 +6,15 @@ import { QuestionComponent } from './quest.component'
     selector: 'main-form',
     template: `
         <div class="questionare-body">
-            <div class="main-form-header">
-                <div >
+            <div class="row main-form-header">
+                <div class="" style="display: inline">
                     <img class="teacher-image img-circle" src="./shared/images/thumb.png">
+                </div>
+                <div class="pull-right">
+                    <ul class="teacher-details">
+                        <li>Teacher's Name</li>
+                        <li>Department Name</li>
+                    </ul>
                 </div>
             </div>
             <quest *ngFor="let quest of questions"
