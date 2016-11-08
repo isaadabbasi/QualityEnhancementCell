@@ -12,13 +12,15 @@ import { QuestionComponent } from './quest.component'
                 </div>
                 <div class="pull-right">
                     <ul class="teacher-details">
-                        <li>Teacher's Name</li>
-                        <li>Department Name</li>
+                        <li>Fahad   Iqbal</li>
+                        <li>CSE</li>
+                        <li>OS, CAO</li>
                     </ul>
                 </div>
             </div>
-            <quest *ngFor="let quest of questions"
+            <quest *ngFor="let quest of questions, let i=index"
             [percentage]="quest.percentage"
+            [index]= "i"
             [question]="quest.question"
             [_id]="quest.q_id"
             ></quest>
