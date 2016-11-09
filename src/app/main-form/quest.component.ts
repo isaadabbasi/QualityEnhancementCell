@@ -13,7 +13,7 @@ export class QuestionComponent implements OnInit{
     @Input() _id = null;
     @Input() index = null;
 
-    options: Array<String> = ['Strongly Agree', 'Agree', 'Average', 'Disagree', 'Strongly Disagree'];
+    options: Array<String> = ['Strongly Disagree', 'Disagree', 'Agree', 'Average', 'Strongly Agree'];
 
     ngOnInit(){
         console.log('main form initialized');
