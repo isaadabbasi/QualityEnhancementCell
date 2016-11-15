@@ -61,6 +61,12 @@
     margin: -15px auto 10px;
     display: block;
 }
+.survey-form-image{
+    width: auto;
+    height: 65px;
+    margin: -20px auto 0px;
+    display: block;
+}
 .need-help
 {
     margin-top: 10px;

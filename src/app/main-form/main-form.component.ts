@@ -8,7 +8,7 @@ import { QuestionComponent } from './quest.component'
         <div class="questionare-body">
             <div class="row main-form-header">
                 <div class="" style="display: inline">
-                    <img class="teacher-image img-circle" src="./shared/images/thumb.png">
+                    <img class="teacher-image " src="./shared/images/duet_logo.png">
                 </div>
                 <div class="pull-right">
                     <ul class="teacher-details">
