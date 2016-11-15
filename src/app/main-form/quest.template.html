@@ -1,6 +1,6 @@
 <div style="margin:10px 50px;" class="panel panel-primary" id="_id">
     <div style="padding:3px 10px !important" class="panel-heading">
-        <span class="badge">Question {{index +1}}</span>
+        <span class="badge">{{index +1}}</span>
         <div class="pull-right">
             <label class="label label-success" (click)="collapseQuest(_id)" >x</label>    
         </div>
@@ -13,9 +13,9 @@
             </div>
             <div class="col-xs-12 col-md-10">
                 <p class="text-center">{{question}}</p> <hr>
-                <div class="text-center"  style="margin:-10px auto"> 
+                <div class="text-center" style="margin:-10px auto"> 
                     <div *ngFor="let opt of options" style="display:inline;">
-                        <input type="radio"  name="{{_id}}" value="{{opt}}">{{opt}} &nbsp;
+                        <input type="radio" name="{{_id}}" value="{{opt}}">{{opt}} &nbsp;
                     </div>
                 </div>
             </div>
