@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
     template: `
-        <div class="col-xs-offset-2 col-xs-8">
+        <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 ">
             <h1 class="text-center login-title">Start a new Session</h1>
             <div class="account-wall">
                 <img class="survey-form-image img-responsive" src="./shared/images/duet_logo.png"
@@ -23,16 +23,16 @@ import { Component, OnInit } from '@angular/core';
                     <br />
                     
                     <div class="form-group">
-                        <select class="form-control">
-                            <option value="none" name="none" >SELECT DEPARTMENT
-                            <option value="cs" name="cse" >Computer System
-                            <option value="es" name="cse" >Electronics
-                            <option value="ch" name="cse" >Chemical
-                            <option value="te" name="cse" >Telecommunication
-                            <option value="mm" name="cse" >Metallurgy & Materials
-                            <option value="ap" name="cse" >Architecture & Planning
-                            <option value="ee" name="cse" >Energy & Environment
-                            <option value="im" name="cse" >Industrial Management
+                        <select id="department-list" class="form-control" [(ngModel)]="department" name="department">
+                            <option value="none">SELECT DEPARTMENT
+                            <option value="cs" (click)="startSession()">Computer System
+                            <option value="es" >Electronics
+                            <option #opt value="ch">Chemical
+                            <option value="te">Telecommunication
+                            <option value="mm">Metallurgy & Materials
+                            <option value="ap">Architecture & Planning
+                            <option value="ee">Energy & Environment
+                            <option value="im">Industrial Management
                         </select>
                     </div>
 
@@ -56,7 +56,7 @@ import { Component, OnInit } from '@angular/core';
                         </select>
                     </div>
 
-                    <button class="btn btn-lg btn-danger btn-block" (click)="signIn()" type="submit">Start Sessoin</button>
+                    <button class="btn btn-lg btn-danger btn-block" (click)="startSession()" type="submit">Start Sessoin</button>
                     <label class="checkbox pull-left">
                         <input type="checkbox" value="remember-me">
                         Remember me
@@ -72,9 +72,19 @@ export class StartSurveyComponent implements OnInit {
     year: number;
     month: String;
     months:Array<String> = ["January", "February", "March", "April", "May", "June","July","August", "September", "October", "November", "December"];
+    department: String;
     constructor() { 
         this.year = new Date().getFullYear();
         this.month = this.months[new Date().getMonth()];
+    }
+
+    getDepartmentTeacherList(value){
+        console.log(value);
+    }
+    startSession(){
+        let department = document.getElementById('department-list');
+
+        console.log(this.department);
     }
 
     ngOnInit() { }

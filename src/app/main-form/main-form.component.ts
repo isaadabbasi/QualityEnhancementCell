@@ -5,7 +5,7 @@ import { QuestionComponent } from './quest.component'
 @Component({
     selector: 'main-form',
     template: `
-        <div class="questionare-body">
+        <div class="questionare-body col-xs-12 col-md-offset-2 col-md-8">
             <div class="row main-form-header">
                 <div class="" style="display: inline">
                     <img class="teacher-image " src="./shared/images/duet_logo.png">

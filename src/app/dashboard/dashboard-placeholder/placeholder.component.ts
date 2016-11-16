@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
         }
     `],
     templateUrl: `
-        <div class="col-xs-offset-2 col-xs-8 placeholder-image">
+        <div class="col-xs-offset-2 col-xs-8 col-sm-offset-3 col-sm-6 col-md-4 col-md-offset-4 placeholder-image">
             <img class="survey-form-image img-responsive" src="./shared/images/duet_logo.png" />
         </div>
         <div class="col-xs-12">

@@ -5,15 +5,17 @@ import { Component } from '@angular/core';
         .dashboard-main-card{
             background: whitesmoke;
             box-shadow: 20px 15px 45px #999;
-            padding: 10px 5px;
+        }
+        .my-custom-sidebar {
+           background-color: #eaeaea;
         }
     `],
     template: `
     <div class="row dashboard-main-card">
-        <div class="col-sm-2">
+        <div class="col-xs-2 col-md-1 my-custom-sidebar">
             <dashboard-sidebar></dashboard-sidebar>
         </div>
-        <div class="col-sm-10">
+        <div class="col-xs-10 col-md-11">
             <router-outlet></router-outlet>
         </div>
     </div>`
