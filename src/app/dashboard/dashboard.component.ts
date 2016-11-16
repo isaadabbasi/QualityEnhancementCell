@@ -12,10 +12,10 @@ import { Component } from '@angular/core';
     `],
     template: `
     <div class="row dashboard-main-card">
-        <div class="col-xs-2 col-md-1 my-custom-sidebar">
+        <div class="col-xs-12 col-md-1 my-custom-sidebar">
             <dashboard-sidebar></dashboard-sidebar>
         </div>
-        <div class="col-xs-10 col-md-11">
+        <div class="col-xs-12 col-md-11">
             <router-outlet></router-outlet>
         </div>
     </div>`
