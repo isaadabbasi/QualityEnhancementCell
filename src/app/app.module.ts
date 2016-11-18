@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { AngularFireModule } from 'angularfire2'
+import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { routing } from './main.router'
 
@@ -16,7 +16,10 @@ import { PlaceHolderComponent } from './dashboard/dashboard-placeholder/placehol
 import { QuestionComponent } from './main-form//quest.component';
 import { StartSurveyComponent } from './dashboard/dashboard-start/start.component'
 
-
+const myFirebaseAuthConfig = {
+  provider: AuthProviders.Custom,
+  method: AuthMethods.Password
+}
 
 export const firebaseConfig = {
     apiKey: "AIzaSyDGAd9mRNSP3mWXB_MdnwXxaeJsWKqqPgE",
@@ -40,7 +43,7 @@ export const firebaseConfig = {
   ],
   imports: [
     BrowserModule,
-    // AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireModule.initializeApp(firebaseConfig,myFirebaseAuthConfig),
     BrowserModule,
     FormsModule,
     HttpModule,

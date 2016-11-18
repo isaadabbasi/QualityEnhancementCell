@@ -1,4 +1,4 @@
-	<nav id="navbar" class="navbar navbar-default" style="box-shadow: 20px 15px 45px #999;">
+	<nav id="navbar" *ngIf="isAuthenticated()" class="navbar navbar-default" style="box-shadow: 20px 15px 45px #999;">
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -18,7 +18,7 @@
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right pull-right">
-					<li data-toggle="modal" data-target="#myModal"><a href="#">Login</a></li>
+					<li (click)="logout()"><a>Logout</a></li>
 				</ul>
 
 			</div>

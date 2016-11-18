@@ -7,7 +7,9 @@ import { Component } from '@angular/core';
             box-shadow: 20px 15px 45px #999;
         }
         .my-custom-sidebar {
-           background-color: #eaeaea;
+            background-color: #eaeaea;
+            box-shadow: 2px 0px 15px gray;
+            border-radius:10px;
         }
     `],
     template: `

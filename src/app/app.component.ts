@@ -13,7 +13,7 @@ export class AppComponent implements OnInit{
     title = 'app works!';
 
     // constructor(public af: AngularFire) {
-    //   // this.item = af.database.object('/persons/');
+      // this.item = af.database.object('/persons/');
     // }
 
     // save(newName: string) {

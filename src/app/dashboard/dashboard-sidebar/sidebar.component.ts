@@ -14,7 +14,7 @@ import { Component, OnInit } from '@angular/core';
     }
     .margin-topten{
         margin-top:10px;
-        padding: 5px 10px;
+        padding: 10px 0;
     }
 `],
     template: `

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-
+import { AngularFire } from 'angularfire2';
+import { Router } from '@angular/router'
 
 @Component({
     templateUrl: './login.template.html',
@@ -8,17 +9,26 @@ import {Component, OnInit} from '@angular/core';
 
 export class LoginComponent implements OnInit{
 
-    userCredentials: Object = {
+    userCredentials: {email: string, password:string} = {
         email: '',
-        password: ''    
+        password: ''
     };
 
-    constructor(){}
+    constructor(public af: AngularFire, public router: Router){}
     ngOnInit(){
 
     }
 
     signIn(){
-        console.log(this.userCredentials)
-    }
+        if(this.userCredentials.email && this.userCredentials.password)
+        this.af.auth.login
+            ({email:this.userCredentials.email, password:this.userCredentials.password})
+                .then( (res) => {
+                    if(res.uid) {
+                        localStorage.setItem('authid',res.uid);
+                        this.router.navigate(['/dashboard'])
+                        
+                    }
+                })
+    }   
 }

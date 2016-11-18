@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
     template: `
-        <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 ">
+        <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 animated bounceInRight">
             <h1 class="text-center login-title">Start a new Session</h1>
             <div class="account-wall">
                 <img class="survey-form-image img-responsive" src="./shared/images/duet_logo.png"
@@ -23,11 +23,11 @@ import { Component, OnInit } from '@angular/core';
                     <br />
                     
                     <div class="form-group">
-                        <select id="department-list" class="form-control" [(ngModel)]="department" name="department">
-                            <option value="none">SELECT DEPARTMENT
-                            <option value="cs" (click)="startSession()">Computer System
+                        <select class="form-control" #dept (change)="getDepartmentTeacherList(dept.value)">
+                            <option value="none" [selected]="true"> Select Department
+                            <option value="cs" >Computer System
                             <option value="es" >Electronics
-                            <option #opt value="ch">Chemical
+                            <option value="ch">Chemical
                             <option value="te">Telecommunication
                             <option value="mm">Metallurgy & Materials
                             <option value="ap">Architecture & Planning
@@ -37,7 +37,8 @@ import { Component, OnInit } from '@angular/core';
                     </div>
 
                     <div class="form-group">
-                        <select class="form-control">
+                        <select [disabled]="!teachers" class="form-control">
+                            <option value="cse" name="cse" [selected]="!teachers">Select Teacher
                             <option value="cse" name="cse" >Fahad Iqbal
                             <option value="cse" name="cse" >Motia Rani
                             <option value="cse" name="cse" >Maria Bashir
@@ -47,7 +48,8 @@ import { Component, OnInit } from '@angular/core';
                         </select>
                     </div>
                     <div class="form-group">
-                        <select class="form-control">
+                        <select class="form-control" [disabled]="!subjects">
+                            <option value="cpp" name="course" [selected]="!subjects">Select Subject
                             <option value="cpp" name="course" >CPP
                             <option value="ccna" name="course" >CCNA
                             <option value="dcn" name="course" >DCN
@@ -57,10 +59,6 @@ import { Component, OnInit } from '@angular/core';
                     </div>
 
                     <button class="btn btn-lg btn-danger btn-block" (click)="startSession()" type="submit">Start Sessoin</button>
-                    <label class="checkbox pull-left">
-                        <input type="checkbox" value="remember-me">
-                        Remember me
-                    </label>
                     <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
                 </form>
             </div>
@@ -72,19 +70,16 @@ export class StartSurveyComponent implements OnInit {
     year: number;
     month: String;
     months:Array<String> = ["January", "February", "March", "April", "May", "June","July","August", "September", "October", "November", "December"];
-    department: String;
     constructor() { 
         this.year = new Date().getFullYear();
         this.month = this.months[new Date().getMonth()];
     }
 
     getDepartmentTeacherList(value){
-        console.log(value);
+        console.log('from args: ', value);
     }
     startSession(){
-        let department = document.getElementById('department-list');
-
-        console.log(this.department);
+        // console.log(this.department);
     }
 
     ngOnInit() { }
