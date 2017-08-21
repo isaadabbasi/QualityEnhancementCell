@@ -34,5 +34,4 @@ export class AppComponent implements OnInit{
       
       localStorage.setItem('users', JSON.stringify(users));
     }
-
 }
