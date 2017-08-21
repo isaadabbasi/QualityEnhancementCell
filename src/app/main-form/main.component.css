@@ -1,0 +1,23 @@
+.questionare-body{
+    padding: 0px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: rgb(232, 232, 232);
+}
+
+.main-form-header{
+    padding: 5px 5%;
+    margin: 0 !important;
+    background-color: #f8f8f8;
+}   
+
+ul.teacher-details{
+    list-style: none;
+    font-family: monospace;
+    font-size: medium;
+}
+
+.teacher-image{
+    width: 82px;
+    margin-left: -10px;
+}

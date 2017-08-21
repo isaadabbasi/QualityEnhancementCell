@@ -1,0 +1,26 @@
+	<nav id="navbar" *ngIf="isAuthenticated()" class="navbar navbar-default" style="box-shadow: 20px 15px 45px #999;">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+				<a class="navbar-brand" [routerLink]="['/']" >Q E C</a>
+			</div>
+
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li class="active"><a [routerLink]="['/']">Home <span class="sr-only">(current)</span></a></li>
+					<li><a [routerLink]="['/main-page']" >Form</a></li>
+					<li><a [routerLink]="['/dashboard']" >Dashboard</a></li>
+				</ul>
+
+				<ul class="nav navbar-nav navbar-right pull-right">
+					<li (click)="logout()"><a>Logout</a></li>
+				</ul>
+
+			</div>
+		</div>
+	</nav>
