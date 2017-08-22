@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-// import { AngularFire} from 'angularfire2';
 import { Router } from '@angular/router'; 
 @Component({
     selector: 'my-navbar',

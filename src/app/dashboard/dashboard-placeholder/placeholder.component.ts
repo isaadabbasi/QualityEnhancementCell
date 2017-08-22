@@ -17,7 +17,8 @@ import { Component } from '@angular/core';
     template: `
         <div class="placeholder-container"> 
             <img class="placeholder-image" src="./assets/images/duet_logo.png" />
-        </div> 
+        </div>
+        }
     `
 })  
 export class PlaceHolderComponent {
