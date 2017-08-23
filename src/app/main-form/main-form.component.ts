@@ -1,6 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 
-import { QuestionComponent } from './quest.component'
+import { QuestionComponent } from './quest.component';
+
+interface SurveyModel {
+    _id: number, 
+    reply: string
+}
 
 @Component({
     selector: 'main-form',
@@ -18,11 +23,13 @@ import { QuestionComponent } from './quest.component'
                     </ul>
                 </div>
             </div>
-            <quest *ngFor="let quest of questions, let i=index"
+            <quest 
+            *ngFor="let quest of questions, let i=index"
             [percentage]="quest.percentage"
             [index]= "i"
             [question]="quest.question"
             [_id]="quest.q_id"
+            (quizReplied)="optionSelected($event)"
             ></quest>
 
             <button (click)="getStudentRemarks()" class="pull-right btn btn-primary">Submit</button>
@@ -31,9 +38,11 @@ import { QuestionComponent } from './quest.component'
     styleUrls: ['main.component.css']
 })
 
+
 export class MainFormComponent implements OnInit{
     constructor(){}
     questions: Array<Object> = null;
+    survey: Array<SurveyModel> = []; 
     ngOnInit(){
         this.questions = [
             {q_id: 1,
@@ -63,4 +72,11 @@ export class MainFormComponent implements OnInit{
         ] 
     }
 
+    optionSelected(event: SurveyModel){
+        console.log(event)
+        this.survey.push(event)
+    }
+    getStudentRemarks(){
+        console.log('finalized result', this.survey)
+    }
 }

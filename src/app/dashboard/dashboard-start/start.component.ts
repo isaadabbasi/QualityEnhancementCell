@@ -57,8 +57,9 @@ import { Component, OnInit } from '@angular/core';
                             <option value="caed" name="course" >CAED
                         </select>
                     </div>
-
-                    <button class="btn btn-lg btn-danger btn-block" (click)="startSession()" type="submit">Start Sessoin</button>
+                    <button 
+                        class="btn btn-primary btn-lg btn-block"
+                        routerLink="/survey">Start</button>
                     <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
                 </form>
             </div>

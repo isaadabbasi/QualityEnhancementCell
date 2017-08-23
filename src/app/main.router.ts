@@ -5,6 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { PlaceHolderComponent } from './dashboard/dashboard-placeholder/placeholder.component';
 import { MainFormComponent } from './main-form/main-form.component';
 import { NavBarComponent } from './nav-bar/navbar.component';
+import { RankingComponent } from './dashboard/dashboard-ranking/ranking.component'
 import { StartSurveyComponent } from './dashboard/dashboard-start/start.component'
 
 
@@ -15,9 +16,10 @@ const fallback: Route = {
 
 export const routes: Routes = [
     {path: '', component: LoginComponent},
-    {path: 'main-page', component: MainFormComponent},
+    {path: 'survey', component: MainFormComponent},
     {path: 'dashboard', component: DashboardComponent, children: [
         {path:'start', component: StartSurveyComponent},
+        {path:'rankings', component: RankingComponent},
         {path:'', component: PlaceHolderComponent },
         fallback
     ]},

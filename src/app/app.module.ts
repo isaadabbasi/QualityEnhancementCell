@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+// import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { routing } from './main.router'
 
 import { AppComponent } from './app.component';
@@ -13,6 +13,7 @@ import { MainFormComponent } from './main-form/main-form.component';
 import { NavBarComponent } from './nav-bar/navbar.component';
 import { PlaceHolderComponent } from './dashboard/dashboard-placeholder/placeholder.component';
 import { QuestionComponent } from './main-form//quest.component';
+import { RankingComponent } from './dashboard/dashboard-ranking/ranking.component'
 import { StartSurveyComponent } from './dashboard/dashboard-start/start.component'
 
 
@@ -26,6 +27,7 @@ import { StartSurveyComponent } from './dashboard/dashboard-start/start.componen
     NavBarComponent,
     PlaceHolderComponent,
     QuestionComponent,
+    RankingComponent,
     StartSurveyComponent
   ],
   imports: [
@@ -33,7 +35,6 @@ import { StartSurveyComponent } from './dashboard/dashboard-start/start.componen
     BrowserModule,
     FormsModule,
     HttpModule,
-    NgbModule.forRoot(),
     routing
   ],
   providers: [],

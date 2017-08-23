@@ -4,14 +4,17 @@ import { Component } from '@angular/core';
     styles:[`
         .dashboard-main-card{
             background: whitesmoke;
-            box-shadow: 20px 15px 45px #999;
+            box-shadow: 3px 3px 5px #999;
             display: flex;
             align-items: center;
+            height: 88vh;
         }
         .my-custom-sidebar {
-            background-color: #eaeaea;
-            box-shadow: 2px 0px 15px gray;
-            border-radius:10px;
+            background-color: #eeeeee;;
+            box-shadow: 1px 1px 5px #999;
+            border-top-right-radius: 10px;
+            height:100%;
+            padding: 0px !important;
         }
     `],
     template: `

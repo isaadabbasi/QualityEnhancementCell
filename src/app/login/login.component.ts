@@ -31,7 +31,14 @@ export class LoginComponent implements OnInit{
                     this.loginError = true
                     setTimeout(()=>{
                         this.loginError = false
+                        document.getElementById('login-container').classList.remove('wobble');
+                        
                     },3000)
+                    setTimeout(()=>{
+                        document.getElementById('login-container').classList.add('wobble');
+                        this.userCredentials.username = '';
+                        this.userCredentials.password = ''; 
+                    },100)
                 } 
                     
 

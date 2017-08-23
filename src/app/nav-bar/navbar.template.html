@@ -1,26 +1,28 @@
-	<nav id="navbar" *ngIf="isAuthenticated()" class="navbar navbar-default" style="box-shadow: 20px 15px 45px #999;">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-	        <span class="sr-only">Toggle navigation</span>
-	        <span class="icon-bar"></span>
-	        <span class="icon-bar"></span>
-	        <span class="icon-bar"></span>
-	      </button>
-				<a class="navbar-brand" [routerLink]="['/']" >Q E C</a>
-			</div>
+<nav class="navbar navbar-default navbar-xs" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="#"><b>QEC</b> - Dawood University</a>
+  </div>
 
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
-					<li class="active"><a [routerLink]="['/']">Home <span class="sr-only">(current)</span></a></li>
-					<li><a [routerLink]="['/main-page']" >Form</a></li>
-					<li><a [routerLink]="['/dashboard']" >Dashboard</a></li>
-				</ul>
-
-				<ul class="nav navbar-nav navbar-right pull-right">
-					<li (click)="logout()"><a>Logout</a></li>
-				</ul>
-
-			</div>
-		</div>
-	</nav>
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav">
+      <li><a routerLink="dashboard" routerLinkActive="active">Dashboard</a></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="fa fa-sort-down" aria-hidden="true"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li class="divider"></li>
+          <li><a href="#">Settings <i class="fa fa-cogs pull-right" aria-hidden="true"></i></a></li>
+        </ul>
+      </li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>

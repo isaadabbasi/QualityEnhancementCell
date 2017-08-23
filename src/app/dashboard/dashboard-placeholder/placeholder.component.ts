@@ -4,8 +4,8 @@ import { Component } from '@angular/core';
     styles:[`
         .placeholder-image{
             opacity: 0.9;
-            width: 70% !important;
-            height: 70% !important;
+            width: 30% !important;
+            height: 30% !important;
         }
         .placeholder-container{
             display: flex;
@@ -13,14 +13,18 @@ import { Component } from '@angular/core';
             align-items: center;
             margin-top: 50px;
         }
+       
     `],
     template: `
-        <div class="placeholder-container"> 
-            <img class="placeholder-image" src="./assets/images/duet_logo.png" />
+        <div  class="placeholder-container"> 
+            <img 
+                id="placeholder-image" 
+                class="placeholder-image animated flip" 
+                src="./assets/images/duet_logo.png" />
         </div>
-        }
     `
 })  
 export class PlaceHolderComponent {
     constructor() { }
+    
 }
