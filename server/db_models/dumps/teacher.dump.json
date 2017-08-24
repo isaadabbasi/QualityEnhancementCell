@@ -1,0 +1,22 @@
+{
+    "_id":"Object Id('113514123516144')",
+    "join_date": "25 Jan 2014, 1200 GTK+5",
+    "full_name":"Fahad Iqbal",
+    "designation":"Teacher",
+    "departments":["Computer System","Electronics"], //need discussion if needed or not
+    "subjects ": ["Operating System", "Embedded Systems", "Mobile Computing", "Data Communication"],
+    "surveys": {
+        "total_surveys": 22,
+        "average_rating": 4.3,//
+        "surveys":[
+            {
+                "survey_ref": "Object Id('1131351u247923472941')",
+                "conduct_date": "29th Feb 2015, 1900 GTK+5" //complete date information 
+            },
+            {
+                "survey_ref": "Object Id('1131351u24792322941')",
+                "conduct_date": "29th Feb 2015, 1900 GTK+5" //complete date information 
+            }
+        ]
+    }
+}

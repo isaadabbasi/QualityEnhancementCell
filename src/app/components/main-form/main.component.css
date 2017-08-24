@@ -21,3 +21,10 @@ ul.teacher-details{
     width: 82px;
     margin-left: -10px;
 }
+.form-submittion{
+    justify-content: center;
+    padding: 20px;
+    width: 300px;
+    align-items: center;
+    margin: 0 auto;
+}

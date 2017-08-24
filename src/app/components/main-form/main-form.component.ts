@@ -32,7 +32,9 @@ interface SurveyModel {
             (quizReplied)="optionSelected($event)"
             ></quest>
 
-            <button (click)="getStudentRemarks()" class="pull-right btn btn-primary">Submit</button>
+            <div class="form-submittion">
+                <button (click)="getStudentRemarks()" class=" btn-lg btn-block btn btn-primary">Submit</button>
+            </div>
         </div>  
         `,
     styleUrls: ['main.component.css']
@@ -78,5 +80,7 @@ export class MainFormComponent implements OnInit{
     }
     getStudentRemarks(){
         console.log('finalized result', this.survey)
+        if(this.questions.length === this.survey.length)
+            localStorage.setItem('surveys', JSON.stringify([this.survey])); 
     }
 }

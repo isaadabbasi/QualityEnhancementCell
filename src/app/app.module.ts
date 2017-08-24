@@ -6,15 +6,15 @@ import { HttpModule } from '@angular/http';
 import { routing } from './main.router'
 
 import { AppComponent } from './app.component';
-import { DashboardComponent } from './dashboard/dashboard.component'
-import { DashboardSidebarComponent } from './dashboard/dashboard-sidebar/sidebar.component';
-import { LoginComponent } from './login/login.component'
-import { MainFormComponent } from './main-form/main-form.component';
-import { NavBarComponent } from './nav-bar/navbar.component';
-import { PlaceHolderComponent } from './dashboard/dashboard-placeholder/placeholder.component';
-import { QuestionComponent } from './main-form//quest.component';
-import { RankingComponent } from './dashboard/dashboard-ranking/ranking.component'
-import { StartSurveyComponent } from './dashboard/dashboard-start/start.component'
+import { DashboardComponent } from './components/dashboard/dashboard.component'
+import { DashboardSidebarComponent } from './components/dashboard/dashboard-sidebar/sidebar.component';
+import { LoginComponent } from './components/login/login.component'
+import { MainFormComponent } from './components/main-form/main-form.component';
+import { NavBarComponent } from './components/nav-bar/navbar.component';
+import { PlaceHolderComponent } from './components/dashboard/dashboard-placeholder/placeholder.component';
+import { QuestionComponent } from './components/main-form//quest.component';
+import { RankingComponent } from './components/dashboard/dashboard-ranking/ranking.component'
+import { StartSurveyComponent } from './components/dashboard/dashboard-start/start.component'
 
 
 @NgModule({

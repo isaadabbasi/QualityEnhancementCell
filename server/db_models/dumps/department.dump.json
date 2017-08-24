@@ -1,0 +1,21 @@
+// Department -> Teacher -> Survey;
+{
+    "_id": "Object Id('1313515o3592759g9134659')",
+    "dept_name":"Computer Systems",
+    "dept_hod": "Doc. Saleem Phul", // didnt included in implemented model
+    "faculty_members": 17,
+    "teachers": [
+        {
+            "full_name": "Fahad Iqbal",
+            "record_reference": "Object Id ('21h01h1oh1123bskdbfkn888')"
+        },
+        {
+            "full_name": "Abdul Manan Memon",
+            "record_reference": "Object Id ('21h01h1oh1123bskdbfkn888')"
+        },
+        {
+            "full_name": "Maria Bashir",
+            "record_reference": "Object Id ('21h01h1oh1123bskdbfkn888')"
+        }
+    ]
+} 

@@ -1,0 +1,21 @@
+{
+    "_id":"Object Id('195n1n131u18181rbv10')", //will be assigned by mongodb 
+    "created":"15th March 2016, 1900 GMT+5", //javascript time object new Date();
+    "type": "Teacher Evaluation",
+    "target": "Fahad Iqbal",
+    "survey": {
+        "quiz_type": "behavioral",
+        "survey": [ //value may or may not be required.
+            {"_id": 1, "reply": 3, "value": 0.6, "type": "direct"},
+            {"_id": 2, "reply": 4, "value": 0.8, "type": "indirect"},
+            {"_id": 3, "reply": 5, "value": 1, "type": "direct"},
+            {"_id": 4, "reply": 5, "value": 1, "type": "direct"},
+            {"_id": 5, "reply": 4, "value": 0.8, "type": "indirect"},
+            {"_id": 6, "reply": 3, "value": 0.6, "type": "direct"},
+            {"_id": 7, "reply": 2, "value": 0.4, "type": "indirect"},
+            {"_id": 8, "reply": 5, "value": 1, "type": "direct"},
+            {"_id": 9, "reply": 4, "value": 0.8, "type": "direct"},
+            {"_id": 10, "reply": 2, "value": 0.4, "type": "indirect"}
+        ]
+    }
+}
