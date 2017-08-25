@@ -2,6 +2,7 @@ const
     express = require('express'),
     router = express.Router(),
     Student = require('../db_models/models/student.model'),
+    
     loginCallback = (req, res, next)=> {
 
         let recordFindCb = (err, records)=>{
@@ -21,6 +22,7 @@ const
         console.log(`Search Query: `, searchQuery);
         Student.find(searchQuery, recordFindCb)
     },
+
     registrationCallback = (req, res, next)=> {
         console.log(typeof req.body);
         let 
@@ -32,8 +34,10 @@ const
                 fullname, department, rollnumber, password
             }),
             saveStudentCb = err => {
+
                 if(err)
-                    res.status(500).send("Unable to register student");
+                    res.status(409).send("Account Already Exists");
+
                 if(!err)
                     res.status(201).send("Account Created");
             };
