@@ -29,6 +29,7 @@
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.11",
     "angularfire2": "^2.0.0-beta.6",
     "axios": "^0.16.2",
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.17.2",
     "cookie-parser": "^1.4.3",
     "core-js": "^2.4.1",
