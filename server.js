@@ -5,6 +5,7 @@ const
   bodyParser = require('body-parser'),
 // Get our API routes
   api = require('./server/routes/api'),
+  users = require('./server/routes/users.route'),
   establish_connection = require('./server/connections/mongo.connection'),
 
   app = express(),
@@ -19,7 +20,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 // Set our api routes
 app.use('/api', api);
-
+app.use('/users', users);
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/index.html'));

@@ -8,9 +8,9 @@ const
             type: Schema.Types.Date, default: Date.now
         },
         details: { 
-            type: Schema.Types.ObjectId
+            type: Schema.Types.ObjectId,
+            ref: 'Surveys'
         },
-        ref: 'Surveys'
     },
 
     teacherSchema = new Schema({

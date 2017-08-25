@@ -2,6 +2,15 @@ const
     mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     // Schema got second arg 'collection' to be the name of schema in mongodb
+    teacherRef = {
+        fullname: {
+            type: String, trim: true, maxlength: 40, unique: true
+        },
+        details: {
+            type: Schema.Types.ObjectId,
+            ref: 'Teachers'
+        },
+    },
     departmentSchema = new Schema({ 
         dept_name: {
             type: String, 
@@ -13,21 +22,11 @@ const
         faculty_size: {
             type: Number
         },
-        teachers: [
-            {
-                fullname: {
-                    type: String, trim: true, maxlength: 40, unique: true
-                },
-                details: {
-                    type: Schema.Types.ObjectId
-                },
-                ref: 'Teachers'
-            }
-        ]
+        teachers: [teacherRef]
     },
     {
-        collection: 'department'
+        collection: 'departments'
     }),
-    model = mongoose.model('department', departmentSchema);
+    model = mongoose.model('departments', departmentSchema);
 
 module.exports = model;
