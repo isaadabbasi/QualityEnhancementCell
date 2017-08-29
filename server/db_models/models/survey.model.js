@@ -12,7 +12,7 @@ const
         created: { type: Schema.Types.ObjectId, default: Date.now },
         evaluation: { type: String, maxlength: 30, trim: true },
         target: { type: String, maxlength: 30, trim: true },
-        survey: [survey],
+        survey: [survey]
 
     },{collection: identity})
     model = mongoose.model(identity, surveySchema);
