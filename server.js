@@ -3,9 +3,10 @@ const
   path = require('path'),
   http = require('http'),
   bodyParser = require('body-parser'),
-// Get our API routes
+  // Get our API routes
   api = require('./server/routes/api'),
-  users = require('./server/routes/users.route'),
+  routes_users = require('./server/routes/users.route'),
+  routes_survey = require('./server/routes/surveys.route'),
   establish_connection = require('./server/connections/mongo.connection'),
 
   app = express(),
@@ -20,7 +21,9 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 // Set our api routes
 app.use('/api', api);
-app.use('/users', users);
+app.use('/users', routes_users);
+app.use('/surveys', routes_survey);
+
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/index.html'));
