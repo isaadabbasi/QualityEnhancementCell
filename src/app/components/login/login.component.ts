@@ -1,47 +1,81 @@
 import {Component, OnInit} from '@angular/core';
 import { AngularFire } from 'angularfire2';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
+
+import { signInURL } from "./../../shared/global-vars";
+import { SharedService } from './../../shared/shared.service';
+
 
 @Component({
     templateUrl: './login.template.html',
-    styleUrls:['./login.component.css']
+    styleUrls: ['./login.component.css'],
+    providers: [
+        SharedService
+    ]
 })
 
 export class LoginComponent implements OnInit{
 
     users: Array<Object> = [];
-    userCredentials: {username: string, password:string} = {
-        username: '',
+    userCredentials: {rollnumber: string, password:string} = {
+        rollnumber: '',
         password: ''
     };
     loginError: boolean = false;
-    constructor(public router: Router){}
+    loginErrorMessage: string;
+    constructor(public router: Router,
+                private sharedService: SharedService,
+                ){}
     ngOnInit(){
-        this.users = JSON.parse(localStorage.getItem('users'));
+        // this.users = JSON.parse(localStorage.getItem('users'));
     }
-
+    validateCredentials(){
+        return this.userCredentials.rollnumber && this.userCredentials.password;
+    }
     signIn(){
-        if(this.userCredentials.username && this.userCredentials.password){
+        if(this.userCredentials.rollnumber && this.userCredentials.password){
             console.log('Got Credentials')
-            this.users.forEach(user => {
-                if(user['username'] === this.userCredentials.username 
-                    && user['password'] === this.userCredentials.password)
-                        this.router.navigate(['/dashboard'])
-                else {
-                    this.loginError = true
+            this.sharedService.postCall(signInURL, this.userCredentials)
+                .subscribe(res => {
+                    if(res.status == 200){
+                        console.log(res);
+                        localStorage.setItem('activeUser', res['_body']);
+                    }
+                    
+                }, err => {
+                    console.log(err);
+                    this.loginError = true;
+                    this.loginErrorMessage = err['_body'];
                     setTimeout(()=>{
                         this.loginError = false
                         document.getElementById('login-container').classList.remove('wobble');
-                    },3000)
+                    },5000)
                     setTimeout(()=>{
                         document.getElementById('login-container').classList.add('wobble');
-                        this.userCredentials.username = '';
+                        this.userCredentials.rollnumber = '';
                         this.userCredentials.password = ''; 
                     },100)
-                } 
+                    
+                })
+            // this.users.forEach(user => {
+            //     if(user['username'] === this.userCredentials.username 
+            //         && user['password'] === this.userCredentials.password)
+            //             this.router.navigate(['/dashboard'])
+            //     else {
+            //         this.loginError = true
+            //         setTimeout(()=>{
+            //             this.loginError = false
+            //             document.getElementById('login-container').classList.remove('wobble');
+            //         },3000)
+            //         setTimeout(()=>{
+            //             document.getElementById('login-container').classList.add('wobble');
+            //             this.userCredentials.username = '';
+            //             this.userCredentials.password = ''; 
+            //         },100)
+            //     } 
                     
 
-            });
+            // });
             // this.router.navigate(['/dashboard'])
         }
         // this.af.auth.login

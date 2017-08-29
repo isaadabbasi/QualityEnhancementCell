@@ -26,12 +26,12 @@ export class AppComponent implements OnInit{
 
     ngOnInit(){
       console.log('On Init Initialized')
-      let users: Array<Object> = [
-        {username: 'saadabbasi', password: 'abcd1234'},
-        {username: 'smtaha', password: 'abc123'},
-        {username: 'fahadiqbal', password: 'duet123'}
-      ]
+    //   let users: Array<Object> = [
+    //     {username: 'saadabbasi', password: 'abcd1234'},
+    //     {username: 'smtaha', password: 'abc123'},
+    //     {username: 'fahadiqbal', password: 'duet123'}
+    //   ]
       
-      localStorage.setItem('users', JSON.stringify(users));
+    //   localStorage.setItem('users', JSON.stringify(users));
     }
 }
