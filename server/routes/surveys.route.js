@@ -3,6 +3,7 @@ const
     router = express.Router(),
     Surveys = require('../db_models/models/survey.model'),
     Users = require('../db_models/models/student.model'),
+    
     getSurveyByIdCb = function(req, res, next){
         console.log(`gettings params.surveyId ${req.params.surveyId}`);
         let 
@@ -18,6 +19,7 @@ const
         
         Surveys.findById(surveyId, findByIdCb);
     },
+
     getSurveyByListCb = (req, res, next)=>{
         let _list = req.body.list;
 
