@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
 import { QuestionComponent } from './quest.component';
-
+import { SharedService } from '../../shared/shared.service'
 interface SurveyModel {
     _id: number, 
     reply: string
@@ -24,12 +24,12 @@ interface SurveyModel {
                 </div>
             </div>
             <quest 
-            *ngFor="let quest of questions, let i=index"
-            [percentage]="quest.percentage"
-            [index]= "i"
-            [question]="quest.question"
-            [_id]="quest.q_id"
-            (quizReplied)="optionSelected($event)"
+                *ngFor="let quest of questions, let i=index"
+                [percentage]="quest.percentage"
+                [index]= "i"
+                [question]="quest.question"
+                [_id]="quest.q_id"
+                (quizReplied)="optionSelected($event)"
             ></quest>
 
             <div class="form-submittion">
@@ -37,7 +37,8 @@ interface SurveyModel {
             </div>
         </div>  
         `,
-    styleUrls: ['main.component.css']
+    styleUrls: ['main.component.css'],
+    providers: [SharedService]
 })
 
 

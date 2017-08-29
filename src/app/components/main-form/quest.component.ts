@@ -14,7 +14,7 @@ export class QuestionComponent implements OnInit{
     @Input() index = null;
     @Output() quizReplied = new EventEmitter();
 
-    options: Array<String> = ['Strongly Disagree', 'Disagree', 'Agree', 'Average', 'Strongly Agree'];
+    options: Array<String> = ['Strongly Disagree', 'Disagree', 'Average', 'Agree', 'Strongly Agree'];
 
     ngOnInit(){
         console.log('main form initialized');
@@ -28,8 +28,11 @@ export class QuestionComponent implements OnInit{
     }
     optionSelected(_id, reply){
         // console.log(_id, reply)
+        let valueIndex:number = this.options.indexOf(reply),
+            value = valueIndex/this.options.length;
+
         this.quizReplied.emit({
-            _id, reply
+            _id, reply, value
         })
     }
 

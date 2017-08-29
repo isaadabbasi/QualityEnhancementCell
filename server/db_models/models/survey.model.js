@@ -6,7 +6,7 @@ const
         id: Number, 
         selection: String, 
         value: Number,
-        type: String
+        type: {type: String, default: 'direct'}
     },
     surveySchema = new Schema({
         created: { type: Schema.Types.ObjectId, default: Date.now },
