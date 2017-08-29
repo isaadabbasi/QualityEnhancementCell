@@ -1,3 +1,5 @@
+import { SharedService } from './shared/shared.service';
+import { AuthGuard } from './auth-guard.service';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -39,7 +41,10 @@ import { StartSurveyComponent } from './components/dashboard/dashboard-start/sta
     RouterModule,
     routing
   ],
-  providers: [],
+  providers: [
+    AuthGuard, 
+    SharedService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

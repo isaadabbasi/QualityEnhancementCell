@@ -19,6 +19,10 @@ export class SharedService{
             // .map(response => response.json());
     }
 
+    isLoggedIn(){
+        return !!localStorage.getItem('activeUser');
+    }
+
 
 
 }

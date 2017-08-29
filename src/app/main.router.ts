@@ -1,3 +1,4 @@
+import { AuthGuard } from './auth-guard.service';
 import { RouterModule, Routes, Route} from '@angular/router';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component'
@@ -17,7 +18,7 @@ const fallback: Route = {
 export const routes: Routes = [
     {path: '', component: LoginComponent},
     {path: 'survey', component: MainFormComponent},
-    {path: 'dashboard', component: DashboardComponent, children: [
+    {path: 'dashboard', canActivateChild: [AuthGuard], component: DashboardComponent, children: [
         {path:'start', component: StartSurveyComponent},
         {path:'rankings', component: RankingComponent},
         {path:'', component: PlaceHolderComponent },
