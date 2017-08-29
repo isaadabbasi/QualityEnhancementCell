@@ -28,6 +28,7 @@ const
                     res.status(501).send("Error occured on login attempt");
                 if(!record)
                     res.status(401).send("No Such Account Exists")
+                
                 let compareCb = (err, success)=>{
                     // delete record['password'];
                     if(err)
@@ -39,6 +40,7 @@ const
                     if(!err && !success)
                         res.status(401).send("Invalid Password");
                 }
+
                 if(record)
                     bcrypt.compare(password, record.password, compareCb)
             }, 
@@ -68,7 +70,7 @@ const
             password = req.body.password;
             
 
-            generateHash(password)
+            generateHash(password) // return hash with 10 round salt added
                 .then(hash=> {
                     let student = new Student({
                         fullname, department, rollnumber, password: hash
