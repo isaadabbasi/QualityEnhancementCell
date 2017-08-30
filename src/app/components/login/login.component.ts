@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import { AngularFire } from 'angularfire2';
 import { Router } from '@angular/router';
 
-import { signInURL } from "./../../shared/global-vars";
+import { SIGNIN_URL } from "./../../shared/global-vars";
 import { SharedService } from './../../shared/shared.service';
 import * as localforage from 'localforage';
 // import {} from 'ng2-localforage';
@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit{
     signIn(){
         if(this.userCredentials.rollnumber && this.userCredentials.password){
             console.log('Got Credentials')
-            this.sharedService.postCall(signInURL, this.userCredentials)
+            this.sharedService.postCall(SIGNIN_URL, this.userCredentials)
                 .subscribe(res => {
                     if(res.status == 200){
                         console.log(res);

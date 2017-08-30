@@ -46,6 +46,22 @@ const
             }
 
         Users.find({_id: {$in: list}}, findCb);
+    },
+    addSurveyCb= (req, res, next) => {
+        console.log('request body', req.body);
+        let 
+            evaluation = req.body.evaluation.trim(),
+            target = req.body.target.trim(),
+            survey = req.body.survey              
+            
+        new Surveys({
+            evaluation, target, survey
+        }).save(err => {
+            if(err)
+                throw new Error(err);
+            
+            res.status(200).send("Survey Submitted");
+        })
     }
     
 
@@ -53,5 +69,5 @@ const
 
 router.get('/id/:surveyId', getSurveyByIdCb);
 router.post('/list', getSurveyByListCb);
-
+router.post('/add', addSurveyCb)
 module.exports = router;
