@@ -1,3 +1,4 @@
+import { SignupComponent } from './components/signup/signup.component';
 import { AuthGuard } from './auth-guard.service';
 import { RouterModule, Routes, Route} from '@angular/router';
 
@@ -17,6 +18,7 @@ const fallback: Route = {
 
 export const routes: Routes = [
     {path: '', component: LoginComponent},
+    {path: 'signup', component: SignupComponent},
     {path: 'survey', component: MainFormComponent},
     {path: 'dashboard', canActivateChild: [AuthGuard], component: DashboardComponent, children: [
         {path:'start', component: StartSurveyComponent},
