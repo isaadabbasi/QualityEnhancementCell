@@ -4,13 +4,12 @@ const
     identity = 'Teachers',
     
     surveyReference = {
-        dated: {
+        created: {
             type: Schema.Types.Date, default: Date.now
         },
-        details: { 
-            type: Schema.Types.ObjectId,
-            ref: 'Surveys'
-        },
+        _reference: { 
+            type: Schema.Types.ObjectId, ref: 'Surveys'
+        }
     },
 
     teacherSchema = new Schema({

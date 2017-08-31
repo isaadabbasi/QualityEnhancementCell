@@ -1,7 +1,7 @@
 const 
     express = require('express'),
     router = express.Router(),
-    Student = require('../db_models/models/student.model'),
+    Student = require('../database/models/student.model'),
     bcrypt = require('bcrypt'),
     saltRounds = 10, 
 

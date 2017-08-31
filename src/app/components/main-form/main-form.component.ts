@@ -92,12 +92,6 @@ export class MainFormComponent implements OnInit{
             target: this.subject || this.selectedTeacher, // should the target be dynamically changed to course name?
             survey: this.survey
         }
-        //!IMPORTANT
-        // if its teacher evaluation then 2 parallel HTTP request will be made
-        // first to survey/add same as it is now,
-        // second to update the record of teacher so reference could be added to survey lists;
-        // retrieval through id is way faster than string comparission.
-        // check rxjs parallel or combineLatest methods.
 
         // localStorage.setItem('surveys', JSON.stringify([this.survey]));        
         // if(this.questions.length === this.survey.length)

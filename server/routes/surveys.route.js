@@ -1,23 +1,20 @@
 const 
     express = require('express'),
     router = express.Router(),
-    Surveys = require('../db_models/models/survey.model'),
-    Users = require('../db_models/models/student.model'),
-    
+    teacherJoint = require('../joints/teachers.joint'),
+    surveyJoint = require('../joints/survey.joint'),
     getSurveyByIdCb = function(req, res, next){
-        console.log(`gettings params.surveyId ${req.params.surveyId}`);
+        console.log(`gettings params.surveyId ${req.params._id}`);
         let 
-            surveyId = req.params.surveyId,
-            findByIdCb = (err, result)=>{
-                if(err)
-                    throw new Error(err);
-                
-                if(!err)
-                    result ?
-                        res.status(200).send(result) : res.status(404).send('Unable to find records for desired data');
-            }
-        
-        Surveys.findById(surveyId, findByIdCb);
+            _id = req.params._id;
+
+            surveyJoint.getSurveyById(_id)
+                .then( prores => {
+                    res.status(prores.status).send(prores.body);
+                })
+                .catch(err=>{
+                    res.status(err.status).send(err.body);
+                })
     },
 
     getSurveyByListCb = (req, res, next)=>{
@@ -34,40 +31,48 @@ const
         //to remove all whitespaces in ids, if there are any.
         _list = _list.map(i => i.trim());
         
-        let 
-            list = _list,
-            findCb = (err, results)=>{
-                if(err)
-                    throw new Error(err);
-                
-                if(!err)
-                    results ? 
-                        res.status(200).send(results) : res.status(404).send('Unable to find records for desired data');
-            }
+        surveyJoint.getSurveyList(_list)
+            .then( prores => {
+                res.status(prores.status).send(prores.body)
+            })
+            .catch(err => {
+                res.status(err.status).send(err.body)
+            })
+    }, 
 
-        Users.find({_id: {$in: list}}, findCb);
-    },
-    addSurveyCb= (req, res, next) => {
+    addSurveyCb = (req, res, next) => {
         console.log('request body', req.body);
         let 
             evaluation = req.body.evaluation.trim(),
             target = req.body.target.trim(),
-            survey = req.body.survey              
+            surveyBody = req.body.survey              
             
-        new Surveys({
-            evaluation, target, survey
-        }).save(err => {
-            if(err)
-                throw new Error(err);
-            
-            res.status(200).send("Survey Submitted");
-        })
+        let survey = {
+            evaluation, target, survey: surveyBody
+        };
+        surveyJoint.saveSurvey(survey)
+            .then(result => {
+                if(result.evaluation === "Teacher Evaluation")
+                    teacherJoint.addSurveyReference(result)
+                        .then( res =>{
+                            console.log(`${res.status}- Teacher ref update made, msg: ${res.msg}`);
+                            res.status(res.status).send("Survey Added");
+                        })
+                        .catch( err => {
+                            console.error(`${err.status}- Teacher ref update error, msg: ${err.msg}`);
+                            res.status(err.status).send(err.msg)
+                        })
+                else 
+                    res.status(200).send("Survey Added");
+                })
+            .catch(err=>{
+                res.status(err.status).send(err.body);
+            })
     }
     
 
-
-
-router.get('/id/:surveyId', getSurveyByIdCb);
+router.get('/id/:_id', getSurveyByIdCb);
 router.post('/list', getSurveyByListCb);
-router.post('/add', addSurveyCb)
+router.post('/add', addSurveyCb);
+
 module.exports = router;
