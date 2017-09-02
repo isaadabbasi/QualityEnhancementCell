@@ -18,18 +18,23 @@ class TeacherJoint {
             teacher.save(cb)
         })
     }
-    addSurveyReference({created, _id, target}){
-        let refObject = {created, reference};
-        console.log(refObject)
+    addSurveyReference(surveyReference){
+        console.log('survey reference: ', surveyReference)
+        let refObject = {
+            created: surveyReference.created,
+            _reference: surveyReference._id
+        },
+        target = surveyReference.target;
+        // console.log('\n \n what is refObject', refObject);
         return new Promise((resolve, reject)=>{
             console.log('CB invoked');
             
-            Teachers.update({fullname: {$regex: target}}, {$set: {survey: [refObj]}}, (err, update)=> {
-                console.log(err, result)
+            Teachers.update({fullname: {$regex: target}}, {$push: {survey: [refObject]}}, (err, update)=> {
+                // console.log('update ok?', !!update.ok)
                 if(err)
                     reject({status: 404, msg: 'No Such Teacher Exist'});
-                if(!err)
-                     update ?
+                if(!err)    
+                     update.ok ?
                     resolve({status: 201, msg: 'Reference Updated'})
                     :
                     reject({status: 501, msg: 'Unable to Update'});

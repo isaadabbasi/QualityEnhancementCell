@@ -41,33 +41,38 @@ const
     }, 
 
     addSurveyCb = (req, res, next) => {
-        console.log('request body', req.body);
+        // console.log('request body', req.body);
         let 
             evaluation = req.body.evaluation.trim(),
             target = req.body.target.trim(),
             survey = req.body.survey              
-            
+        
         let surveyModel = {
             evaluation, target, survey
         };
         surveyJoint.saveSurvey(surveyModel)
             .then(result => {
-                console.log('what is result: ', result)
-                if(result.body.evaluation === "teacher")
-                    teacherJoint.addSurveyReference(result.body)
-                        .then( res =>{
+                let body = result.body;
+                console.log(body)
+                // console.log('\n  .then is being exeute ... ', result.body )
+                !!~ body.evaluation.indexOf('teacher') ?
+                    teacherJoint.addSurveyReference(body)
+                        .then( prores =>{
+                            console.log('on promise resolve', prores)
                             console.log(`${res.status}- Teacher ref update made, msg: ${res.msg}`);
-                            res.status(res.status).send("Survey Added");
+                            res.status(prores.status).send("Survey Added");
                         })
                         .catch( err => {
-                            console.error(`${err.status}- Teacher ref update error, msg: ${err.msg}`);
-                            res.status(err.status).send(err.msg)
+                            console.log('on err response', err);
+                            // console.error(`${err.status}- Teacher ref update error, msg: ${err.msg}`);
+                            // res.status(501).send(err.msg)
                         })
-                else 
-                    res.status(200).send("Survey Added");
+                :
+                    res.status(201).send("Survey Added");
                 })
             .catch(err=>{
-                res.status(err.status).send(err.body);
+                console.log(err)
+                // res.status(500).send();
             })
     }
     
