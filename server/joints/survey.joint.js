@@ -1,29 +1,24 @@
 
 const 
-    Surveys = require('../database/models/survey.model'),
-    getSurveyPromiseCb ;
+    Surveys = require('../database/models/survey.model');
 
 
 class SurveyJoint {
     constructor(){
         console.log('Router-to-Survey Joint Made');
     }
-    getCommonCb(msg, successStatus, errStatus){
-        return (err, result) => {
-            if(err)
-                throw new Error(err);
-            if(!err)
-                result ?
-                    resolve({status: successStatus, body: result}) : reject({status: errStatus, body: msg})
-        }
-    }
 
     saveSurvey(surveyModel){
         let 
-            survey = new Surveys(surveyModel),
-            msg = ""
+            survey = new Surveys(surveyModel);
         return new Promise((resolve, reject)=>{
-            survey.save(this.getCommonCb("Unable to save survey", 201, 501));
+            survey.save((err, result) => {
+                if(err)
+                    throw new Error(err);
+                if(!err)
+                    result ?
+                        resolve({status: 201, body: result}) : reject({status: 501, body: "Survey Not Added"})
+            });
         })
     }
     

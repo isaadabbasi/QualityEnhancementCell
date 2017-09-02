@@ -46,9 +46,9 @@ interface SurveyModel {
 export class MainFormComponent implements OnInit{
     constructor(private _sharedService: SharedService){}
     
-    selectedTeacher: string = 'Teacher X';
+    selectedTeacher: string = 'Fahad Iqbal';
     selectedDepartment: string = 'Computer Systems';
-    subject: string = 'CCNA';
+    subject: string = null;
 
     questions: Array<Object> = null;
     survey: Array<SurveyModel> = []; 
@@ -88,7 +88,7 @@ export class MainFormComponent implements OnInit{
     getStudentRemarks(){
         
         let surveyDetails = {
-            evaluation: this.subject ? 'Course Evaluation':'Teacher Evaluation',
+            evaluation: this.subject ? 'course':'teacher',
             target: this.subject || this.selectedTeacher, // should the target be dynamically changed to course name?
             survey: this.survey
         }

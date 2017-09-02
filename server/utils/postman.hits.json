@@ -1,0 +1,16 @@
+{
+    // /teachers/add
+    "fullname":"Shamim Naich",
+	"designation": "Teacher",
+	"subjects": ["DLD", "BE", "BEE"],
+	"departments": ["Computer Systems"],
+	
+    // /users/register
+    "fulname": "Person X",
+    "department": "Computer Systems",
+    "rollnumber": "D-14-CS-",
+    "password": "abcd1234"
+
+    // /surveys/add
+
+}
