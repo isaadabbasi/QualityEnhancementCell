@@ -16,7 +16,9 @@ import { PlaceHolderComponent } from './components/dashboard/dashboard-placehold
 import { QuestionComponent } from './components/main-form//quest.component';
 import { RankingComponent } from './components/dashboard/dashboard-ranking/ranking.component'
 import { StartSurveyComponent } from './components/dashboard/dashboard-start/start.component'
-
+import { SignupComponent } from './components/signup/signup.component';
+import { SharedService } from './shared/shared.service';
+import { AuthGuard } from './auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import { StartSurveyComponent } from './components/dashboard/dashboard-start/sta
     PlaceHolderComponent,
     QuestionComponent,
     RankingComponent,
-    StartSurveyComponent
+    StartSurveyComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +42,10 @@ import { StartSurveyComponent } from './components/dashboard/dashboard-start/sta
     RouterModule,
     routing
   ],
-  providers: [],
+  providers: [
+    AuthGuard, 
+    SharedService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

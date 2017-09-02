@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Http } from "@angular/http";
 import { Observable } from "rxjs/Observable";
+import * as  localforage from 'localforage';
 import 'rxjs/add/operator/map';
 @Injectable()
 export class SharedService{
@@ -17,6 +18,10 @@ export class SharedService{
 
         return this.http.post(url, body, options)
             // .map(response => response.json());
+    }
+
+    isLoggedIn(){
+        return !!localforage.getItem('activeUser');
     }
 
 
