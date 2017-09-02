@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit{
                     if(res.status == 200){
                         console.log(res);
                         localforage.setItem('activeUser', JSON.parse(res['_body']));
-                        this.router.navigate(['/dashboard'])
+                        this.router.navigate(['/dashboard']);
                     }
                     
                 }, err => {

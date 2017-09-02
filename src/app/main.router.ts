@@ -20,7 +20,7 @@ export const routes: Routes = [
     {path: '', component: LoginComponent},
     {path: 'signup', component: SignupComponent},
     {path: 'survey', component: MainFormComponent},
-    {path: 'dashboard', canActivateChild: [AuthGuard], component: DashboardComponent, children: [
+    {path: 'dashboard', canActivate: [AuthGuard], canActivateChild: [AuthGuard], component: DashboardComponent, children: [
         {path:'start', component: StartSurveyComponent},
         {path:'rankings', component: RankingComponent},
         {path:'', component: PlaceHolderComponent },
