@@ -45,15 +45,16 @@ const
         let 
             evaluation = req.body.evaluation.trim(),
             target = req.body.target.trim(),
-            surveyBody = req.body.survey              
+            survey = req.body.survey              
             
-        let survey = {
-            evaluation, target, survey: surveyBody
+        let surveyModel = {
+            evaluation, target, survey
         };
-        surveyJoint.saveSurvey(survey)
+        surveyJoint.saveSurvey(surveyModel)
             .then(result => {
-                if(result.evaluation === "Teacher Evaluation")
-                    teacherJoint.addSurveyReference(result)
+                console.log('what is result: ', result)
+                if(result.body.evaluation === "teacher")
+                    teacherJoint.addSurveyReference(result.body)
                         .then( res =>{
                             console.log(`${res.status}- Teacher ref update made, msg: ${res.msg}`);
                             res.status(res.status).send("Survey Added");

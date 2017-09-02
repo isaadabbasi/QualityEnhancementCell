@@ -1,10 +1,10 @@
 {
     "_id":"Object Id('113514123516144')",
     "join_date": "25 Jan 2014, 1200 GTK+5",
-    "full_name":"Fahad Iqbal",
+    "fullname":"Fahad Iqbal",
     "designation":"Teacher",
     "departments":["Computer System","Electronics"], //need discussion if needed or not
-    "subjects ": ["Operating System", "Embedded Systems", "Mobile Computing", "Data Communication"],
+    "subjects": ["Operating System", "Embedded Systems", "Mobile Computing", "Data Communication"],
     "surveys": {
         "total_surveys": 22,
         "average_rating": 4.3,//

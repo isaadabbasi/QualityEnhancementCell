@@ -28,4 +28,4 @@ const
     }),
     teacherModel = mongoose.model(identity, teacherSchema);
 
-module.exports = model;
+module.exports = teacherModel;
