@@ -9,15 +9,18 @@ class SurveyJoint {
     }
 
     saveSurvey(surveyModel){
+        console.log('surveyModel recieved: ', surveyModel);
         let 
             survey = new Surveys(surveyModel);
         return new Promise((resolve, reject)=>{
             survey.save((err, result) => {
                 if(err)
                     throw new Error(err);
-                if(!err)
-                    result ?
-                        resolve({status: 201, body: result}) : reject({status: 501, body: "Survey Not Added"})
+                
+                else if(Object.keys(result).length)
+                    resolve({status: 201, body: result})
+                else if(!Object.keys(result).length) 
+                    reject({status: 501, body: "Survey Not Added"})
             });
         })
     }
