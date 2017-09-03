@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import 'rxjs/add/operator/debounceTime';
 
 import { QuestionComponent } from './quest.component';
 import { SharedService } from '../../shared/shared.service';
@@ -100,6 +101,7 @@ export class MainFormComponent implements OnInit{
         // subscribe also takes and object as param, 
         // in which first key is successResponse, second is Error, third is onComplete Event
         this._sharedService.postCall(ADD_SURVEY_URL, surveyDetails)
+            .debounceTime(500)
             .subscribe({
                 next: res => { console.log( res )},
                 error: error => { console.log( error ) }

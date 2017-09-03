@@ -4,6 +4,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { ChartsModule } from 'ng2-charts';
+
 import { routing } from './main.router'
 
 import { AppComponent } from './app.component';
@@ -19,6 +22,7 @@ import { StartSurveyComponent } from './components/dashboard/dashboard-start/sta
 import { SignupComponent } from './components/signup/signup.component';
 import { SharedService } from './shared/shared.service';
 import { AuthGuard } from './auth-guard.service';
+import { StatsComponent } from "./components/dashboard/dashboard-stats/stats.component";
 
 @NgModule({
   declarations: [
@@ -32,7 +36,8 @@ import { AuthGuard } from './auth-guard.service';
     QuestionComponent,
     RankingComponent,
     StartSurveyComponent,
-    SignupComponent
+    SignupComponent,
+    StatsComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +45,7 @@ import { AuthGuard } from './auth-guard.service';
     FormsModule,
     HttpModule,
     RouterModule,
+    ChartsModule,
     routing
   ],
   providers: [
