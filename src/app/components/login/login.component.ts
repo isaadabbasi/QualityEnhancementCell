@@ -4,8 +4,7 @@ import { Router } from '@angular/router';
 
 import { SIGNIN_URL } from "./../../shared/global-vars";
 import { SharedService } from './../../shared/shared.service';
-import * as localforage from 'localforage';
-// import {} from 'ng2-localforage';
+
 @Component({
     templateUrl: './login.template.html',
     styleUrls: ['./login.component.css'],
@@ -41,8 +40,9 @@ export class LoginComponent implements OnInit{
                     
                     if(res.status == 200){
                         console.log(res);
-                        localforage.setItem('activeUser', JSON.parse(res['_body']));
-                        this.router.navigate(['/dashboard']);
+                        localStorage.setItem('activeUser', (res['_body']))
+                        console.log(JSON.parse(localStorage.getItem('activeUser')).rollnumber);
+                        this.router.navigate(['/dashboard']);     
                     }
                     
                 }, err => {
