@@ -26,13 +26,12 @@ export class QuestionComponent implements OnInit{
     hideQuest(id: number){
         console.log('close tab #'+id);
     }
-    optionSelected(_id, reply){
+    optionSelected(id, selection){
         // console.log(_id, reply)
-        let valueIndex:number = this.options.indexOf(reply),
-            value = valueIndex/this.options.length;
+        let value:number = this.options.indexOf(selection)+1;
 
         this.quizReplied.emit({
-            _id, reply, value
+            id, selection, value
         })
     }
 

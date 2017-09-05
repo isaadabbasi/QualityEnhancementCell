@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 
 import { QuestionComponent } from './quest.component';
-import { SharedService } from '../../shared/shared.service'
+import { SharedService } from '../../shared/shared.service';
+import { ADD_SURVEY_URL } from '../../shared/global-vars';
 interface SurveyModel {
     _id: number, 
     reply: string
@@ -17,9 +18,9 @@ interface SurveyModel {
                 </div>
                 <div class="pull-right">
                     <ul class="teacher-details">
-                        <li>Fahad   Iqbal</li>
-                        <li>CSE</li>
-                        <li>OS, CAO</li>
+                        <li>{{selectedDepartment}}</li>
+                        <li>{{selectedTeacher}}</li>
+                        <li>{{subject? subject: ''}}</li>
                     </ul>
                 </div>
             </div>
@@ -43,7 +44,12 @@ interface SurveyModel {
 
 
 export class MainFormComponent implements OnInit{
-    constructor(){}
+    constructor(private _sharedService: SharedService){}
+    
+    selectedTeacher: string = 'Fahad Iqbal';
+    selectedDepartment: string = 'Computer Systems';
+    subject: string = null;
+
     questions: Array<Object> = null;
     survey: Array<SurveyModel> = []; 
     ngOnInit(){
@@ -80,8 +86,23 @@ export class MainFormComponent implements OnInit{
         this.survey.push(event)
     }
     getStudentRemarks(){
-        console.log('finalized result', this.survey)
-        if(this.questions.length === this.survey.length)
-            localStorage.setItem('surveys', JSON.stringify([this.survey])); 
+        
+        let surveyDetails = {
+            evaluation: this.subject ? 'course':'teacher',
+            target: this.subject || this.selectedTeacher, // should the target be dynamically changed to course name?
+            survey: this.survey
+        }
+
+        // localStorage.setItem('surveys', JSON.stringify([this.survey]));        
+        // if(this.questions.length === this.survey.length)
+        console.log('finalized result',  surveyDetails)
+
+        // subscribe also takes and object as param, 
+        // in which first key is successResponse, second is Error, third is onComplete Event
+        this._sharedService.postCall(ADD_SURVEY_URL, surveyDetails)
+            .subscribe({
+                next: res => { console.log( res )},
+                error: error => { console.log( error ) }
+            })
     }
 }

@@ -6,18 +6,13 @@ const
         fullname: {
             type: String, trim: true, maxlength: 40, unique: true
         },
-        details: {
-            type: Schema.Types.ObjectId,
-            ref: 'Teachers'
+        _reference: {
+            type: Schema.Types.ObjectId, ref: 'Teachers'
         },
     },
     departmentSchema = new Schema({ 
         dept_name: {
-            type: String, 
-            trim: true, 
-            required: true, 
-            maxlength: 40,
-            unique: true
+            type: String, trim: true, required: true, maxlength: 40, unique: true
         },
         faculty_size: {
             type: Number
@@ -25,8 +20,8 @@ const
         teachers: [teacherRef]
     },
     {
-        collection: 'departments'
+        collection: 'Departments'
     }),
-    model = mongoose.model('departments', departmentSchema);
+    model = mongoose.model('Departments', departmentSchema);
 
 module.exports = model;

@@ -9,7 +9,7 @@ const
         type: {type: String, default: 'direct'}
     },
     surveySchema = new Schema({
-        created: { type: Schema.Types.ObjectId, default: Date.now },
+        created: { type: Schema.Types.Date, default: Date.now },
         evaluation: { type: String, maxlength: 30, trim: true },
         target: { type: String, maxlength: 30, trim: true },
         survey: [survey]
