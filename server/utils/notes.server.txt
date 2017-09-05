@@ -4,4 +4,43 @@
 2- have to make sure insert is like update with no deletion.
 
 // NOTES
-- no notes available
+
+ROUTE REQUIREMENTS.
+/users/login, POST
+    - rollnumber:string || university_id:string
+    - password: string
+
+/users/register, POST
+    - rollnumber: string
+    - fullname: string
+    - department: string
+    - password: string
+    {
+        "fullname": "Person X",
+        "rollnumber": "D-14-ES-05",
+        "department": "Electronics",
+        "password": "abcd1234"
+    }
+/surveys/id/:id, GET
+    _id: ObjectId
+
+/surveys/list, POST 
+    - list: Array<string>
+
+/surveys/add, POST
+    - evaluation: string
+    - target: string, 
+    - survey: Array<Object>
+
+/teachers/add: POST
+    fullname: string,
+    designation: string
+    department: Array<string>
+    subjects: Array<string>
+
+    "fullname":"Shamim Naich",
+	"designation": "Teacher",
+	"subjects": ["DLD", "BE", "BEE"],
+	"departments": ["Computer Systems"]
+
+    

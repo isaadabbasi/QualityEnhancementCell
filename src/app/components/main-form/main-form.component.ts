@@ -46,7 +46,7 @@ interface SurveyModel {
 export class MainFormComponent implements OnInit{
     constructor(private _sharedService: SharedService){}
     
-    selectedTeacher: string = 'Fahad Iqbal';
+    selectedTeacher: string = 'Shamim Naich';
     selectedDepartment: string = 'Computer Systems';
     subject: string = null;
 

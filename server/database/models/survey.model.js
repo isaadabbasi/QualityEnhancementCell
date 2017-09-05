@@ -2,12 +2,12 @@ const
     mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     identity = 'Surveys',
-    survey = {
+    survey = new Schema({
         id: Number, 
         selection: String, 
         value: Number,
         type: {type: String, default: 'direct'}
-    },
+    }, {_id: false}),
     surveySchema = new Schema({
         created: { type: Schema.Types.Date, default: Date.now },
         evaluation: { type: String, maxlength: 30, trim: true },

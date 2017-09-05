@@ -62,7 +62,7 @@ const
     },
 
     registrationCallback = (req, res, next)=> {
-        console.log(typeof req.body);
+        // console.log(req.body);
         let 
             fullname = req.body.fullname.trim(),
             department = req.body.department.trim(),
@@ -92,6 +92,6 @@ const
 
 
 router.post('/login', loginCallback);
-router.post('/registration', registrationCallback);
+router.post('/register', registrationCallback);
 
 module.exports = router;
