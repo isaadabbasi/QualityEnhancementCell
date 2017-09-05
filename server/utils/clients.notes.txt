@@ -1,0 +1,27 @@
+/users/login, POST
+    - rollnumber:string || university_id:string
+    - password: string
+/users/register, POST
+    - rollnumber: string
+    - fullname: string
+    - department: string
+    - password: string
+
+/surveys/id/:id, GET
+    _id: ObjectId
+
+/surveys/list, POST 
+    - list: Array<string>
+
+/surveys/add, POST
+    - evaluation: string
+    - target: string, 
+    - survey: Array<Object>
+
+/teachers/add: POST
+    fullname: string,
+    designation: string
+    department: Array<string>
+    subjects: Array<string>
+
+https://semantic-ui.com/modules/dropdown.html -> Multiple Search Selection for adding teacher on admin panel
