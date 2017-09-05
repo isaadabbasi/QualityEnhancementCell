@@ -4,6 +4,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { ChartsModule } from 'ng2-charts';
+
 import { routing } from './main.router'
 
 import { AppComponent } from './app.component';
@@ -16,7 +19,10 @@ import { PlaceHolderComponent } from './components/dashboard/dashboard-placehold
 import { QuestionComponent } from './components/main-form//quest.component';
 import { RankingComponent } from './components/dashboard/dashboard-ranking/ranking.component'
 import { StartSurveyComponent } from './components/dashboard/dashboard-start/start.component'
-
+import { SignupComponent } from './components/signup/signup.component';
+import { SharedService } from './shared/shared.service';
+import { AuthGuard } from './auth-guard.service';
+import { StatsComponent } from "./components/dashboard/dashboard-stats/stats.component";
 
 @NgModule({
   declarations: [
@@ -29,7 +35,9 @@ import { StartSurveyComponent } from './components/dashboard/dashboard-start/sta
     PlaceHolderComponent,
     QuestionComponent,
     RankingComponent,
-    StartSurveyComponent
+    StartSurveyComponent,
+    SignupComponent,
+    StatsComponent
   ],
   imports: [
     BrowserModule,
@@ -37,9 +45,13 @@ import { StartSurveyComponent } from './components/dashboard/dashboard-start/sta
     FormsModule,
     HttpModule,
     RouterModule,
+    ChartsModule,
     routing
   ],
-  providers: [],
+  providers: [
+    AuthGuard, 
+    SharedService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

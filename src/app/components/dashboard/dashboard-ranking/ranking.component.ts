@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
     template: `
         <div>Ranking will be rendered here</div> 
     `
+   
 })
 export class RankingComponent {
 

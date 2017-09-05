@@ -50,7 +50,7 @@ import { Component, OnInit } from '@angular/core';
                         <div class="sidenav-text">Rankings</div>
                 </li>
             </a>
-            <a class="col-xs-2 col-md-12 side-option" title="Statistics">
+            <a class="col-xs-2 col-md-12 side-option" title="Statistics" routerLinkActive="active-link" routerLink="stats">
                 <li class="sidenav-item">
                         <div class="fa fa-line-chart fa-3x active"></div>
                         <div class="sidenav-text">Statistics</div>
