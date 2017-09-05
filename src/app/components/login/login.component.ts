@@ -34,9 +34,11 @@ export class LoginComponent implements OnInit{
     }
     signIn(){
         if(this.userCredentials.rollnumber && this.userCredentials.password){
-            console.log('Got Credentials')
+            console.log('Got Credentials', this.userCredentials.password, this.userCredentials.rollnumber);            
             this.sharedService.postCall(SIGNIN_URL, this.userCredentials)
                 .subscribe(res => {
+                    console.log(res);
+                    
                     if(res.status == 200){
                         console.log(res);
                         localforage.setItem('activeUser', JSON.parse(res['_body']));

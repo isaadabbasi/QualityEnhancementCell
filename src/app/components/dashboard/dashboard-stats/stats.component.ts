@@ -35,7 +35,7 @@ export class StatsComponent {
  
   // events
   public chartClicked(e:any):void {
-    console.log(e);
+    this.lineChartType = 'bar';
   }
  
   public chartHovered(e:any):void {
