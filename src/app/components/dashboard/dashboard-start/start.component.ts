@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import * as localforage from 'localforage';
+import { StudentModel } from "./../../../shared/models";
+
 @Component({
     templateUrl: './start.template.html',
     styleUrls:[ '../../login/login.component.css' ]
@@ -33,14 +34,13 @@ export class StartSurveyComponent implements OnInit {
     }
 
     ngOnInit() {
-        localforage.getItem('activeUser')
-            .then(user=>{
-                this.selectedDepartment = user['department'];
-                console.log(this.selectedDepartment)
-                console.log(this.deptReference)
-                let node = this.deptReference.nativeElement;
-                node.value = this.selectedDepartment;
-                
-            })
+        let activeUser: StudentModel = JSON.parse(localStorage.getItem('activeUser'));
+        console.log(activeUser);
+        this.selectedDepartment = activeUser.department;
+        console.log(this.selectedDepartment);
+        
+        // console.log(this.deptReference)
+        // let node = this.deptReference.nativeElement;
+        // node.value = this.selectedDepartment;
      }
 }
