@@ -1,3 +1,5 @@
+import { SignupComponent } from './components/signup/signup.component';
+import { AuthGuard } from './auth-guard.service';
 import { RouterModule, Routes, Route} from '@angular/router';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component'
@@ -7,6 +9,7 @@ import { MainFormComponent } from './components/main-form/main-form.component';
 import { NavBarComponent } from './components/nav-bar/navbar.component';
 import { RankingComponent } from './components/dashboard/dashboard-ranking/ranking.component'
 import { StartSurveyComponent } from './components/dashboard/dashboard-start/start.component'
+import { StatsComponent } from "./components/dashboard/dashboard-stats/stats.component";
 
 
 const fallback: Route = {
@@ -16,10 +19,12 @@ const fallback: Route = {
 
 export const routes: Routes = [
     {path: '', component: LoginComponent},
+    {path: 'signup', component: SignupComponent},
     {path: 'survey', component: MainFormComponent},
-    {path: 'dashboard', component: DashboardComponent, children: [
+    {path: 'dashboard', canActivate: [AuthGuard], canActivateChild: [AuthGuard], component: DashboardComponent, children: [
         {path:'start', component: StartSurveyComponent},
         {path:'rankings', component: RankingComponent},
+        {path:'stats', component: StatsComponent },
         {path:'', component: PlaceHolderComponent },
         fallback
     ]},

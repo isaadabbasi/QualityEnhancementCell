@@ -10,13 +10,13 @@
                 <!--<button class="bttn-fill bttn-lg bttn-primary btn-block" (click)="signIn()">LOGIN</button>-->
                 <!--<button class="bttn-slant bttn-lg bttn-primary btn-block" (click)="signIn()">Login</button>-->
                 <!--<button class="bttn-material-flat bttn-md bttn-primary bttn-block">Login</button>-->
-                <button class="btn btn-block btn-primary btn-lg" (click)="signIn()" [disabled]=!validateCredentials()>Login</button>
+                <button type="button" class="btn btn-block btn-primary btn-lg" (click)="signIn()" [disabled]=!validateCredentials()>Login</button>
                 
                 <h4 *ngIf="loginError" class="text-center text-danger bold">{{ loginErrorMessage }}</h4>
-                <a href="#" class="pull-right need-help">Need help? </a>
+                <a href="" class="pull-right need-help">Need help? </a>
                 <span class="clearfix"></span>
                 </form>
             </div>
-            <a href="#" class="text-center new-account" >Create an account</a>
+            <a routerLink="/signup" class="text-center new-account" >Create an account</a>
         </div>
 </div>

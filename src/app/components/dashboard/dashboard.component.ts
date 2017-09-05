@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+
+import * as localforage from 'localforage';
+
 @Component({
     selector: 'qec-dashboard',
     styles:[`
@@ -31,5 +34,10 @@ import { Component } from '@angular/core';
 export class DashboardComponent{
     sidebars: Array<String> = ['1', '3', '5'];
     constructor(){
+        localforage.getItem("activeUser", (err, value)=>{
+            console.log(value);
+            
+        });
+    
     }
 }

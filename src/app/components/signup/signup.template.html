@@ -1,0 +1,26 @@
+<div style="display:inline;" class="container">
+    <div class="col-xs-12 col-sm-offset-2 col-sm-8 col-md-6 col-md-offset-3">
+            <h1 class="text-center signup-title">Create an account</h1>
+            <div id="signup-container" class="account-wall animated">
+                <img class="profile-img img-responsive" src="./assets/images/duet_logo.png"
+                    alt="">
+                <form class="form-signup">
+                <input type="text" class="form-control" placeholder="Full name" [(ngModel)]="userCredentials.fullname" name="fullname" required autofocus>
+                <select #depart (ngModelChange)="loging(depart.selectedIndex)" class="form-control" name="department" id="department" [(ngModel)]="selectedDepartment">
+                    <option *ngFor="let dept of departments" [ngValue]="dept" [selected]="userCredentials.department"> {{ dept.name }} </option>      
+                </select>
+                <input type="text" class="form-control" placeholder="Roll No" [(ngModel)]="userCredentials.rollnumber" name="rollno." required autofocus>
+                <input type="password" class="form-control" placeholder="Password" [(ngModel)]="userCredentials.password" name="password" required>
+                <!--<button class="bttn-fill bttn-lg bttn-primary btn-block" (click)="signIn()">LOGIN</button>-->
+                <!--<button class="bttn-slant bttn-lg bttn-primary btn-block" (click)="signIn()">Login</button>-->
+                <!--<button class="bttn-material-flat bttn-md bttn-primary bttn-block">Login</button>-->
+                <button class="btn btn-block btn-primary btn-lg" routerLink="" (click)="signUp()" [disabled]=!validateCredentials()>Signup</button>
+                
+                <h4 *ngIf="signupError" class="text-center text-danger bold">{{ signupErrorMessage }}</h4>
+                <a href="" class="pull-right need-help">Need help? </a>
+                <span class="clearfix"></span>
+                </form>
+            </div>
+            <a routerLink="" class="text-center new-account" >Already have an account? Login in here</a>
+        </div>
+</div>
