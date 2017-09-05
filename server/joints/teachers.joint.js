@@ -29,7 +29,7 @@ class TeacherJoint {
         return new Promise((resolve, reject)=>{
             console.log('CB invoked');
             
-            Teachers.update({fullname: {$regex: target}}, {$push: {survey: [refObject]}}, (err, update)=> {
+            Teachers.update({fullname: {$regex: target}}, {$push: {surveys: refObject}}, (err, update)=> {
                 // console.log('update ok?', !!update.ok)
                 if(err)
                     reject({status: 404, msg: 'No Such Teacher Exist'});
@@ -40,6 +40,23 @@ class TeacherJoint {
                     reject({status: 501, msg: 'Unable to Update'});
             })
 
+        })
+    }
+
+    findResultFor(searchQuery){
+        return new Promise((resolve, reject)=>{
+            let cb = (err, result) => {
+                if(err)
+                    throw new Error(err);
+                
+                if(!err)
+                    result ? 
+                        resolve({status: 302, body: result})
+                        :
+                        reject({status: 404, body: "Unable to find result for desired data"});
+            }
+            Teachers.find(searchQuery, cb)
+                
         })
     }
 }

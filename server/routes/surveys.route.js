@@ -41,7 +41,7 @@ const
     }, 
 
     addSurveyCb = (req, res, next) => {
-        // console.log('request body', req.body);
+        console.log('request body', req.body);
         let 
             evaluation = req.body.evaluation.trim(),
             target = req.body.target.trim(),
@@ -65,7 +65,7 @@ const
                         .catch( err => {
                             console.log('on err response', err);
                             // console.error(`${err.status}- Teacher ref update error, msg: ${err.msg}`);
-                            // res.status(501).send(err.msg)
+                            res.status(501).send(err.msg)
                         })
                 :
                     res.status(201).send("Survey Added");

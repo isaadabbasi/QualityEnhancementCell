@@ -6,7 +6,8 @@ import { SharedService } from '../../shared/shared.service';
 import { ADD_SURVEY_URL } from '../../shared/global-vars';
 interface SurveyModel {
     _id: number, 
-    reply: string
+    reply: string,
+    value: number
 }
 
 @Component({
@@ -47,7 +48,7 @@ interface SurveyModel {
 export class MainFormComponent implements OnInit{
     constructor(private _sharedService: SharedService){}
     
-    selectedTeacher: string = 'Fahad Iqbal';
+    selectedTeacher: string = 'Shamim Naich';
     selectedDepartment: string = 'Computer Systems';
     subject: string = null;
 
