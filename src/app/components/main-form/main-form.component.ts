@@ -6,7 +6,8 @@ import { SharedService } from '../../shared/shared.service';
 import { ADD_SURVEY_URL } from '../../shared/global-vars';
 interface SurveyModel {
     _id: number, 
-    reply: string
+    reply: string,
+    value: number
 }
 
 @Component({

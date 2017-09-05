@@ -28,8 +28,8 @@ const
                         
             if(req.body.hasOwnProperty('department'))
                 searchQuery['departments'] = req.body.department
-            if(req.body.hasOwnProperty('teacher') || req.body.hasOwnProperty('fullname'))
-                searchQuery['fullname'] = req.body.teacher || req.body.fullname
+            if(req.body.hasOwnProperty('teacher'))
+                searchQuery['fullname'] = req.body.teacher
             
             teacherJoint.findResultFor(searchQuery)
                 .then(result =>{
