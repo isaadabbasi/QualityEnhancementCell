@@ -16,3 +16,4 @@ export const SIGNIN_URL: string = `${BASE_URL}/users/login`; // should be rename
 export const SIGNUP_URL: string = `${BASE_URL}/users/registration`;
 export const ADD_SURVEY_URL: string = `${BASE_URL}/surveys/add`; // should be renamed 
 export const SURVEY_START_URL: string = `${BASE_URL}/surveys/start`;
+export const TEACHER_DETAILS_URL: string = `${BASE_URL}/teachers/details`;
