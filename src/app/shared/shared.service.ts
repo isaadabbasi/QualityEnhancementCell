@@ -20,10 +20,7 @@ export class SharedService{
     }
 
     isLoggedIn(){
-        let isLoggedIn = JSON.parse(localStorage.getItem('activeUser')).rollnumber;
-        console.log('islogge in? :', isLoggedIn)
-        //  return !!JSON.parse(localStorage.getItem('activeUser')).rollnumber;
-        return !!isLoggedIn;
+        return !!(JSON.parse(localStorage.getItem('activeUser'))["rollnumber"]);
     }
 
 

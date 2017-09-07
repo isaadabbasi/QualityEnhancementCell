@@ -24,6 +24,20 @@ class SurveyJoint {
             });
         })
     }
+
+    getAllSurveys(){
+        return new Promise((resolve, reject)=>{
+            let cb = (err, surveys) =>{
+                if(err)
+                    throw new Error('Unable to load All Surveys');
+                
+                if(!err)
+                    surveys ? resolve({status: 302, body: surveys}) : reject({status: 404, body: "No Results Found"})
+
+            }
+            Surveys.find({}, cb)
+        })
+    }
     
     getSurveyById(_id){
         return new Promise((resolve, reject)=>{

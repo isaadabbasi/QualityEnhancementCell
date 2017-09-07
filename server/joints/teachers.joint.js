@@ -51,7 +51,7 @@ class TeacherJoint {
                 
                 if(!err)
                     result ? 
-                        resolve({status: 302, body: result})
+                        resolve({status: 200, body: result})
                         :
                         reject({status: 404, body: "Unable to find result for desired data"});
             }

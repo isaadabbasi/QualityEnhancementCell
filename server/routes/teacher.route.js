@@ -34,7 +34,7 @@ const
             teacherJoint.findResultFor(searchQuery)
                 .then(result =>{
                     console.log(result)
-                    res.status(302).send(result)
+                    res.status(200).send(result)
                 })
                 .catch(err=>{
                     // console.log(err)
