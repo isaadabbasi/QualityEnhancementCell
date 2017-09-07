@@ -1,5 +1,5 @@
 import { SIGNUP_URL } from './../../shared/global-vars';
-import { SignUpModel } from './signup.model';
+import { StudentModel } from './../../shared/models';
 import { Router } from '@angular/router';
 import { SharedService } from './../../shared/shared.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -28,9 +28,9 @@ export class SignupComponent implements OnInit{
         {value: 'TE', name: 'Telecommunication Engineering'}
     ];
     selectedDepartment = this.departments[0];    
-    userCredentials: SignUpModel = {
+    userCredentials: StudentModel = {
         fullname: '',
-        deparment: '',
+        department: '',
         rollnumber: '',
         password: ''
     }
@@ -41,11 +41,11 @@ export class SignupComponent implements OnInit{
         console.log(this.departments);
     }
     loging(deptIdx){
-        this.userCredentials.deparment = this.departments[deptIdx]["value"];
+        this.userCredentials.department = this.departments[deptIdx]["value"];
         console.log(this.userCredentials);
     }
     validateCredentials(){
-        return this.userCredentials.fullname && this.userCredentials.deparment != "0"
+        return this.userCredentials.fullname && this.userCredentials.department != "0"
             && this.userCredentials.rollnumber && this.userCredentials.password;
     }
     @ViewChild('#signup-container') signUpContainer;

@@ -34,10 +34,6 @@ import * as localforage from 'localforage';
 export class DashboardComponent{
     sidebars: Array<String> = ['1', '3', '5'];
     constructor(){
-        localforage.getItem("activeUser", (err, value)=>{
-            console.log(value);
-            
-        });
-    
+        console.log(localStorage.getItem("activeUser"));
     }
 }
