@@ -1,5 +1,5 @@
 import { SignupComponent } from './components/signup/signup.component';
-import { AuthGuard } from './auth-guard.service';
+import { AuthGuard, SessionGuard } from './auth-guard.service';
 import { RouterModule, Routes, Route} from '@angular/router';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component'
@@ -18,17 +18,18 @@ const fallback: Route = {
 }
 
 export const routes: Routes = [
-    {path: '', canActivate: [AuthGuard], canActivateChild: [AuthGuard], children: [
-        {path: 'survey', component: MainFormComponent},
-        {path: 'dashboard', canActivate: [AuthGuard], canActivateChild: [AuthGuard], component: DashboardComponent, children: [
-            {path:'start', component: StartSurveyComponent},
-            {path:'rankings', component: RankingComponent},
-            {path:'stats', component: StatsComponent },
-            {path: '', component: PlaceHolderComponent}
-        ]},
-        {path: '', component: LoginComponent}            
-    ]},
-    {path: 'signup', component: SignupComponent},
+    {path: 'survey', component: MainFormComponent},
+    {path: 'dashboard', canActivate:[AuthGuard], canActivateChild:[AuthGuard], component: DashboardComponent,
+    children:[
+        {path:'start', component: StartSurveyComponent},
+        {path:'rankings', component: RankingComponent},
+        {path:'stats', component: StatsComponent },
+        {path: '', component: PlaceHolderComponent}
+        ]
+    },
+    {path: 'login', canActivate:[SessionGuard], component: LoginComponent},
+    {path: 'signup', canActivate:[SessionGuard], component: SignupComponent},
+    {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
     fallback
 ]
 

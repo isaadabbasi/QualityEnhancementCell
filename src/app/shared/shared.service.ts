@@ -20,7 +20,7 @@ export class SharedService{
     }
 
     isLoggedIn(){
-        return !!JSON.parse(localStorage.getItem('activeUser'));
+        return !!(JSON.parse(localStorage.getItem('activeUser'))["rollnumber"]);
 
     }
 
