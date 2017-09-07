@@ -19,7 +19,8 @@
             <br />
             
             <div class="form-group">
-                <select class="form-control" #dept (change)="getDepartmentTeacherList(dept.value)">
+                <input type="text" class="form-control" #dept name="dept" [value]="selectedDepartment" disabled="disabled" >
+                <!-- <select class="form-control" #dept (change)="getDepartmentTeacherList(dept.value)">
                     <option value="none" [selected]="!selectedDepartment && true"> Select Department
                     <option value="CS" >Computer Systems
                     <option value="ES" >Electronics
@@ -29,33 +30,28 @@
                     <option value="AP">Architecture & Planning
                     <option value="EE">Energy & Environment
                     <option value="IM">Industrial Management
-                </select>
+                </select> -->
             </div>
 
             <div class="form-group">
-                <select [disabled]="!teachers" #teacher class="form-control" (change)="getSubjectList(teacher.value)">
-                    <option value="null" name="cse" [selected]="!teachers">Select Teacher
-                    <option value="Fahad Iqbal" name="cse" >Fahad Iqbal
-                    <option value="Motia Rani" name="cse" >Motia Rani
-                    <option value="Maria Bashir" name="cse" >Maria Bashir
-                    <option value="Shahid Suleman" name="cse" >Suleman Ahmed
-                    <option value="Manan Memon" name="cse" >Manan Memon
-                    <option value="Saleem Phul" name="cse" >Saleem Phul
+                <select #teacher name="teacher" class="form-control" (change)="getSubjectList(teacher.value)">
+                    <option value="" name="teachers" [selected]="teachers">Select Teacher</option>
+                    <option *ngFor="let teacher of teachersList" [ngValue]="teacher.fullname"> {{ teacher.fullname }} </option>      
                 </select>
+                
             </div>
             <div class="form-group">
-                <select class="form-control" [disabled]="!subjects">
-                    <option value="cpp" name="course" [selected]="!subjects">Select Subject
-                    <option value="cpp" name="course" >CPP
-                    <option value="ccna" name="course" >CCNA
-                    <option value="dcn" name="course" >DCN
-                    <option value="sns" name="course" >S&S
-                    <option value="caed" name="course" >CAED
+                <select #subject class="form-control" [disabled]="!subjects" (change)="selectedSubject(subject.value)" >
+                    <option value="" name="course" [selected]="!subjects">Select Subject</option>
+                    <option *ngFor="let subject of subjectsList" [ngValue]="subject"> {{ subject }} </option>      
                 </select>
             </div>
             <button 
+                type="button"
+                [disabled]="!validate()"
+                (click)="startSession()"
                 class="btn btn-primary btn-lg btn-block"
-                routerLink="/survey">Start</button>
+                >Start</button>
             <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
         </form>
     </div>

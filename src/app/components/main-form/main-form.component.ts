@@ -1,3 +1,4 @@
+import { TeacherEvaluationForm } from './../../shared/forms/teacher-evaluation-form';
 import {Component, OnInit} from '@angular/core';
 import 'rxjs/add/operator/debounceTime';
 
@@ -55,57 +56,53 @@ export class MainFormComponent implements OnInit{
     questions: Array<Object> = null;
     survey: Array<SurveyModel> = []; 
     ngOnInit(){
-        this.questions = [
-            {q_id: 1,
-            question:'Does he/she arrives and leave the class on time',
-            percentage: 88
-            },
-            {q_id: 2,
-            question:'Is he/she fair in examination and session marks',
-            percentage: 35
-            },
-            {q_id: 3,
-            question:'Do she/he provide some content other than course material to help the course content',
-            percentage: 80
-            },
-            {q_id: 4,
-            question:'He/She does any kind of gender, religious or linguistic discremination',
-            percentage: 56
-            },
-            {q_id: 5,
-            question:'Do she/he provide some content other than course material to help the course content',
-            percentage: 78
-            },
-            {q_id: 6,
-            question: 'Does he/she arrives and leave the class on time',
-            percentage: 22
-            },
-        ] 
+        this.questions = TeacherEvaluationForm
     }
 
     optionSelected(event: SurveyModel){
         console.log(event)
-        this.survey.push(event)
+        // this.survey.push(event)
+        function isSimilar(element  ) {
+            // console.log(element.id, event["id"]);
+            
+            return element;
+        }
+
+        let indexOfEvent = this.survey.findIndex((surveyElement:any) => surveyElement.id == (event as any).id);
+        if(indexOfEvent === -1){
+            this.survey.push(event)
+        }else{
+            this.survey[indexOfEvent] = event;
+        }
+        console.log(this.survey);
+        
     }
     getStudentRemarks(){
+        let surveyMetaData = JSON.parse(localStorage.getItem('surveyMetaData'));
         
         let surveyDetails = {
-            evaluation: this.subject ? 'course':'teacher',
-            target: this.subject || this.selectedTeacher, // should the target be dynamically changed to course name?
+            evaluation: surveyMetaData.evaluation,    //this.subject ? 'course':'teacher',
+            target: surveyMetaData.target,    //this.subject || this.selectedTeacher, // should the target be dynamically changed to course name?
             survey: this.survey
         }
 
         // localStorage.setItem('surveys', JSON.stringify([this.survey]));        
         // if(this.questions.length === this.survey.length)
         console.log('finalized result',  surveyDetails)
-
-        // subscribe also takes and object as param, 
-        // in which first key is successResponse, second is Error, third is onComplete Event
-        this._sharedService.postCall(ADD_SURVEY_URL, surveyDetails)
+        if(surveyDetails.survey.length === this.questions.length){
+            console.log('Send Http Request');
+            // subscribe also takes and object as param, 
+            // in which first key is successResponse, second is Error, third is onComplete Event
+            this._sharedService.postCall(ADD_SURVEY_URL, surveyDetails)
             .debounceTime(500)
             .subscribe({
                 next: res => { console.log( res )},
                 error: error => { console.log( error ) }
-            })
+            })    
+        }else{
+            console.log('Stop Http Request');
+            
+        }
+        
     }
 }
