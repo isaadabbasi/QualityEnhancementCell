@@ -70,7 +70,7 @@ export class StartSurveyComponent implements OnInit {
         if(this.validate()){
             // this.surveyMetaData.target = this.selectedTeacher;
             console.log(this.surveyMetaData.target);
-            localStorage.setItem('SurveyMetadata', JSON.stringify(this.surveyMetaData))
+            localStorage.setItem('surveyMetaData', JSON.stringify(this.surveyMetaData))
             this.router.navigate(['survey']);
         }
     }
