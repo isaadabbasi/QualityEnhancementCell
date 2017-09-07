@@ -1,3 +1,4 @@
+import { SurveysComponent } from './components/dashboard/dashboard-surveys/surveys.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { AuthGuard, SessionGuard } from './auth-guard.service';
 import { RouterModule, Routes, Route} from '@angular/router';
@@ -18,7 +19,8 @@ const fallback: Route = {
 }
 
 export const routes: Routes = [
-    {path: 'survey', component: MainFormComponent},
+    {path: 'survey', canActivate:[AuthGuard], component: MainFormComponent},
+    {path: 'view-surveys', component: SurveysComponent},
     {path: 'dashboard', canActivate:[AuthGuard], canActivateChild:[AuthGuard], component: DashboardComponent,
     children:[
         {path:'start', component: StartSurveyComponent},
