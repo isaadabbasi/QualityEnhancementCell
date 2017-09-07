@@ -25,6 +25,10 @@ ROUTE REQUIREMENTS.
         "department": "Electronics",
         "password": "abcd1234"
     }
+
+/surveys/ , GET
+    - to get all surveys;
+    
 /surveys/id/:id, GET
     _id: ObjectId
 

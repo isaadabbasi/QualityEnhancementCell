@@ -87,7 +87,7 @@ const
             })
     }
     
-router.get('/', getAllSurveysCb)
+router.get('/', getAllSurveysCb);
 router.get('/id/:_id', getSurveyByIdCb);
 router.post('/list', getSurveyByListCb);
 router.post('/add', addSurveyCb);
