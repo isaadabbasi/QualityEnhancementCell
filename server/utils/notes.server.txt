@@ -12,7 +12,7 @@ ROUTE REQUIREMENTS.
     {
         "rollnumber": "D-14-CS-11",
         "password": "abcd1234"
-    }
+    } 
 
 /users/register, POST
     - rollnumber: string

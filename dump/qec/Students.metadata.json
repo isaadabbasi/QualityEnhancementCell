@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"qec.Students"},{"v":1,"unique":true,"key":{"rollnumber":1},"name":"rollnumber_1","ns":"qec.Students","background":true}]}
