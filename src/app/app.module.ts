@@ -21,7 +21,7 @@ import { RankingComponent } from './components/dashboard/dashboard-ranking/ranki
 import { StartSurveyComponent } from './components/dashboard/dashboard-start/start.component'
 import { SignupComponent } from './components/signup/signup.component';
 import { SharedService } from './shared/shared.service';
-import { AuthGuard } from './auth-guard.service';
+import { AuthGuard, SessionGuard } from './auth-guard.service';
 import { StatsComponent } from "./components/dashboard/dashboard-stats/stats.component";
 
 @NgModule({
@@ -50,6 +50,7 @@ import { StatsComponent } from "./components/dashboard/dashboard-stats/stats.com
   ],
   providers: [
     AuthGuard, 
+    SessionGuard,
     SharedService
   ],
   bootstrap: [AppComponent]
