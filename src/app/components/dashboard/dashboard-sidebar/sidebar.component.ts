@@ -38,7 +38,7 @@ import { Component, OnInit } from '@angular/core';
                         <div class="sidenav-text">Start Survey</div>
                 </li>
             </a>
-            <a  class="col-xs-2 col-md-12 side-option" title="View Surveys" routerLinkActive="active-link">
+            <a  class="col-xs-2 col-md-12 side-option" title="View Surveys" routerLinkActive="active-link" routerLink="view-surveys">
                 <li class="sidenav-item">
                         <div class="fa fa-check-square-o fa-3x active"></div>
                         <div class="sidenav-text">View Surveys</div>
