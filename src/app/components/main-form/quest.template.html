@@ -7,14 +7,14 @@
             </div>
         </div>
         <div class="panel-body">
-                <div class="col-xs-12">
-                    <p class="text-center">{{question}}</p> <hr>
-                    <div class="text-center" style="margin:-10px auto"> 
-                        <div *ngFor="let opt of options" (change)="optionSelected(_id, opt)" style="display:inline;">
-                            <input type="radio" name="{{_id}}" value="{{opt}}">{{opt}} &nbsp;
-                        </div>
+            <div class="col-xs-12">
+                <p class="text-center">{{question}}</p> <hr>
+                <div class="text-center" style="margin:-10px auto"> 
+                    <div *ngFor="let opt of options" (change)="optionSelected(_id, opt)" style="display:inline;">
+                        <input type="radio" name="{{_id}}" value="{{opt}}">{{opt}} &nbsp;
                     </div>
                 </div>
+            </div>
         </div>
     </div>
 </div>
