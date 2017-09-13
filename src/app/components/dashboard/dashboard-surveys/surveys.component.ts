@@ -1,10 +1,14 @@
-import { Component, ViewChild } from '@angular/core';
-
+import { Component, ViewChild, Output, EventEmitter } from '@angular/core';
+import { SharedService } from "./../../../shared/shared.service";
 @Component({
     selector: 'surveys',
-    templateUrl: './surveys.template.html'
+    templateUrl: './surveys.template.html',
+    providers: [
+      SharedService
+    ]
 })
 export class SurveysComponent {
+  @Output('surveyId') SurveyId: EventEmitter<number> = new EventEmitter<number>();
   surveysArray = [
     {
       _id : 1,
@@ -33,5 +37,18 @@ export class SurveysComponent {
       }],
       created: (new Date()).toLocaleDateString()
     }
-  ]
+  ];
+
+  constructor(private sharedService: SharedService){
+    this.sharedService.getCall('http://localhost:3000/surveys')
+      .subscribe(
+        next => {this.surveysArray = next; console.log(next);
+        },
+        err => console.log(err)        
+      ), err => console.log(err)
+  }
+
+  viewSurvey(id){
+    this.SurveyId.emit(id);  
+  }
 }
