@@ -20,12 +20,12 @@ const fallback: Route = {
 
 export const routes: Routes = [
     {path: 'survey', canActivate:[AuthGuard], component: MainFormComponent},
-    {path: 'view-surveys', component: SurveysComponent},
     {path: 'dashboard', canActivate:[AuthGuard], canActivateChild:[AuthGuard], component: DashboardComponent,
     children:[
         {path:'start', component: StartSurveyComponent},
         {path:'rankings', component: RankingComponent},
         {path:'stats', component: StatsComponent },
+        {path: 'view-surveys', component: SurveysComponent},
         {path: '', component: PlaceHolderComponent}
         ]
     },
