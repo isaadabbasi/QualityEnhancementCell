@@ -1,10 +1,11 @@
 import { TeacherEvaluationForm } from './../../shared/forms/teacher-evaluation-form';
 import {Component, OnInit} from '@angular/core';
+import { Router } from '@angular/router';
 import 'rxjs/add/operator/debounceTime';
 
 import { QuestionComponent } from './quest.component';
 import { SharedService } from '../../shared/shared.service';
-import { ADD_SURVEY_URL } from '../../shared/global-vars';
+import { ADD_SURVEY_URL, Departments } from '../../shared/global-vars';
 interface SurveyModel {
     _id: number, 
     reply: string,
@@ -47,15 +48,20 @@ interface SurveyModel {
 
 
 export class MainFormComponent implements OnInit{
-    constructor(private _sharedService: SharedService){}
+    constructor(private _sharedService: SharedService, private router: Router){}
     
-    selectedTeacher: string = 'Shamim Naich';
-    selectedDepartment: string = 'Computer Systems';
+    selectedTeacher: string = '';
+    selectedDepartment: string = '';
     subject: string = null;
-
+    surveyMetaData;
     questions: Array<Object> = null;
     survey: Array<SurveyModel> = []; 
     ngOnInit(){
+        this.surveyMetaData = JSON.parse(localStorage.getItem('surveyMetaData'));
+        this.selectedTeacher = this.surveyMetaData.target;
+        this.selectedDepartment = JSON.parse(localStorage.getItem('activeUser'))["department"];
+        this.selectedDepartment = (Departments.find(o => (o as any).value == this.selectedDepartment))["name"];
+        
         this.questions = TeacherEvaluationForm
     }
 
@@ -78,13 +84,16 @@ export class MainFormComponent implements OnInit{
         
     }
     getStudentRemarks(){
-        let surveyMetaData = JSON.parse(localStorage.getItem('surveyMetaData'));
+        // let surveyMetaData = JSON.parse(localStorage.getItem('surveyMetaData'));
         
         let surveyDetails = {
-            evaluation: surveyMetaData.evaluation,    //this.subject ? 'course':'teacher',
-            target: surveyMetaData.target,    //this.subject || this.selectedTeacher, // should the target be dynamically changed to course name?
+            evaluation: this.surveyMetaData.evaluation,    //this.subject ? 'course':'teacher',
+            target: this.surveyMetaData.target,    //this.subject || this.selectedTeacher, // should the target be dynamically changed to course name?
             survey: this.survey
         }
+
+        console.log(surveyDetails);
+        
 
         // localStorage.setItem('surveys', JSON.stringify([this.survey]));        
         // if(this.questions.length === this.survey.length)
@@ -96,7 +105,10 @@ export class MainFormComponent implements OnInit{
             this._sharedService.postCall(ADD_SURVEY_URL, surveyDetails)
             .debounceTime(500)
             .subscribe({
-                next: res => { console.log( res )},
+                next: res => { 
+                    console.log( res );
+                    this.router.navigate(['/dashboard']);
+                },
                 error: error => { console.log( error ) }
             })    
         }else{

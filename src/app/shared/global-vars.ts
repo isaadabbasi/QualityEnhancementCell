@@ -13,7 +13,21 @@ import { Routes } from '@angular/router';
 export const BASE_URL: string = `http://localhost:3000`  //Will be updated on deployment
 
 export const SIGNIN_URL: string = `${BASE_URL}/users/login`; // should be renamed 
-export const SIGNUP_URL: string = `${BASE_URL}/users/registration`;
+export const SIGNUP_URL: string = `${BASE_URL}/users/register`;
 export const ADD_SURVEY_URL: string = `${BASE_URL}/surveys/add`; // should be renamed 
 export const SURVEY_START_URL: string = `${BASE_URL}/surveys/start`;
 export const TEACHER_DETAILS_URL: string = `${BASE_URL}/teachers/details`;
+export const SURVEY_LIST: string = `${BASE_URL}/surveys`
+
+export const Departments: Array<Object> = [
+  {value: '0', name: 'Please Select'},
+  {value: 'AP', name: 'Architecture and Planning'},
+  {value: 'CH', name: 'Chemical Engineering'},
+  {value: 'CS', name: 'Computer Systems'},
+  {value: 'ES', name: 'Electronics Engineering'},
+  {value: 'EE', name: 'Energy and Environment Engineering'},
+  {value: 'IM', name: 'Industrial Engineering and Management'},
+  {value: 'MM', name: 'Metallurgy and Materials Engineering'}, 
+  {value: 'PG', name: 'Petroleum and Gas Engineering'}, 
+  {value: 'TE', name: 'Telecommunication Engineering'}
+];
