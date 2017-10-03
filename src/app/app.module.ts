@@ -1,3 +1,4 @@
+import { DashboardSurveyComponent } from './components/dashboard/dashboard-survey/dashboard-survey.component';
 import { SurveysComponent } from './components/dashboard/dashboard-surveys/surveys.component';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
@@ -39,7 +40,8 @@ import { StatsComponent } from "./components/dashboard/dashboard-stats/stats.com
     StartSurveyComponent,
     SignupComponent,
     StatsComponent,
-    SurveysComponent
+    SurveysComponent,
+    DashboardSurveyComponent
   ],
   imports: [
     BrowserModule,

@@ -1,3 +1,4 @@
+import { DashboardSurveyComponent } from './components/dashboard/dashboard-survey/dashboard-survey.component';
 import { SurveysComponent } from './components/dashboard/dashboard-surveys/surveys.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { AuthGuard, SessionGuard } from './auth-guard.service';
@@ -19,19 +20,21 @@ const fallback: Route = {
 }
 
 export const routes: Routes = [
-    {path: 'survey', canActivate:[AuthGuard], component: MainFormComponent},
-    {path: 'view-surveys', component: SurveysComponent},
+    {path: 'survey', canActivate:[AuthGuard], component: MainFormComponent },
     {path: 'dashboard', canActivate:[AuthGuard], canActivateChild:[AuthGuard], component: DashboardComponent,
     children:[
-        {path:'start', component: StartSurveyComponent},
-        {path:'rankings', component: RankingComponent},
+        {path:'start', component: StartSurveyComponent },
+        {path:'rankings', component: RankingComponent },
         {path:'stats', component: StatsComponent },
-        {path: '', component: PlaceHolderComponent}
+        {path: 'view-surveys', component: SurveysComponent },
+        {path: 'view-surveys/:id', component: DashboardSurveyComponent },
+        // {path: 'survey', component: DashboardSurveyComponent },
+        {path: '', component: PlaceHolderComponent }
         ]
     },
-    {path: 'login', canActivate:[SessionGuard], component: LoginComponent},
-    {path: 'signup', canActivate:[SessionGuard], component: SignupComponent},
-    {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+    {path: 'login', canActivate:[SessionGuard], component: LoginComponent },
+    {path: 'signup', canActivate:[SessionGuard], component: SignupComponent },
+    {path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     fallback
 ]
 
