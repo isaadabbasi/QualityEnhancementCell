@@ -23,8 +23,7 @@ export class LoginComponent implements OnInit{
     loginError: boolean = false;
     loginErrorMessage: string;
     constructor(public router: Router,
-                private sharedService: SharedService,
-                ){}
+                private sharedService: SharedService){}
     ngOnInit(){
         // this.users = JSON.parse(localStorage.getItem('users'));
     }

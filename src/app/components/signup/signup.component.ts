@@ -1,4 +1,4 @@
-import { SIGNUP_URL } from './../../shared/global-vars';
+import { SIGNUP_URL, Departments } from './../../shared/global-vars';
 import { StudentModel } from './../../shared/models';
 import { Router } from '@angular/router';
 import { SharedService } from './../../shared/shared.service';
@@ -15,18 +15,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 export class SignupComponent implements OnInit{
     signupErrorMessage: any;
     signupError: boolean;
-    departments: Array<Object> = [
-        {value: '0', name: 'Please Select'},
-        {value: 'AP', name: 'Architecture and Planning'},
-        {value: 'CH', name: 'Chemical Engineering'},
-        {value: 'CS', name: 'Computer Systems Engineering'},
-        {value: 'ES', name: 'Electronics Engineering'},
-        {value: 'EE', name: 'Energy and Environment Engineering'},
-        {value: 'IM', name: 'Industrial Engineering and Management'},
-        {value: 'MM', name: 'Metallurgy and Materials Engineering'}, 
-        {value: 'PG', name: 'Petroleum and Gas Engineering'}, 
-        {value: 'TE', name: 'Telecommunication Engineering'}
-    ];
+    departments = Departments;
     selectedDepartment = this.departments[0];    
     userCredentials: StudentModel = {
         fullname: '',
@@ -49,12 +38,12 @@ export class SignupComponent implements OnInit{
             && this.userCredentials.rollnumber && this.userCredentials.password;
     }
     @ViewChild('#signup-container') signUpContainer;
-    SignUp(){
+    signUp(){
         if(this.validateCredentials){
             this.sharedService.postCall(SIGNUP_URL, this.userCredentials)
                 .subscribe(res => {
                     if(res.status == 200) {
-                        this.router.navigate(['']);
+                        this.router.navigate(['/login']);
                     }
                 }, err => {
                     this.signupError = true;

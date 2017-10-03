@@ -3,6 +3,17 @@ const
     router = express.Router(),
     teacherJoint = require('../joints/teachers.joint'),
     surveyJoint = require('../joints/survey.joint'),
+    getAllSurveysCb = function(req, res, next){
+        surveyJoint.getAllSurveys()
+            .then( prores => {
+                prores.status === 302 ?
+                    res.status(200).send(prores.body) : res.status(404).send("No Results Found")
+
+            }).catch(err => {
+                res.status(500).send("Internal Server Error");
+            })
+            
+    }
     getSurveyByIdCb = function(req, res, next){
         console.log(`gettings params.surveyId ${req.params._id}`);
         let 
@@ -76,7 +87,7 @@ const
             })
     }
     
-
+router.get('/', getAllSurveysCb);
 router.get('/id/:_id', getSurveyByIdCb);
 router.post('/list', getSurveyByListCb);
 router.post('/add', addSurveyCb);

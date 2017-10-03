@@ -30,6 +30,7 @@ export const routes: Routes = [
         {path: 'view-surveys/:id', component: DashboardSurveyComponent },
         // {path: 'survey', component: DashboardSurveyComponent },
         {path: '', component: PlaceHolderComponent }
+
         ]
     },
     {path: 'login', canActivate:[SessionGuard], component: LoginComponent },
