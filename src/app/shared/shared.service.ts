@@ -20,7 +20,13 @@ export class SharedService{
     }
 
     isLoggedIn(){
-        return !!(JSON.parse(localStorage.getItem('activeUser'))["rollnumber"]);
+        // console.log('localstorage.getItem: ', localStorage.getItem('activeUser'))
+        // const activeUser:any = localStorage.getItem('activeUser');
+        // return activeUser ? 
+        //     activeUser.rollnumber
+        //     :
+        //     false
+        return !!(JSON.parse(localStorage.getItem('activeUser')).rollnumber);
     }
 
 
