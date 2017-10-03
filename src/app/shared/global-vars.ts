@@ -17,6 +17,7 @@ export const SIGNUP_URL: string = `${BASE_URL}/users/register`;
 export const ADD_SURVEY_URL: string = `${BASE_URL}/surveys/add`; // should be renamed 
 export const SURVEY_START_URL: string = `${BASE_URL}/surveys/start`;
 export const TEACHER_DETAILS_URL: string = `${BASE_URL}/teachers/details`;
+export const SURVEY_LIST: string = `${BASE_URL}/surveys`
 
 export const Departments: Array<Object> = [
   {value: '0', name: 'Please Select'},

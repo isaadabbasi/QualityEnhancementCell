@@ -1,3 +1,4 @@
+import { SURVEY_LIST } from './../../../shared/global-vars';
 import { Component, ViewChild, Output, EventEmitter } from '@angular/core';
 import { SharedService } from "./../../../shared/shared.service";
 @Component({
@@ -40,10 +41,9 @@ export class SurveysComponent {
   ];
 
   constructor(private sharedService: SharedService){
-    this.sharedService.getCall('http://localhost:3000/surveys')
+    this.sharedService.getCall(SURVEY_LIST)
       .subscribe(
-        next => {this.surveysArray = next; console.log(next);
-        },
+        next => { this.surveysArray = next; console.log(next); },
         err => console.log(err)        
       ), err => console.log(err)
   }
