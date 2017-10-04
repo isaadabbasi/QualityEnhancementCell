@@ -23,7 +23,7 @@ export class SharedService{
     isLoggedIn(){
         let activeUser = (JSON.parse(localStorage.getItem('activeUser')));
         if(activeUser && activeUser.rollnumber){
-            return !!["rollnumber"];
+            return !!activeUser["rollnumber"];
         }
         else return false;
 
