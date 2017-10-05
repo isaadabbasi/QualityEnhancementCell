@@ -24,7 +24,12 @@
                 <!--<button class="bttn-fill bttn-lg bttn-primary btn-block" (click)="signIn()">LOGIN</button>-->
                 <!--<button class="bttn-slant bttn-lg bttn-primary btn-block" (click)="signIn()">Login</button>-->
                 <!--<button class="bttn-material-flat bttn-md bttn-primary bttn-block">Login</button>-->
-                <button class="btn btn-block btn-primary btn-lg" routerLink="" (click)="signUp()" [disabled]=!validateCredentials()>Signup</button>
+                <button 
+                    type="button" 
+                    (click)="signUp()" 
+                    [disabled]=!validateCredentials()
+                    class="btn btn-block btn-primary btn-lg" 
+                    >Signup</button>
                 
                 <h4 *ngIf="signupError" class="text-center text-danger bold">{{ signupErrorMessage }}</h4>
                 <a href="" class="pull-right need-help">Need help? </a>

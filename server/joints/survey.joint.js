@@ -41,7 +41,7 @@ class SurveyJoint {
     
     getSurveyById(_id){
         return new Promise((resolve, reject)=>{
-            console.log(`gettings params.surveyId ${req.params.surveyId}`);
+            console.log(`gettings params.surveyId ${_id}`);
             let 
                 findByIdCb = (err, result)=>{
                     if(err)

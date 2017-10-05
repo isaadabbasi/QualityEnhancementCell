@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { TEACHER_DETAILS_URL } from './../../../shared/global-vars';
+import { TEACHER_DETAILS_URL, Departments } from './../../../shared/global-vars';
 import { SharedService } from './../../../shared/shared.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { StudentModel } from "./../../../shared/models";
@@ -14,11 +14,12 @@ export class StartSurveyComponent implements OnInit {
     month: String;
     teachers: boolean;
     teachersList;
-    selectedDepartment: string = '';
+    selectedDepartment: any = '';
     selectedTeacher: string = '';
     subject: string;
     subjects: boolean;
     subjectsList;
+    deparmentsList = Departments;
     surveyMetaData = {
         evaluation: "teacher",
         target: "",
@@ -34,8 +35,10 @@ export class StartSurveyComponent implements OnInit {
     getDepartmentTeacherList(department){
         this.sharedService.postCall(TEACHER_DETAILS_URL, {department: department})
             .subscribe( res => {
-                if(res.status == 302) {
-                    this.teachersList = res["_body"];
+                if(res.status == 200) {
+                    console.log(JSON.parse(res["_body"])["body"]);
+                    
+                    this.teachersList = JSON.parse(res["_body"])["body"];
                     this.teachers = false;
                     console.log(this.teachersList);
                 }
@@ -73,12 +76,11 @@ export class StartSurveyComponent implements OnInit {
             localStorage.setItem('surveyMetaData', JSON.stringify(this.surveyMetaData))
             this.router.navigate(['survey']);
         }
-    }
-
+    } 
     ngOnInit() {
         let activeUser: StudentModel = JSON.parse(localStorage.getItem('activeUser'));
         console.log(activeUser);
-        this.selectedDepartment = activeUser.department;
+        this.selectedDepartment = (this.deparmentsList.find(department => department["value"] == activeUser.department))["name"];
         console.log(this.selectedDepartment);
         this.getDepartmentTeacherList(this.selectedDepartment);
         // console.log(this.deptReference)
