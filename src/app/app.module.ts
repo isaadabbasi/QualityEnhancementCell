@@ -51,6 +51,7 @@ import { StatsComponent } from "./components/dashboard/dashboard-stats/stats.com
     RouterModule,
     ChartsModule,
     routing
+    
   ],
   providers: [
     AuthGuard, 

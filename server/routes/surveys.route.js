@@ -13,7 +13,7 @@ const
                 res.status(500).send("Internal Server Error");
             })
             
-    }
+    },
     getSurveyByIdCb = function(req, res, next){
         console.log(`gettings params.surveyId ${req.params._id}`);
         let 
@@ -24,13 +24,14 @@ const
                     res.status(prores.status).send(prores.body);
                 })
                 .catch(err=>{
+                    console.log(err);
                     res.status(err.status).send(err.body);
                 })
     },
 
     getSurveyByListCb = (req, res, next)=>{
         let _list = req.body.list;
-
+        console.log('list: ', _list)
         //if the list is provided in array wrapped in string,
         if(typeof req.body.list === 'string'){ // method to reconvert to simple array
             let list = req.body.list;
