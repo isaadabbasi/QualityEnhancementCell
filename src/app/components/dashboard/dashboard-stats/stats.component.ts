@@ -52,4 +52,15 @@ export class StatsComponent {
   public chartHovered(e:any):void {
     console.log(e);
   }
+  options: Object;
+  constructor(){
+    this.options = {
+      title: { text: 'simple chart'},
+      series: [{
+        name: 's1',
+        data: [2,3,5,8,13],
+        allowPointSelect: true
+      }]
+    }
+  }
 }

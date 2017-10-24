@@ -27,6 +27,8 @@
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.11",
+    "@types/node": "^6.0.90",
+    "angular2-highcharts": "^0.5.5",
     "angularfire2": "^2.0.0-beta.6",
     "axios": "^0.16.2",
     "bcrypt": "^1.0.3",
