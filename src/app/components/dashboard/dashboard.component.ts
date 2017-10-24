@@ -8,7 +8,7 @@ import * as localforage from 'localforage';
         .dashboard-main-card{
             background: whitesmoke;
             box-shadow: 3px 3px 5px #999;
-            display: flex;
+            
             align-items: center;
             height: 88vh;
         }
@@ -22,10 +22,10 @@ import * as localforage from 'localforage';
     `],
     template: `
     <div class="row dashboard-main-card">
-        <div class="col-xs-12 col-md-1 my-custom-sidebar">
+        <div class="col-xs-2 col-md-1 my-custom-sidebar">
             <dashboard-sidebar></dashboard-sidebar>
         </div>
-        <div class="col-xs-12 col-md-11">
+        <div class="col-xs-10 col-md-11">
             <router-outlet></router-outlet>
         </div>
     </div>`

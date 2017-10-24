@@ -36,6 +36,12 @@ export class DashboardSurveyComponent implements OnInit, OnDestroy{
         });
     }
     
+    mapResults(results: Array<Object>){
+
+        results.forEach( (e:Object) => {
+            
+        })
+    }
     ngOnDestroy(){
         this.sub.unsubscribe();
     }
