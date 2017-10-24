@@ -23,6 +23,7 @@ export class StartSurveyComponent implements OnInit {
     surveyMetaData = {
         evaluation: "teacher",
         target: "",
+        teacher: ""
     }
     @ViewChild('dept') deptReference;  
     months:Array<String> = ["January", "February", "March", "April", "May", "June","July","August", "September", "October", "November", "December"];
@@ -51,6 +52,7 @@ export class StartSurveyComponent implements OnInit {
     }
     getSubjectList(selectedTeacher){ // need to rewrite with real logic, bluffing DOM for now.
         this.subjects = !selectedTeacher ? false : true;
+        this.selectedTeacher = selectedTeacher;
         this.surveyMetaData.target= selectedTeacher;
         console.log(this.surveyMetaData);
         
@@ -62,9 +64,14 @@ export class StartSurveyComponent implements OnInit {
     }
     selectedSubject(selectedSubject){
         this.subject = selectedSubject;
+        if(!!this.subject){
+            this.surveyMetaData.target = this.subject,
+            this.surveyMetaData.evaluation = "course",
+            this.surveyMetaData.teacher = this.selectedTeacher;
+        }
     }
     validate(){
-        return !!this.subject;
+        return !!this.surveyMetaData.target;
     }
     startSession(){
         console.log('Starting Session');
@@ -72,8 +79,8 @@ export class StartSurveyComponent implements OnInit {
         
         if(this.validate()){
             // this.surveyMetaData.target = this.selectedTeacher;
-            console.log(this.surveyMetaData.target);
-            localStorage.setItem('surveyMetaData', JSON.stringify(this.surveyMetaData))
+            console.log(this.surveyMetaData);
+            localStorage.setItem('surveyMetaData', JSON.stringify(this.surveyMetaData));
             this.router.navigate(['survey']);
         }
     } 
