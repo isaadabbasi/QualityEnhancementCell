@@ -1,3 +1,4 @@
+import { SettingsComponent } from './components/dashboard/dashboard-settings/settings.component';
 import { DashboardSurveyComponent } from './components/dashboard/dashboard-survey/dashboard-survey.component';
 import { SurveysComponent } from './components/dashboard/dashboard-surveys/surveys.component';
 import { SignupComponent } from './components/signup/signup.component';
@@ -28,7 +29,7 @@ export const routes: Routes = [
         {path:'stats', component: StatsComponent },
         {path: 'view-surveys', component: SurveysComponent },
         {path: 'view-surveys/:id', component: DashboardSurveyComponent },
-        // {path: 'survey', component: DashboardSurveyComponent },
+        {path: 'settings', component: SettingsComponent },
         {path: '', component: PlaceHolderComponent }
 
         ]
