@@ -1,3 +1,5 @@
+import { SettingsComponent } from './components/dashboard/dashboard-settings/settings.component';
+import { CourseEvalForm } from './components/main-form/course-eval-form.component';
 import { DashboardSurveyComponent } from './components/dashboard/dashboard-survey/dashboard-survey.component';
 import { SurveysComponent } from './components/dashboard/dashboard-surveys/surveys.component';
 import { RouterModule } from '@angular/router';
@@ -6,8 +8,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
-import { ChartsModule } from 'ng2-charts';
+import { ChartModule } from "angular2-highcharts";
+// import { ChartsModule } from 'ng2-charts';
+import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 
 import { routing } from './main.router'
 
@@ -26,6 +29,16 @@ import { SharedService } from './shared/shared.service';
 import { AuthGuard, SessionGuard } from './auth-guard.service';
 import { StatsComponent } from "./components/dashboard/dashboard-stats/stats.component";
 
+declare var require: any;
+
+export function highchartsFactory() {
+  const hc = require('highcharts');
+  const dd = require('highcharts/modules/drilldown');
+  dd(hc);
+
+  return hc;
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +54,9 @@ import { StatsComponent } from "./components/dashboard/dashboard-stats/stats.com
     SignupComponent,
     StatsComponent,
     SurveysComponent,
-    DashboardSurveyComponent
+    DashboardSurveyComponent,
+    CourseEvalForm,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -49,14 +64,18 @@ import { StatsComponent } from "./components/dashboard/dashboard-stats/stats.com
     FormsModule,
     HttpModule,
     RouterModule,
-    ChartsModule,
+    ChartModule.forRoot(require('highcharts')),
     routing
     
   ],
   providers: [
     AuthGuard, 
     SessionGuard,
-    SharedService
+    SharedService,
+    {
+      provide: HighchartsStatic,
+      useFactory: highchartsFactory
+    }
   ],
   bootstrap: [AppComponent]
 })
