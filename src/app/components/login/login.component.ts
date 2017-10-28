@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit{
                     console.log(res);
                     
                     if(res.status == 200){
+                        
                         console.log(res);
                         localStorage.setItem('activeUser', (res['_body']))
                         console.log(JSON.parse(localStorage.getItem('activeUser')).rollnumber);
