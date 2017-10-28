@@ -16,6 +16,11 @@ interface SurveyModel {
 @Component({
     selector: 'main-form',
     template: `
+        <div  *ngIf="showMessage" id="message" class="col-xs-6 col-xs-offset-3">
+            <div id="inner-message" class="alert alert-danger text-center">
+                Please answer all questions.
+            </div>
+        </div>
         <div class="questionare-body col-xs-12 col-md-offset-1 col-md-10">
             <div class="row main-form-header">
                 <div class="" style="display: inline">
@@ -29,7 +34,7 @@ interface SurveyModel {
                     </ul>
                 </div>
             </div>
-            <div class="scrollbar" id="style-1" style="height: 70vh; overflow-y: scroll;">
+            <div class="scrollbar" id="scrollbar" style="height: 70vh; overflow-y: scroll;">
                 <div *ngIf="this.surveyMetaData.evaluation == 'teacher'">
                     <quest 
                         *ngFor="let quest of questions, let i=index"
@@ -50,7 +55,7 @@ interface SurveyModel {
                     ></course-eval-form>
                 </div>
                 <div class="form-submittion">
-                    <button (click)="getStudentRemarks()" [disabled]="!surveyComplete" class=" btn-lg btn-block btn btn-primary">Submit</button>
+                    <button (click)="getStudentRemarks()" class=" btn-lg btn-block btn btn-primary">Submit</button>
                 </div>
             </div>                
         </div>  
@@ -69,6 +74,7 @@ export class MainFormComponent implements OnInit{
     surveyMetaData;
     questions: Array<Object> = null;
     survey: Array<SurveyModel> = []; 
+    showMessage: boolean = false;
     ngOnInit(){
         this.surveyMetaData = JSON.parse(localStorage.getItem('surveyMetaData'));
         this.selectedTeacher = this.surveyMetaData.teacher || this.surveyMetaData.target;
@@ -77,6 +83,7 @@ export class MainFormComponent implements OnInit{
         this.selectedDepartment = (Departments.find(o => (o as any).value == this.selectedDepartment))["name"];
         
         this.questions = !!this.surveyMetaData.teacher ? courseEvaluationForm : TeacherEvaluationForm;
+        
     }
 
     optionSelected(event: SurveyModel){
@@ -96,6 +103,23 @@ export class MainFormComponent implements OnInit{
         }
         console.log(this.survey);
         
+    }
+    checkSurveyStatus(){
+        let surveyDetails = {
+            evaluation: this.surveyMetaData.evaluation,    //this.subject ? 'course':'teacher',
+            target: this.surveyMetaData.target,    //this.subject || this.selectedTeacher, // should the target be dynamically changed to course name?
+            survey: this.survey
+        }
+
+        console.log(surveyDetails);
+        
+
+        // localStorage.setItem('surveys', JSON.stringify([this.survey]));        
+        // if(this.questions.length === this.survey.length)
+        console.log('finalized result',  surveyDetails)
+        if(surveyDetails.survey.length === this.questions.length){
+            return true
+        }
     }
     getStudentRemarks(){
         // let surveyMetaData = JSON.parse(localStorage.getItem('surveyMetaData'));
@@ -128,7 +152,10 @@ export class MainFormComponent implements OnInit{
             })    
         }else{
             console.log('Stop Http Request');
-            
+            this.showMessage = true;
+            setTimeout(() => {
+                this.showMessage = false;
+            }, 1500);
         }
         
     }
