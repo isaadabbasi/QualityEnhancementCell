@@ -22,13 +22,14 @@ const
             })
     },
     getDetailsHanlder = (req, res, next)=>{
+        console.log('reqbody: ', req.body);
         let 
             searchQuery = {};
         if(Object.keys(req.body).length){
                         
-            if(req.body.hasOwnProperty('department'))
+            if('department' in req.body)
                 searchQuery['departments'] = req.body.department
-            if(req.body.hasOwnProperty('teacher'))
+            if('teacher' in req.body)
                 searchQuery['fullname'] = req.body.teacher
             
             teacherJoint.findResultFor(searchQuery)
