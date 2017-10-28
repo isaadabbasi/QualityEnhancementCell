@@ -1,6 +1,6 @@
 const 
     mongoose = require('mongoose'),
-    Schema = mongoose.Schema(),
+    Schema = mongoose.Schema,
     AdminModel = new Schema({
         email: { type: String, trim: true },
         root: { type: Boolean, default: false },
