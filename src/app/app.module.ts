@@ -64,7 +64,7 @@ export function highchartsFactory() {
     FormsModule,
     HttpModule,
     RouterModule,
-    ChartModule.forRoot(require('highcharts')),
+    ChartModule,
     routing
     
   ],
