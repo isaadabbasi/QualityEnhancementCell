@@ -13,10 +13,16 @@
   <link rel="stylesheet" href="./assets/css/bttn-material-flat.css" />
   <link rel="stylesheet" href="./assets/css/font-awesome.min.css" />
   <link rel="stylesheet" href="./assets/css/simple.css" />
-
+  
+  <script src="./assets/particles/particles.js"></script>
   <script type="application/javascript" src="./assets/js/jquery214.js"></script>
   <script type="application/javascript" src="./assets/js/bootstrap.js"></script>
   <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.js"></script>
+  <script>
+       particlesJS.load('particles-js', './assets/particles.json', function() {
+        console.log('callback - particles-js config loaded');
+      });
+  </script>
   <!--<style>
     a:hover {
       text-decoration: none !important;
@@ -31,7 +37,10 @@
   <!--<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>-->
   <!--<link rel="stylesheet" href="./">-->
 </head>
-<body>
+<body id="particles-js" style="background: #e4e4e4;">
+  <!--<div></div>-->
+
   <app-root></app-root>
 </body>
+
 </html>

@@ -25,7 +25,11 @@ export class AppComponent implements OnInit{
     // }
 
     ngOnInit(){
-      console.log('On Init Initialized')
+      console.log('On Init Initialized');
+      
+      // global.particlesJS.load('particles-js', 'assets/particles.json', function() {
+      //   console.log('callback - particles-js config loaded');
+      // });
     //   let users: Array<Object> = [
     //     {username: 'saadabbasi', password: 'abcd1234'},
     //     {username: 'smtaha', password: 'abc123'},
