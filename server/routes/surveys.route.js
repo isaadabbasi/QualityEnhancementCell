@@ -3,6 +3,9 @@ const
     router = express.Router(),
     teacherJoint = require('../joints/teachers.joint'),
     surveyJoint = require('../joints/survey.joint'),
+    fs = require('fs'),
+    join = require('path').join,
+    through$ = require('through2'),
     getAllSurveysCb = function(req, res, next){
         surveyJoint.getAllSurveys()
             .then( prores => {
@@ -57,7 +60,7 @@ const
         let 
             evaluation = req.body.evaluation.trim(),
             target = req.body.target.trim(),
-            survey = req.body.survey              
+            survey = req.body.survey;             
         
         let surveyModel = {
             evaluation, target, survey
@@ -70,8 +73,8 @@ const
                 !!~ body.evaluation.indexOf('teacher') ?
                     teacherJoint.addSurveyReference(body)
                         .then( prores =>{
-                            console.log('on promise resolve', prores)
-                            console.log(`${res.status}- Teacher ref update made, msg: ${res.msg}`);
+                            // console.log('on promise resolve', prores)
+                            // console.log(`${res.status}- Teacher ref update made, msg: ${res.msg}`);
                             res.status(prores.status).send("Survey Added");
                         })
                         .catch( err => {
@@ -86,11 +89,25 @@ const
                 console.log(err)
                 // res.status(500).send();
             })
+    },
+    getTeacherEvaluationForm = (req, res)=> {
+        let 
+            form = req.params.name || 'te',
+            pathToForm = join(__dirname, '../','surveys',`${form}.json`),
+            jsonify = through$({ objectMode: true }, function(chunk, enc = 'utf8', callback) {
+                this.push(JSON.stringify(chunk))
+                callback()
+            });
+
+        fs
+            .createReadStream(pathToForm)
+            // .pipe(jsonify)
+            .pipe(res);
     }
     
 router.get('/', getAllSurveysCb);
 router.get('/id/:_id', getSurveyByIdCb);
 router.post('/list', getSurveyByListCb);
 router.post('/add', addSurveyCb);
-
+router.get('/form/:name', getTeacherEvaluationForm);
 module.exports = router;

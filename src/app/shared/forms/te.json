@@ -1,0 +1,222 @@
+{
+    "type": "teacher",
+    "canComment": true,
+    "queries": [
+        {
+            "q": "The Instructor is prepared for each class", 
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+
+        { //2
+            "q": "The Instructor demonstrates knowledge of the subject", 
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+
+        { //3
+            "q": "The Instructor has completed the whole course", 
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+
+        { //4
+            "q": "The Instructor provides additional material apart from the textbook", 
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        
+        { //5
+            "q": "The Instructor gives citations regarding current situations with reference to Pakistani context", 
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+
+        { //6
+            "q": "The Instructor communicates the subject matter effectively", 
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+
+        { // 7 
+            "q": "The Instructor shows respect towards students and encourages class participation", 
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+
+        { // 8
+            "q": "The Instructor maintains an environment that is conducive to learning", 
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+
+        {
+            "q": "The Instructor arrives on time", 
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+
+        {
+            "q": "The Instructor leaves on time", 
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+
+        {
+            "q": "The Instructor is fair in examination", 
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+
+        { //12
+            "q": "The Instructor returns the graded scripts etc. in a reasonable amount of time", 
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+
+        { //13
+            "q": "The Instructor was available during the specified office hours and for after class consultations", 
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+
+        { //14
+            "q": "The Subject matter presented in the course has increased your knowledge of the subject", 
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+
+        { //15
+            "q": "The syllabus clearly states course objectives requirements, procedures and grading criteria", 
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+
+        { //16
+            "q": "The course integrates theoretical course concepts with real-world applications", 
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+
+        { //17
+            "q": "The assignments and exams covered the materials presented in the course", 
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+
+        { //18
+            "q": "The course material is modern and updated", 
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        }
+
+    ]
+}
