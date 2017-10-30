@@ -22,17 +22,16 @@ const
             })
     },
     getDetailsHandlder = (req, res, next)=>{
-        console.log('reqbody: ', req.body);
+        console.log('req query: ', req.query);
         let 
             searchQuery = {};
-        if(Object.keys(req.body).length){
                         
-            if('department' in req.body)
-                searchQuery['departments'] = req.body.department
-            if('teacher' in req.body)
-                searchQuery['fullname'] = req.body.teacher
+            if('department' in req.query)
+                searchQuery['departments'] = req.query.department
+            if('fullname' in req.query)
+                searchQuery['fullname'] = req.query.fullname;
             
-            teacherJoint.findResultFor(searchQuery)
+            teacherJoint.deepSearch(searchQuery)
                 .then(result =>{
                     console.log(result)
                     res.status(200).send(result)
@@ -41,26 +40,32 @@ const
                     // console.log(err)
                     res.status(404).send(err.body)
                 })
-            // res.status(200).send(searchQuery)
-        }
-        else 
-            res.status(406).send('Send Params to get details')
     },
-    deleteTeacherHandler = (req, res)=>{
-        const { _id = null } = req.params;
-        if(!_id){
-            res.status(400).send('Must send \'id\' to delete the teacher');
-            return;
-        }
 
-        teacherJoint.remove(_id)
-            .then(resolve => { res.status(200).send(resolve.body) })
-            .catch(err => { console.log(err) })
+    wrappedRouteHandler = (operation)=>{
+        
+        return (req, res)=> {
+            const { _id = null } = req.params;
+            if(!_id){
+                res.status(400).send(`Must send \'id\' to ${operation} the teacher`);
+                return;
+            }
+
+            teacherJoint[operation](_id)
+                .then(resolve => { 
+                    res.status(200).send(resolve.body); 
+                })
+                .catch(err => { console.log(err) })
+        }
     }
 
 
 
+router.get('/details', getDetailsHandlder);
 router.post('/add', addTeacherHandler);
-router.post('/details', getDetailsHandlder);
-router.delete('/:_id', deleteTeacherHandler );
+router.route('/:_id')
+    // .get(wrappedRouteHandler('fetch'))
+    // .update(wrappedRouteHandler('update'))
+    .delete(wrappedRouteHandler('remove'));
+
 module.exports = router;

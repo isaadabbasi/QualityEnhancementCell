@@ -43,7 +43,7 @@ class TeacherJoint {
         })
     }
 
-    findResultFor(searchQuery){
+    deepSearch(params){
         return new Promise((resolve, reject)=>{
             let cb = (err, result) => {
                 if(err)
@@ -55,11 +55,20 @@ class TeacherJoint {
                         :
                         reject({status: 404, body: "Unable to find result for desired data"});
             }
-            Teachers.find(searchQuery, cb)
+            Teachers.find(params, cb)
                 
         })
     }
-
+    
+    fetch(_id) {
+        return new Promise((resolve, reject) => {
+            Teachers.findById(_id, (err, data)=> {
+                // if(err)
+                    // throw new Error()
+            })
+        });
+    }
+    
     remove(_id){
         return new Promise((resolve, reject) => {
             Teachers.remove({_id}, err=> {

@@ -1,6 +1,5 @@
 {
-    "type": "teacher",
-    "canComment": true,
+    "type": "course",
     "sections": [
         {
             "canComment": true,
@@ -52,11 +51,11 @@
                             "question": "Approximate level of your attendance during the whole course",
                             "type": "ss",
                             "options": [
-                                { "message": "Strongly Disagree", "value": 1 },
-                                { "message": "Disagree", "value": 2 },
-                                { "message": "Uncertain", "value": 3 },
-                                { "message": "Agree", "value": 4 },
-                                { "message": "Strongly Agree", "value": 5 }
+                                { "message": "<20%", "value": 1 },
+                                { "message": "21-40%", "value": 2 },
+                                { "message": "41-60%", "value": 3 },
+                                { "message": "61-80%", "value": 4 },
+                                { "message": ">81%", "value": 5 }
                             ]
                         },
 
