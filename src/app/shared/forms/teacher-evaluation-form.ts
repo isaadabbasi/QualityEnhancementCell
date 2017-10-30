@@ -86,7 +86,6 @@ export const courseEvaluationForm = [
                 question: "The course objectives were clear",
                 type: 'single-select',
                 options: ['Strongly Disagree', 'Disagree', 'Average', 'Agree', 'Strongly Agree']
-                
             },
             {
                 q_id: 2,

@@ -21,6 +21,20 @@ export class SurveysComponent implements OnInit {
       next => { this.surveysArray = next; console.log(next); },
       err => console.log(err),
       () => {
+        // let byTeacherName = 
+        //   _.groupBy(this.surveysArray, item => item.target)
+        //   .map(target => {
+              
+        //   });
+        // console.log(byTeacherName);
+        
+        
+        
+        
+        
+        
+        
+        
         let surveyByName = [];
         _.each(this.surveysArray,(survey) => {
           // console.log(survey);
@@ -32,17 +46,12 @@ export class SurveysComponent implements OnInit {
 
           }else{
             console.log(false);
-            surveyByName.push({
-              
-            });
+            surveyByName.push(survey);
             console.log(surveyByName);
             
           }
         });
-        // let byTeacherName = _.groupBy(this.surveysArray, item => {
-        //   return item.target;
-        // });
-        // console.log(byTeacherName);
+        
         // let b =[];
         // let i = 0; 
         // _.each(this.surveysArray, item => {
