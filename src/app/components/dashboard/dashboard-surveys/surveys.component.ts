@@ -47,8 +47,7 @@ export class SurveysComponent implements OnInit {
           }else{
             console.log(false);
             surveyByName.push(survey);
-            console.log(surveyByName);
-            
+            console.log(surveyByName);  
           }
         });
         

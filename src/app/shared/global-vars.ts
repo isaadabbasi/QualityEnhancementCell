@@ -12,12 +12,13 @@ import { Routes } from '@angular/router';
 
 export const BASE_URL: string = `http://localhost:3000`  //Will be updated on deployment
 
-export const SIGNIN_URL: string = `${BASE_URL}/users/login`; // should be renamed 
-export const SIGNUP_URL: string = `${BASE_URL}/users/register`;
-export const ADD_SURVEY_URL: string = `${BASE_URL}/surveys/add`; // should be renamed 
-export const SURVEY_START_URL: string = `${BASE_URL}/surveys/start`;
-export const TEACHER_DETAILS_URL: string = `${BASE_URL}/teachers/details`;
-export const SURVEY_LIST: string = `${BASE_URL}/surveys`
+export const SIGNIN_URL           : string = `${BASE_URL}/users/login`; // should be renamed 
+export const SIGNUP_URL           : string = `${BASE_URL}/users/register`;
+export const SURVEY_LIST          : string = `${BASE_URL}/surveys`;
+export const GET_SURVEY           : string = `${BASE_URL}/surveys/form/`;
+export const ADD_SURVEY_URL       : string = `${BASE_URL}/surveys/add`; // should be renamed 
+export const SURVEY_START_URL     : string = `${BASE_URL}/surveys/start`;
+export const TEACHER_DETAILS_URL  : string = `${BASE_URL}/teachers/details`;
 
 export const Departments: Array<Object> = [
   {value: '0', name: 'Please Select'},

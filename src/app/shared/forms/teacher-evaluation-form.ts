@@ -292,7 +292,7 @@ export const courseEvaluationForm = [
         'questionArray': [
             {
                 q_id: 31,
-                question: "The material in the tutorials wwas helpful"        ,
+                question: "The material in the tutorials was helpful"        ,
                 type: 'single-select',
                 options: ['Strongly Disagree', 'Disagree', 'Average', 'Agree', 'Strongly Agree']
             },
@@ -332,7 +332,7 @@ export const courseEvaluationForm = [
         'questionArray': [
             {
                 q_id: 36,
-                question: "The best features of course the were:"        ,
+                question: "The best features of course were:"        ,
                 type: 'textarea'
             },
             {

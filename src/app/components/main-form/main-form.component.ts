@@ -6,7 +6,7 @@ import 'rxjs/add/operator/debounceTime';
 import { QuestionComponent } from './quest.component';
 import { CourseEvalForm } from "./course-eval-form.component";
 import { SharedService } from '../../shared/shared.service';
-import { ADD_SURVEY_URL, Departments } from '../../shared/global-vars';
+import {GET_SURVEY, ADD_SURVEY_URL, Departments } from '../../shared/global-vars';
 interface SurveyModel {
     _id: number, 
     reply: string,
@@ -81,11 +81,21 @@ export class MainFormComponent implements OnInit{
         this.subject = this.surveyMetaData.teacher ? this.surveyMetaData.target : ''; 
         this.selectedDepartment = JSON.parse(localStorage.getItem('activeUser'))["department"];
         this.selectedDepartment = (Departments.find(o => (o as any).value == this.selectedDepartment))["name"];
-        
-        this.questions = !!this.surveyMetaData.teacher ? courseEvaluationForm : TeacherEvaluationForm;
-        
+        if(this.surveyMetaData.evaluation === 'teacher')
+            this.questions = TeacherEvaluationForm;
+        else
+            this.questions = courseEvaluationForm;
+        this.getSurveys();
     }
-
+    getSurveys(){
+        this._sharedService.getCall(GET_SURVEY + this.surveyMetaData.evaluation)
+            .subscribe(
+                next => {
+                    console.log(next)
+                },
+                err => console.log(err)
+            )
+    }
     optionSelected(event: SurveyModel){
         console.log(event)
         // this.survey.push(event)
@@ -98,6 +108,7 @@ export class MainFormComponent implements OnInit{
         let indexOfEvent = this.survey.findIndex((surveyElement:any) => surveyElement.id == (event as any).id);
         if(indexOfEvent === -1){
             this.survey.push(event)
+            
         }else{
             this.survey[indexOfEvent] = event;
         }
