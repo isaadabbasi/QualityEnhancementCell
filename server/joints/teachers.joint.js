@@ -59,7 +59,19 @@ class TeacherJoint {
                 
         })
     }
+
+    remove(_id){
+        return new Promise((resolve, reject) => {
+            Teachers.remove({_id}, err=> {
+                if(err)
+                    throw new Error('Unable to delete teacher');
+
+                resolve({status: 200, body: 'Teacher deleted'});
+            })
+        });
+    }
 }
+
 function getInstanceOfTeacherJoint(){
     return new TeacherJoint;
 }
