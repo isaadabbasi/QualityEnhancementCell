@@ -1,7 +1,9 @@
 {
     "type": "teacher",
-    "canComment": true,
-    "queries": [
+    "sections": [{
+        "canComment": true,
+        "name" : null,
+        "queries": [
         {
             "q": "The Instructor is prepared for each class", 
             "type": "SS",
@@ -219,4 +221,5 @@
         }
 
     ]
+    }]    
 }

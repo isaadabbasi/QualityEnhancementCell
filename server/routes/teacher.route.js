@@ -4,8 +4,8 @@ const
     teacherJoint = require('../joints/teachers.joint');
     addTeacherHandler = (req, res, next) =>{ 
         let 
-            fullname = req.body.fullname.trim(),
-            designation = req.body.designation.trim(),
+            fullname = req.body.fullname,
+            designation = req.body.designation,
             departments = req.body.departments,
             subjects = req.body.subjects,
             surveys = [],
@@ -21,7 +21,7 @@ const
                 res.status(501).send("Unable to add new teacher");
             })
     },
-    getDetailsHanlder = (req, res, next)=>{
+    getDetailsHandlder = (req, res, next)=>{
         console.log('reqbody: ', req.body);
         let 
             searchQuery = {};
@@ -45,10 +45,22 @@ const
         }
         else 
             res.status(406).send('Send Params to get details')
+    },
+    deleteTeacherHandler = (req, res)=>{
+        const { _id = null } = req.params;
+        if(!_id){
+            res.status(400).send('Must send \'id\' to delete the teacher');
+            return;
+        }
+
+        teacherJoint.remove(_id)
+            .then(resolve => { res.status(200).send(resolve.body) })
+            .catch(err => { console.log(err) })
     }
 
 
 
 router.post('/add', addTeacherHandler);
-router.post('/details', getDetailsHanlder);
+router.post('/details', getDetailsHandlder);
+router.delete('/:_id', deleteTeacherHandler );
 module.exports = router;

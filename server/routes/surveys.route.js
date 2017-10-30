@@ -91,14 +91,18 @@ const
             })
     },
     getTeacherEvaluationForm = (req, res)=> {
+
         let 
-            form = req.params.name || 'te',
+            {form = null} = req.params,
             pathToForm = join(__dirname, '../','surveys',`${form}.json`),
             jsonify = through$({ objectMode: true }, function(chunk, enc = 'utf8', callback) {
                 this.push(JSON.stringify(chunk))
-                callback()
+                callback();
             });
-
+        if(!form){
+            res.status(400).send('You must specify form name');
+            return;
+        }
         fs
             .createReadStream(pathToForm)
             // .pipe(jsonify)
