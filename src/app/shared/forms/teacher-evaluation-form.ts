@@ -17,7 +17,7 @@ export const TeacherEvaluationForm = [
     },
     {
         q_id: 5,
-        question: "The Instructor gives citations regarding current situations with reference to Pakistani context."
+        question: "The Instructor gives citations regarding current situations with reference to Pakistani context"
     },
     {
         q_id: 6,

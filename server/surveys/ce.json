@@ -1,0 +1,373 @@
+{
+    "type": "teacher",
+    "canComment": true,
+    "queries": [
+        { 
+            "question": "The course objectives were clear",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+
+        { 
+            "question": "The course workload was manageable",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+
+        { 
+            "question": "The course was well organized(e.g., timely access to materials, notification of canges, etc.)",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+
+        { 
+            "question": "Approximate level of your attendance during the whole course",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+
+        { 
+            "question": "I participated actively in the course",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        { 
+            "question": "I think I have made progress in this course",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        {  
+            "question": "I think the course was well structured to acheieve the leraning outcomes(there was a good balance of lectures, tutorials, practical etc.)",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        { 
+            "question": "The learning and teaching methods encrouged participation",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        {  
+            "question": "The overall environment in the class was conducive to learning",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        {  
+            "question": "Classrooms were satisfactory",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        { 
+            "question": "Learning materials(Lesson Plans, Course Notes etc) were relevant and useful",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        { 
+            "question": "Recommended reading books etc. were relevent and appropriate",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        { 
+            "question": "The provision of learning resources in the library was adequate and appropriate",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },{
+            "question": "The course stimulated my interest and thought on the subject area",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        {
+            "question": "The pace of the course was appropriate",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        { 
+            "question": "Ideas and concepts were presented clearly",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        { 
+            "question": "The method of assesment were reasonable",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        { 
+            "question": "Feedback on assesment was timely",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        { 
+            "question": "Feedback on assesment was helpful",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        }, {
+            "question": "I understood the lectures",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        { 
+            "question": "The material was well organized and presented",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        { 
+            "question": "The instructor was responseive to student needs and problems",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        { 
+            "question": "Had the instructor been regular throught the course?"        ,
+
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        { 
+            "question": "The material in the tutorials was helpful",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        { 
+            "question": "I was happy with the amount of work needed for tutorials",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        { 
+            "question": "The tutor dealt effectively with my problems",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        { 
+            "question": "The material in the practicals was useful",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        { 
+            "question": "The demonstrators dealt effectively with my problems",
+            "type": "SS",
+            "options": [
+                { "message": "Strongly Disagree", "value": 1 },
+                { "message": "Disagree", "value": 2 },
+                { "message": "Uncertain", "value": 3 },
+                { "message": "Agree", "value": 4 },
+                { "message": "Strongly Agree", "value": 5 }
+            ]
+        },
+        { 
+            "question": "The best features of course were",
+            "type": "text"
+        },
+        { 
+            "question": "The course could have been improved by",
+            "type": "text"
+        },
+        
+        { 
+            "question": "The university does not tolerate discrimaination on any irrelevant distiction(e.g., race, age, gender) and is committed to work with diversity in a wholly positive way. Please indicate below anything in rlation to this course which may run counter to this objective:",
+            "type": "text"
+        },
+
+        { 
+            "question": "Full/part time study",
+            "type": "SS",
+            "options": [
+                { "message": "Full Time", "value": 1 },
+                { "message": "Part Time", "value": 2 }
+            ]
+        },
+        { 
+            "question": "Do you consider yourself to be disabled",
+            "type": "SS",
+            "options": [
+                { "message": "Yes", "value": 1 },
+                { "message": "No", "value": 2 }
+            ]
+        },
+        { 
+            "question": "Domicile",
+            "type": "text"
+        },
+
+        { 
+            "question": "Gender",
+            "type": "SS",
+            "options": [
+                { "message": "Male", "value": 1 },
+                { "message": "Female", "value": 2 }
+            ]
+        },
+        { 
+            "question": "Age Group",
+            "type": "SS",
+            "options": [
+                { "message": "less than  22", "value": 1 },
+                { "message": "22-29", "value": 2 },
+                { "message": "over 29", "value": 3 }
+            ]
+        },
+        { 
+            "question": "Campus",
+            "type": "text"
+        }
+    ]
+}

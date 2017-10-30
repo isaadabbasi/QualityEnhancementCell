@@ -45,8 +45,10 @@
     "mongoose": "^4.11.8",
     "morgan": "^1.8.2",
     "ng2-charts": "^1.6.0",
+    "particles.js": "^2.0.0",
     "rxjs": "^5.4.1",
     "typescript": "^2.5.3",
+    "through2": "^2.0.3",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
