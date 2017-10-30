@@ -1,3 +1,4 @@
+import { DashboardModalComponent } from './components/dashboard/dashboard-modal/dashboard-modal';
 import { SettingsComponent } from './components/dashboard/dashboard-settings/settings.component';
 import { CourseEvalForm } from './components/main-form/course-eval-form.component';
 import { DashboardSurveyComponent } from './components/dashboard/dashboard-survey/dashboard-survey.component';
@@ -56,7 +57,8 @@ export function highchartsFactory() {
     SurveysComponent,
     DashboardSurveyComponent,
     CourseEvalForm,
-    SettingsComponent
+    SettingsComponent,
+    DashboardModalComponent
   ],
   imports: [
     BrowserModule,
