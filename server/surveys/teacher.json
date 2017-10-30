@@ -5,7 +5,7 @@
         "name" : null,
         "queries": [
         {
-            "q": "The Instructor is prepared for each class", 
+            "question": "The Instructor is prepared for each class", 
             "type": "ss",
             "options": [
                 { "message": "Strongly Disagree", "value": 1 },
@@ -17,7 +17,7 @@
         },
 
         { 
-            "q": "The Instructor demonstrates knowledge of the subject", 
+            "question": "The Instructor demonstrates knowledge of the subject", 
             "type": "ss",
             "options": [
                 { "message": "Strongly Disagree", "value": 1 },
@@ -29,7 +29,7 @@
         },
 
         { 
-            "q": "The Instructor has completed the whole course", 
+            "question": "The Instructor has completed the whole course", 
             "type": "ss",
             "options": [
                 { "message": "Strongly Disagree", "value": 1 },
@@ -41,7 +41,7 @@
         },
 
         { 
-            "q": "The Instructor provides additional material apart from the textbook", 
+            "question": "The Instructor provides additional material apart from the textbook", 
             "type": "ss",
             "options": [
                 { "message": "Strongly Disagree", "value": 1 },
@@ -53,7 +53,7 @@
         },
         
         { 
-            "q": "The Instructor gives citations regarding current situations with reference to Pakistani context", 
+            "question": "The Instructor gives citations regarding current situations with reference to Pakistani context", 
             "type": "ss",
             "options": [
                 { "message": "Strongly Disagree", "value": 1 },
@@ -65,7 +65,7 @@
         },
 
         { 
-            "q": "The Instructor communicates the subject matter effectively", 
+            "question": "The Instructor communicates the subject matter effectively", 
             "type": "ss",
             "options": [
                 { "message": "Strongly Disagree", "value": 1 },
@@ -77,7 +77,7 @@
         },
 
         {  
-            "q": "The Instructor shows respect towards students and encourages class participation", 
+            "question": "The Instructor shows respect towards students and encourages class participation", 
             "type": "ss",
             "options": [
                 { "message": "Strongly Disagree", "value": 1 },
@@ -89,7 +89,7 @@
         },
 
         { 
-            "q": "The Instructor maintains an environment that is conducive to learning", 
+            "question": "The Instructor maintains an environment that is conducive to learning", 
             "type": "ss",
             "options": [
                 { "message": "Strongly Disagree", "value": 1 },
@@ -101,7 +101,7 @@
         },
 
         {
-            "q": "The Instructor arrives on time", 
+            "question": "The Instructor arrives on time", 
             "type": "ss",
             "options": [
                 { "message": "Strongly Disagree", "value": 1 },
@@ -113,7 +113,7 @@
         },
 
         {
-            "q": "The Instructor leaves on time", 
+            "question": "The Instructor leaves on time", 
             "type": "ss",
             "options": [
                 { "message": "Strongly Disagree", "value": 1 },
@@ -125,7 +125,7 @@
         },
 
         {
-            "q": "The Instructor is fair in examination", 
+            "question": "The Instructor is fair in examination", 
             "type": "ss",
             "options": [
                 { "message": "Strongly Disagree", "value": 1 },
@@ -137,7 +137,7 @@
         },
 
         { 
-            "q": "The Instructor returns the graded scripts etc. in a reasonable amount of time", 
+            "question": "The Instructor returns the graded scripts etc. in a reasonable amount of time", 
             "type": "ss",
             "options": [
                 { "message": "Strongly Disagree", "value": 1 },
@@ -149,7 +149,7 @@
         },
 
         { 
-            "q": "The Instructor was available during the specified office hours and for after class consultations", 
+            "question": "The Instructor was available during the specified office hours and for after class consultations", 
             "type": "ss",
             "options": [
                 { "message": "Strongly Disagree", "value": 1 },
@@ -161,7 +161,7 @@
         },
 
         { 
-            "q": "The Subject matter presented in the course has increased your knowledge of the subject", 
+            "question": "The Subject matter presented in the course has increased your knowledge of the subject", 
             "type": "ss",
             "options": [
                 { "message": "Strongly Disagree", "value": 1 },
@@ -173,7 +173,7 @@
         },
 
         { 
-            "q": "The syllabus clearly states course objectives requirements, procedures and grading criteria", 
+            "question": "The syllabus clearly states course objectives requirements, procedures and grading criteria", 
             "type": "ss",
             "options": [
                 { "message": "Strongly Disagree", "value": 1 },
@@ -185,7 +185,7 @@
         },
 
         { 
-            "q": "The course integrates theoretical course concepts with real-world applications", 
+            "question": "The course integrates theoretical course concepts with real-world applications", 
             "type": "ss",
             "options": [
                 { "message": "Strongly Disagree", "value": 1 },
@@ -197,7 +197,7 @@
         },
 
         { 
-            "q": "The assignments and exams covered the materials presented in the course", 
+            "question": "The assignments and exams covered the materials presented in the course", 
             "type": "ss",
             "options": [
                 { "message": "Strongly Disagree", "value": 1 },
@@ -209,7 +209,7 @@
         },
 
         { 
-            "q": "The course material is modern and updated", 
+            "question": "The course material is modern and updated", 
             "type": "ss",
             "options": [
                 { "message": "Strongly Disagree", "value": 1 },
@@ -219,7 +219,6 @@
                 { "message": "Strongly Agree", "value": 5 }
             ]
         }
-
     ]
     }]    
 }

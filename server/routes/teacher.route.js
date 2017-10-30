@@ -43,7 +43,6 @@ const
     },
 
     wrappedRouteHandler = (operation)=>{
-        
         return (req, res)=> {
             const { _id = null } = req.params;
             if(!_id){

@@ -63,8 +63,10 @@ class TeacherJoint {
     fetch(_id) {
         return new Promise((resolve, reject) => {
             Teachers.findById(_id, (err, data)=> {
-                // if(err)
-                    // throw new Error()
+                if(err)
+                    reject();
+                
+                console.log(err, data);
             })
         });
     }
