@@ -1,32 +1,32 @@
 <div class="col-xs-12 col-md-10 col-md-offset-1">
-    <h4 class="text-center">{{ sectionHeading }}</h4>    
+        
 </div>
-
 <div class="col-xs-12 col-md-10 col-md-offset-1">
     <div class="panel panel-primary" id="_id">
         <div style="padding:3px 10px !important" class="panel-heading">
             <span class="badge">{{index +1}}</span>
+            <strong class="text-center">{{ sectionHeading }}</strong>
             <div class="pull-right">
                 <label class="label label-success" (click)="collapseQuest(_id)">-</label>    
             </div>
         </div>
         <div class="panel-body">
             {{ questions }}
-            <div class="col-xs-12" *ngFor="let quest of question">
-                <p class="text-center">{{quest.question}}</p>
+            <div class="col-xs-12" *ngFor="let quest of question, let i=index">
+                <p class="text-center">{{ quest.qid }}. {{quest.question}}</p>
                 <br>
-                <div class="text-center" *ngIf="quest.type == 'single-select'" style="margin:-10px auto"> 
-                    <div class="radio-inline" *ngFor="let opt of quest.options" (change)="optionSelected(quest.q_id, opt)">
-                        <input type="radio" name="{{quest.q_id}}" value="{{opt}}">{{opt}} &nbsp;
+                <div class="text-center" *ngIf="quest.type == 'ss'" style="margin:-10px auto"> 
+                    <div class="radio-inline" *ngFor="let opt of quest.options" (change)="optionSelected(quest.qid, opt.value, opt.message)">
+                        <input type="radio" name="{{ quest.qid }}" value="{{opt.value}}">{{ opt.message }} &nbsp;
                     </div>
                 </div>
-                <div class="text-center" *ngIf="quest.type == 'textarea'" style="margin:-10px auto"> 
-                    <textarea class="form-control"></textarea>
-                </div>
                 <div class="text-center" *ngIf="quest.type == 'text'" style="margin:-10px auto"> 
-                    <input class="form-control" type="text" name="{{quest.q_id}}" placeholder="{{ quest.question }}">{{opt}} &nbsp;                
+                    <textarea class="form-control" style="overflow: hidden;resize: none;" placeholder="{{ quest.question }}" rows=2 wrap=Off></textarea>                
                 </div>
                 <hr>
+            </div>
+            <div class="col-xs-12 text-center" *ngIf="canComment === true" style="margin:-10px auto"> 
+                <textarea (focusout)="getTextValue(comment.id, comment.value)" #comment id="comment{{ index + 1 }}" class="form-control" style="overflow: hidden;resize: none;" placeholder="Comments" ([ngModel])="comments" rows=2 wrap=Off></textarea>
             </div>
         </div>
     </div>

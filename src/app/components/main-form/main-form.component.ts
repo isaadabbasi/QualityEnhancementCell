@@ -7,6 +7,7 @@ import { QuestionComponent } from './quest.component';
 import { CourseEvalForm } from "./course-eval-form.component";
 import { SharedService } from '../../shared/shared.service';
 import {GET_SURVEY, ADD_SURVEY_URL, Departments } from '../../shared/global-vars';
+import * as _ from "lodash";
 interface SurveyModel {
     _id: number, 
     reply: string,
@@ -15,51 +16,7 @@ interface SurveyModel {
 
 @Component({
     selector: 'main-form',
-    template: `
-        <div  *ngIf="showMessage" id="message" class="col-xs-6 col-xs-offset-3">
-            <div id="inner-message" class="alert alert-danger text-center">
-                Please answer all questions.
-            </div>
-        </div>
-        <div class="questionare-body col-xs-12 col-md-offset-1 col-md-10">
-            <div class="row main-form-header">
-                <div class="" style="display: inline">
-                    <img class="teacher-image " src="./assets/images/duet_logo.png">
-                </div>
-                <div class="pull-right">
-                    <ul class="teacher-details">
-                        <li>{{selectedDepartment}}</li>
-                        <li>{{selectedTeacher}}</li>
-                        <li>{{subject? subject: ''}}</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="scrollbar" id="scrollbar" style="height: 70vh; overflow-y: scroll;">
-                <div *ngIf="this.surveyMetaData.evaluation == 'teacher'">
-                    <quest 
-                        *ngFor="let quest of questions, let i=index"
-                        [percentage]="quest.percentage"
-                        [index]= "i"
-                        [question]="quest.question"
-                        [_id]="quest.q_id"
-                        (quizReplied)="optionSelected($event)"
-                    ></quest>
-                </div>
-                <div *ngIf="this.surveyMetaData.evaluation == 'course'">
-                    <course-eval-form  *ngFor="let section of questions, let i=index"
-                        
-                        [index]="i"
-                        [heading]="section.name"
-                        [question]="section.questionArray"
-                        (quizReplied)="optionSelected($event)"                
-                    ></course-eval-form>
-                </div>
-                <div class="form-submittion">
-                    <button (click)="getStudentRemarks()" class=" btn-lg btn-block btn btn-primary">Submit</button>
-                </div>
-            </div>                
-        </div>  
-        `,
+    templateUrl: './main-form.html',
     styleUrls: ['main.component.css'],
     providers: [SharedService]
 })
@@ -78,22 +35,29 @@ export class MainFormComponent implements OnInit{
     ngOnInit(){
         this.surveyMetaData = JSON.parse(localStorage.getItem('surveyMetaData'));
         this.selectedTeacher = this.surveyMetaData.teacher || this.surveyMetaData.target;
-        this.subject = this.surveyMetaData.teacher ? this.surveyMetaData.target : ''; 
+        this.subject = this.surveyMetaData.course; 
         this.selectedDepartment = JSON.parse(localStorage.getItem('activeUser'))["department"];
-        this.selectedDepartment = (Departments.find(o => (o as any).value == this.selectedDepartment))["name"];
-        if(this.surveyMetaData.evaluation === 'teacher')
-            this.questions = TeacherEvaluationForm;
-        else
-            this.questions = courseEvaluationForm;
+        this.selectedDepartment = (Departments.find(o => (o as any).value == this.selectedDepartment))["name"];        
         this.getSurveys();
+        _.each(this.questions, question => {
+            console.log(_.filter(question, q => {
+                return q["type"] === 'ss' ? q: null;
+            }));
+            
+        });
     }
     getSurveys(){
         this._sharedService.getCall(GET_SURVEY + this.surveyMetaData.evaluation)
             .subscribe(
                 next => {
-                    console.log(next)
+                    console.log(next);
+                    this.questions = next.sections;
                 },
-                err => console.log(err)
+                err => console.log(err),
+                () => {
+                    console.log(this.questions);
+                    
+                }
             )
     }
     optionSelected(event: SurveyModel){
@@ -116,9 +80,11 @@ export class MainFormComponent implements OnInit{
         
     }
     checkSurveyStatus(){
+        console.log(this.questions[this.questions.length - 1]["queries"])
         let surveyDetails = {
             evaluation: this.surveyMetaData.evaluation,    //this.subject ? 'course':'teacher',
-            target: this.surveyMetaData.target,    //this.subject || this.selectedTeacher, // should the target be dynamically changed to course name?
+            teacher: this.surveyMetaData.teacher,
+            course: this.surveyMetaData.course,
             survey: this.survey
         }
 
@@ -137,17 +103,16 @@ export class MainFormComponent implements OnInit{
         
         let surveyDetails = {
             evaluation: this.surveyMetaData.evaluation,    //this.subject ? 'course':'teacher',
-            target: this.surveyMetaData.target,    //this.subject || this.selectedTeacher, // should the target be dynamically changed to course name?
+            target: this.surveyMetaData.course,    //this.subject || this.selectedTeacher, // should the target be dynamically changed to course name?
             survey: this.survey
         }
 
         console.log(surveyDetails);
-        
-
-        // localStorage.setItem('surveys', JSON.stringify([this.survey]));        
-        // if(this.questions.length === this.survey.length)
+        let lastSection = this.questions[this.questions.length - 1]["queries"];
+        let lastQID = lastSection[lastSection.length - 1]["qid"];
+        console.log(lastQID);
         console.log('finalized result',  surveyDetails)
-        if(surveyDetails.survey.length === this.questions.length){
+        if(surveyDetails.survey.length >= lastQID){
             this.surveyComplete = true;
             console.log('Send Http Request');
             // subscribe also takes and object as param, 
@@ -162,6 +127,8 @@ export class MainFormComponent implements OnInit{
                 error: error => { console.log( error ) }
             })    
         }else{
+            
+            
             console.log('Stop Http Request');
             this.showMessage = true;
             setTimeout(() => {
