@@ -62,9 +62,10 @@ const
 
 router.get('/details', getDetailsHandlder);
 router.post('/add', addTeacherHandler);
+
 router.route('/:_id')
-    // .get(wrappedRouteHandler('fetch'))
-    // .update(wrappedRouteHandler('update'))
+    .post(wrappedRouteHandler('update'))
+    .get(wrappedRouteHandler('fetch'))
     .delete(wrappedRouteHandler('remove'));
 
 module.exports = router;

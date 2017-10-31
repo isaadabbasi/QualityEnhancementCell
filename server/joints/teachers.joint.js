@@ -64,9 +64,9 @@ class TeacherJoint {
         return new Promise((resolve, reject) => {
             Teachers.findById(_id, (err, data)=> {
                 if(err)
-                    reject();
+                    reject({status: 500, body: err.message});
                 
-                console.log(err, data);
+                resolve({status: 200, body: data});
             })
         });
     }
@@ -79,6 +79,12 @@ class TeacherJoint {
 
                 resolve({status: 200, body: 'Teacher deleted'});
             })
+        });
+    }
+
+    update(_id){
+        return new Promise((resolve, reject) => {
+            
         });
     }
 }
