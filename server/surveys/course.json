@@ -6,6 +6,7 @@
             "name": "Course content and organization",
             "queries": [
                         { 
+                            "qid": 1,
                             "question": "The course objectives were clear",
                             "type": "ss",
                             "options": [
@@ -18,6 +19,7 @@
                         },
 
                         { 
+                            "qid": 2,
                             "question": "The course workload was manageable",
                             "type": "ss",
                             "options": [
@@ -30,6 +32,7 @@
                         },
 
                         { 
+                            "qid": 3,
                             "question": "The course was well organized(e.g., timely access to materials, notification of canges, etc.)",
                             "type": "ss",
                             "options": [
@@ -48,6 +51,7 @@
             "canComment": true,
             "queries":[
                         { 
+                            "qid": 4,
                             "question": "Approximate level of your attendance during the whole course",
                             "type": "ss",
                             "options": [
@@ -60,6 +64,7 @@
                         },
 
                         { 
+                            "qid": 5,
                             "question": "I participated actively in the course",
                             "type": "ss",
                             "options": [
@@ -71,6 +76,7 @@
                             ]
                         },
                         { 
+                            "qid": 6,
                             "question": "I think I have made progress in this course",
                             "type": "ss",
                             "options": [
@@ -88,6 +94,7 @@
             "canComment": true,
             "queries":[
                         {  
+                            "qid": 7,
                             "question": "I think the course was well structured to acheieve the leraning outcomes(there was a good balance of lectures, tutorials, practical etc.)",
                             "type": "ss",
                             "options": [
@@ -99,6 +106,7 @@
                             ]
                         },
                         { 
+                            "qid": 8,
                             "question": "The learning and teaching methods encrouged participation",
                             "type": "ss",
                             "options": [
@@ -110,6 +118,7 @@
                             ]
                         },
                         {  
+                            "qid": 9,
                             "question": "The overall environment in the class was conducive to learning",
                             "type": "ss",
                             "options": [
@@ -121,6 +130,7 @@
                             ]
                         },
                         {  
+                            "qid": 10,
                             "question": "Classrooms were satisfactory",
                             "type": "ss",
                             "options": [
@@ -138,6 +148,7 @@
             "canComment": true,
             "queries":[
                         { 
+                            "qid": 11,
                             "question": "Learning materials(Lesson Plans, Course Notes etc) were relevant and useful",
                             "type": "ss",
                             "options": [
@@ -149,6 +160,7 @@
                             ]
                         },
                         { 
+                            "qid": 12,
                             "question": "Recommended reading books etc. were relevent and appropriate",
                             "type": "ss",
                             "options": [
@@ -160,6 +172,7 @@
                             ]
                         },
                         { 
+                            "qid": 13,
                             "question": "The provision of learning resources in the library was adequate and appropriate",
                             "type": "ss",
                             "options": [
@@ -177,6 +190,7 @@
             "canComment": true,
             "queries":[
                         {
+                            "qid": 14,
                             "question": "The course stimulated my interest and thought on the subject area",
                             "type": "ss",
                             "options": [
@@ -188,6 +202,7 @@
                             ]
                         },
                         {
+                            "qid": 15,
                             "question": "The pace of the course was appropriate",
                             "type": "ss",
                             "options": [
@@ -199,6 +214,7 @@
                             ]
                         },
                         { 
+                            "qid": 16,
                             "question": "Ideas and concepts were presented clearly",
                             "type": "ss",
                             "options": [
@@ -217,6 +233,7 @@
             "canComment": true,
             "queries":[
                         { 
+                            "qid": 17,
                             "question": "The method of assesment were reasonable",
                             "type": "ss",
                             "options": [
@@ -228,6 +245,7 @@
                             ]
                         },
                         { 
+                            "qid": 18,
                             "question": "Feedback on assesment was timely",
                             "type": "ss",
                             "options": [
@@ -239,6 +257,7 @@
                             ]
                         },
                         { 
+                            "qid": 19,
                             "question": "Feedback on assesment was helpful",
                             "type": "ss",
                             "options": [
@@ -256,6 +275,7 @@
             "canComment": false,
             "queries":[
                         {
+                            "qid": 20,
                             "question": "I understood the lectures",
                             "type": "ss",
                             "options": [
@@ -267,6 +287,7 @@
                             ]
                         },
                         { 
+                            "qid": 21,
                             "question": "The material was well organized and presented",
                             "type": "ss",
                             "options": [
@@ -278,6 +299,7 @@
                             ]
                         },
                         { 
+                            "qid": 22,
                             "question": "The instructor was responseive to student needs and problems",
                             "type": "ss",
                             "options": [
@@ -289,8 +311,8 @@
                             ]
                         },
                         { 
-                            "question": "Had the instructor been regular throught the course?"        ,
-
+                            "qid": 23,
+                            "question": "Had the instructor been regular throught the course?",                            
                             "type": "ss",
                             "options": [
                                 { "message": "Strongly Disagree", "value": 1 },
@@ -307,6 +329,7 @@
             "canComment": false,
             "queries":[
                         { 
+                            "qid": 24,
                             "question": "The material in the tutorials was helpful",
                             "type": "ss",
                             "options": [
@@ -318,6 +341,7 @@
                             ]
                         },
                         { 
+                            "qid": 25,
                             "question": "I was happy with the amount of work needed for tutorials",
                             "type": "ss",
                             "options": [
@@ -329,6 +353,7 @@
                             ]
                         },
                         { 
+                            "qid": 26,
                             "question": "The tutor dealt effectively with my problems",
                             "type": "ss",
                             "options": [
@@ -346,6 +371,7 @@
             "canComment": false,
             "queries":[
                         { 
+                            "qid": 27,
                             "question": "The material in the practicals was useful",
                             "type": "ss",
                             "options": [
@@ -357,6 +383,7 @@
                             ]
                         },
                         { 
+                            "qid": 28,
                             "question": "The demonstrators dealt effectively with my problems",
                             "type": "ss",
                             "options": [
@@ -374,10 +401,12 @@
             "canComment": false,
             "queries": [
                         { 
+                            "qid": 29,
                             "question": "The best features of course were",
                             "type": "text"
                         },
                         { 
+                            "qid": 30,
                             "question": "The course could have been improved by",
                             "type": "text"
                         }
@@ -388,6 +417,7 @@
             "canComment":false,
             "queries":[
                         { 
+                            "qid": 31,
                             "question": "The university does not tolerate discrimaination on any irrelevant distiction(e.g., race, age, gender) and is committed to work with diversity in a wholly positive way. Please indicate below anything in rlation to this course which may run counter to this objective:",
                             "type": "text"
                         }
@@ -398,6 +428,7 @@
             "canComment":false,
             "queries":[
                         { 
+                            "qid": 32,
                             "question": "Full/part time study",
                             "type": "ss",
                             "options": [
@@ -406,6 +437,7 @@
                             ]
                         },
                         { 
+                            "qid": 33,
                             "question": "Do you consider yourself to be disabled",
                             "type": "ss",
                             "options": [
@@ -414,11 +446,13 @@
                             ]
                         },
                         { 
+                            "qid": 34,
                             "question": "Domicile",
                             "type": "text"
                         },
 
                         { 
+                            "qid": 35,
                             "question": "Gender",
                             "type": "ss",
                             "options": [
@@ -427,6 +461,7 @@
                             ]
                         },
                         { 
+                            "qid": 36,
                             "question": "Age Group",
                             "type": "ss",
                             "options": [
@@ -436,6 +471,7 @@
                             ]
                         },
                         { 
+                            "qid": 37,
                             "question": "Campus",
                             "type": "text"
                         }                        

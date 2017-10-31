@@ -5,6 +5,7 @@
         "name" : null,
         "queries": [
         {
+            "qid": 1,
             "question": "The Instructor is prepared for each class", 
             "type": "ss",
             "options": [
@@ -17,6 +18,7 @@
         },
 
         { 
+            "qid": 2,
             "question": "The Instructor demonstrates knowledge of the subject", 
             "type": "ss",
             "options": [
@@ -29,6 +31,7 @@
         },
 
         { 
+            "qid": 3,
             "question": "The Instructor has completed the whole course", 
             "type": "ss",
             "options": [
@@ -41,6 +44,7 @@
         },
 
         { 
+            "qid": 4,
             "question": "The Instructor provides additional material apart from the textbook", 
             "type": "ss",
             "options": [
@@ -53,6 +57,7 @@
         },
         
         { 
+            "qid": 5,
             "question": "The Instructor gives citations regarding current situations with reference to Pakistani context", 
             "type": "ss",
             "options": [
@@ -65,6 +70,7 @@
         },
 
         { 
+            "qid": 6,
             "question": "The Instructor communicates the subject matter effectively", 
             "type": "ss",
             "options": [
@@ -77,6 +83,7 @@
         },
 
         {  
+            "qid": 7,
             "question": "The Instructor shows respect towards students and encourages class participation", 
             "type": "ss",
             "options": [
@@ -89,6 +96,7 @@
         },
 
         { 
+            "qid": 8,
             "question": "The Instructor maintains an environment that is conducive to learning", 
             "type": "ss",
             "options": [
@@ -101,6 +109,7 @@
         },
 
         {
+            "qid": 9,
             "question": "The Instructor arrives on time", 
             "type": "ss",
             "options": [
@@ -113,6 +122,7 @@
         },
 
         {
+            "qid": 10,
             "question": "The Instructor leaves on time", 
             "type": "ss",
             "options": [
@@ -125,6 +135,7 @@
         },
 
         {
+            "qid": 11,
             "question": "The Instructor is fair in examination", 
             "type": "ss",
             "options": [
@@ -137,6 +148,7 @@
         },
 
         { 
+            "qid": 12,
             "question": "The Instructor returns the graded scripts etc. in a reasonable amount of time", 
             "type": "ss",
             "options": [
@@ -149,6 +161,7 @@
         },
 
         { 
+            "qid": 13,
             "question": "The Instructor was available during the specified office hours and for after class consultations", 
             "type": "ss",
             "options": [
@@ -161,6 +174,7 @@
         },
 
         { 
+            "qid": 14,
             "question": "The Subject matter presented in the course has increased your knowledge of the subject", 
             "type": "ss",
             "options": [
@@ -173,6 +187,7 @@
         },
 
         { 
+            "qid": 15,
             "question": "The syllabus clearly states course objectives requirements, procedures and grading criteria", 
             "type": "ss",
             "options": [
@@ -185,6 +200,7 @@
         },
 
         { 
+            "qid": 16,
             "question": "The course integrates theoretical course concepts with real-world applications", 
             "type": "ss",
             "options": [
@@ -197,6 +213,7 @@
         },
 
         { 
+            "qid": 17,
             "question": "The assignments and exams covered the materials presented in the course", 
             "type": "ss",
             "options": [
@@ -209,6 +226,7 @@
         },
 
         { 
+            "qid": 18,
             "question": "The course material is modern and updated", 
             "type": "ss",
             "options": [
