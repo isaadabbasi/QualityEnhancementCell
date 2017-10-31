@@ -21,10 +21,14 @@ export class SharedService{
         return this.http.post(url, body, options)
     }
 
+    deleteCall(url: string, option?){
+        return this.http.delete(url, option)
+    }
+
     isLoggedIn(){
         let activeUser = (JSON.parse(localStorage.getItem('activeUser')));
-        if(activeUser && activeUser.rollnumber){
-            return !!activeUser["rollnumber"];
+        if(activeUser && (activeUser.rollnumber || activeUser.email)){
+            return !!activeUser["rollnumber"] || !!activeUser["email"] ;
         }
         else return false;
     }

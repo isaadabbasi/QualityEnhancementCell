@@ -22,7 +22,7 @@ export class StartSurveyComponent implements OnInit {
     deparmentsList = Departments;
     surveyMetaData = {
         evaluation: "teacher",
-        target: "",
+        course: "",
         teacher: ""
     }
     @ViewChild('dept') deptReference;  
@@ -31,15 +31,19 @@ export class StartSurveyComponent implements OnInit {
                 private router: Router) { 
         this.year = new Date().getFullYear();
         this.month = this.months[new Date().getMonth()];
+        
     }
 
     getDepartmentTeacherList(department){
-        this.sharedService.postCall(TEACHER_DETAILS_URL, {department: department})
+        console.log(department)
+        console.log(`${TEACHER_DETAILS_URL}?department=${department}`);
+        this.sharedService.getCall(`${TEACHER_DETAILS_URL}?department=${department}`)
             .subscribe( res => {
                 if(res.status == 200) {
-                    console.log(JSON.parse(res["_body"])["body"]);
+                    console.log(res);
+                    console.log(res["body"]);
                     
-                    this.teachersList = JSON.parse(res["_body"])["body"];
+                    this.teachersList = res["body"];
                     this.teachers = false;
                     console.log(this.teachersList);
                 }
@@ -53,7 +57,7 @@ export class StartSurveyComponent implements OnInit {
     getSubjectList(selectedTeacher){ // need to rewrite with real logic, bluffing DOM for now.
         this.subjects = !selectedTeacher ? false : true;
         this.selectedTeacher = selectedTeacher;
-        this.surveyMetaData.target= selectedTeacher;
+        this.surveyMetaData.course= selectedTeacher;
         console.log(this.surveyMetaData);
         
         console.log(this.subjects, selectedTeacher);
@@ -65,14 +69,16 @@ export class StartSurveyComponent implements OnInit {
     selectedSubject(selectedSubject){
         this.subject = selectedSubject;
         if(!!this.subject){
-            this.surveyMetaData.target = this.subject,
+            this.surveyMetaData.course = this.subject,
             this.surveyMetaData.evaluation = "course",
             this.surveyMetaData.teacher = this.selectedTeacher;
         }
     }
     validate(){
-        return !!this.surveyMetaData.target;
+        return !!this.surveyMetaData.course && 
+               !!this.surveyMetaData.teacher;
     }
+    openModal = false;
     startSession(){
         console.log('Starting Session');
         console.log(this.validate());
@@ -81,15 +87,17 @@ export class StartSurveyComponent implements OnInit {
             // this.surveyMetaData.target = this.selectedTeacher;
             console.log(this.surveyMetaData);
             localStorage.setItem('surveyMetaData', JSON.stringify(this.surveyMetaData));
-            this.router.navigate(['survey']);
+            // this.router.navigate(['survey']);
         }
+        this.openModal = true;
     } 
     ngOnInit() {
+        localStorage.removeItem('surveyMetaData');
         let activeUser: StudentModel = JSON.parse(localStorage.getItem('activeUser'));
         console.log(activeUser);
         this.selectedDepartment = (this.deparmentsList.find(department => department["value"] == activeUser.department))["name"];
-        console.log(this.selectedDepartment);
-        this.getDepartmentTeacherList(this.selectedDepartment);
+        console.log(this.selectedDepartment, activeUser.department);
+        this.getDepartmentTeacherList(activeUser.department);
         // console.log(this.deptReference)
         // let node = this.deptReference.nativeElement;
         // node.value = this.selectedDepartment;

@@ -3,6 +3,7 @@ import { StudentModel } from './../../shared/models';
 import { Router } from '@angular/router';
 import { SharedService } from './../../shared/shared.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import * as _ from "lodash";
 
 @Component({
     templateUrl: './signup.template.html',
@@ -17,6 +18,7 @@ export class SignupComponent implements OnInit{
     signupError: boolean;
     departments = Departments;
     selectedDepartment = this.departments[0];    
+    signUpContainer = document.getElementById('signup-container');
     userCredentials: StudentModel = {
         fullname: '',
         department: '',
@@ -31,13 +33,17 @@ export class SignupComponent implements OnInit{
     }
     loging(deptIdx){
         this.userCredentials.department = this.departments[deptIdx]["value"];
+        console.log(this.departments);
+        _.find(this.departments, (dept) =>{
+            
+        })
         console.log(this.userCredentials);
     }
     validateCredentials(){
         return this.userCredentials.fullname && this.userCredentials.department != "0"
             && this.userCredentials.rollnumber && this.userCredentials.password;
     }
-    @ViewChild('#signup-container') signUpContainer;
+    
     signUp(){
         if(this.validateCredentials){
             this.sharedService.postCall(SIGNUP_URL, this.userCredentials)
@@ -46,6 +52,8 @@ export class SignupComponent implements OnInit{
                         this.router.navigate(['/login']);
                     }
                 }, err => {
+                    console.log(this.signUpContainer);
+                    
                     this.signupError = true;
                     this.signupErrorMessage = err['_body'];
                     setTimeout(()=>{

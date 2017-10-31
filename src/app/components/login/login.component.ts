@@ -16,9 +16,10 @@ import { SharedService } from './../../shared/shared.service';
 export class LoginComponent implements OnInit{
 
     users: Array<Object> = [];
-    userCredentials: {rollnumber: string, password:string} = {
+    userCredentials: {rollnumber: string, password:string, email: string} = {
         rollnumber: '',
-        password: ''
+        password: '',
+        email: ''
     };
     loginError: boolean = false;
     loginErrorMessage: string;
@@ -32,7 +33,13 @@ export class LoginComponent implements OnInit{
     }
     signIn(){
         if(this.userCredentials.rollnumber && this.userCredentials.password){
-            console.log('Got Credentials', this.userCredentials.password, this.userCredentials.rollnumber);            
+            if(this.userCredentials.rollnumber.indexOf('@') !== -1){
+                this.userCredentials['email'] = this.userCredentials.rollnumber;
+                delete this.userCredentials.rollnumber;
+            }else{
+                delete this.userCredentials.email;
+            }
+            console.log('Got Credentials', this.userCredentials);            
             this.sharedService.postCall(SIGNIN_URL, this.userCredentials)
                 .subscribe(res => {
                     console.log(res);
@@ -40,7 +47,7 @@ export class LoginComponent implements OnInit{
                     if(res.status == 200){
                         console.log(res);
                         localStorage.setItem('activeUser', (res['_body']))
-                        console.log(JSON.parse(localStorage.getItem('activeUser')).rollnumber);
+                        console.log(JSON.parse(localStorage.getItem('activeUser')));
                         this.router.navigate(['/dashboard']);     
                     }
                     

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import * as localforage from 'localforage';
 
@@ -31,9 +31,12 @@ import * as localforage from 'localforage';
     </div>`
 })
 
-export class DashboardComponent{
+export class DashboardComponent implements OnInit{
     sidebars: Array<String> = ['1', '3', '5'];
+    
     constructor(){
-        console.log(localStorage.getItem("activeUser"));
+        // console.log(localStorage.getItem("activeUser"));
     }
+    ngOnInit(){ }
+
 }
