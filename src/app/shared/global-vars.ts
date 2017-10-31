@@ -14,11 +14,12 @@ export const BASE_URL: string = `http://localhost:3000`  //Will be updated on de
 
 export const SIGNIN_URL           : string = `${BASE_URL}/users/login`; // should be renamed 
 export const SIGNUP_URL           : string = `${BASE_URL}/users/register`;
-export const SURVEY_LIST          : string = `${BASE_URL}/surveys`;
 export const GET_SURVEY           : string = `${BASE_URL}/surveys/form/`;
+export const SURVEY_LIST          : string = `${BASE_URL}/surveys`;
 export const ADD_SURVEY_URL       : string = `${BASE_URL}/surveys/add`; // should be renamed 
+export const TEACHER_BASE_URL     : string = `${BASE_URL}/teachers`
 export const SURVEY_START_URL     : string = `${BASE_URL}/surveys/start`;
-export const TEACHER_DETAILS_URL  : string = `${BASE_URL}/teachers/details`;
+export const TEACHER_DETAILS_URL  : string = `${TEACHER_BASE_URL}/details`;
 
 export const Departments: Array<Object> = [
   {value: '0', name: 'Please Select'},
