@@ -1,7 +1,8 @@
 const 
     express = require('express'),
     router = express.Router(),
-    teacherJoint = require('../joints/teachers.joint');
+    teacherJoint = require('../joints/teachers.joint'),
+    
     addTeacherHandler = (req, res, next) =>{ 
         let 
             fullname = req.body.fullname,
@@ -18,16 +19,21 @@ const
                 res.status(prores.status).send(prores.body)
             })
             .catch( err => {
-                res.status(501).send("Unable to add new teacher");
+                if(err.status === 409)
+                    res.status(err.status).send(err.body);                    
+                else 
+                    res.status(501).send("Unable to add new teacher");
+
             })
     },
+
     getDetailsHandlder = (req, res, next)=>{
         console.log('req query: ', req.query);
         let 
             searchQuery = {};
                         
             if('department' in req.query)
-                searchQuery['departments'] = req.query.department
+                searchQuery['departments'] = req.query.department;
             if('fullname' in req.query)
                 searchQuery['fullname'] = req.query.fullname;
             
@@ -44,13 +50,16 @@ const
 
     wrappedRouteHandler = (operation)=>{
         return (req, res)=> {
-            const { _id = null } = req.params;
+            const { _id = null } = req.params, body = req.body || {};
             if(!_id){
                 res.status(400).send(`Must send \'id\' to ${operation} the teacher`);
                 return;
             }
-
-            teacherJoint[operation](_id)
+            if(operation === 'update' && !Object.keys(body).length){
+                res.status(400).send(`Send params to update the teacher`);
+                return;
+            }
+            teacherJoint[operation](_id, body)
                 .then(resolve => { 
                     res.status(200).send(resolve.body); 
                 })
@@ -59,7 +68,7 @@ const
     }
 
 
-
+    
 router.get('/details', getDetailsHandlder);
 router.post('/add', addTeacherHandler);
 
