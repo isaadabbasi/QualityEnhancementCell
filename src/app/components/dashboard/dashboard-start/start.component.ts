@@ -35,12 +35,15 @@ export class StartSurveyComponent implements OnInit {
     }
 
     getDepartmentTeacherList(department){
-        this.sharedService.postCall(TEACHER_DETAILS_URL, {department: department})
+        console.log(department)
+        console.log(`${TEACHER_DETAILS_URL}?department=${department}`);
+        this.sharedService.getCall(`${TEACHER_DETAILS_URL}?department=${department}`)
             .subscribe( res => {
                 if(res.status == 200) {
-                    console.log(JSON.parse(res["_body"])["body"]);
+                    console.log(res);
+                    console.log(res["body"]);
                     
-                    this.teachersList = JSON.parse(res["_body"])["body"];
+                    this.teachersList = res["body"];
                     this.teachers = false;
                     console.log(this.teachersList);
                 }
@@ -93,8 +96,8 @@ export class StartSurveyComponent implements OnInit {
         let activeUser: StudentModel = JSON.parse(localStorage.getItem('activeUser'));
         console.log(activeUser);
         this.selectedDepartment = (this.deparmentsList.find(department => department["value"] == activeUser.department))["name"];
-        console.log(this.selectedDepartment);
-        this.getDepartmentTeacherList(this.selectedDepartment);
+        console.log(this.selectedDepartment, activeUser.department);
+        this.getDepartmentTeacherList(activeUser.department);
         // console.log(this.deptReference)
         // let node = this.deptReference.nativeElement;
         // node.value = this.selectedDepartment;
