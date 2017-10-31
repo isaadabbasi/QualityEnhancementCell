@@ -9,11 +9,10 @@ class TeacherJoint {
         return new Promise( (resolve, reject)=>{
             let 
                 teacher = new Teachers(teacherModel),
-                cb = (err, teacher) => {
-                    if(err)
-                        throw new Error();
-                    if(!err && teacher)
-                        resolve({status: 201, body: "Teacher Successfuly created."})
+                cb = err => {
+                    err ? 
+                        reject({status: 409, body: `Teacher '${teacherModel.fullname}' already exists.`}) : 
+                        resolve({status: 201, body: "Teacher Successfuly created."});
                 };
             teacher.save(cb)
         })
@@ -82,9 +81,17 @@ class TeacherJoint {
         });
     }
 
-    update(_id){
+    update(_id, fields){
         return new Promise((resolve, reject) => {
-            
+            Teachers.update({_id}, {$set: fields}, (err, updated)=> {
+                if(err){
+                    reject({status: 500, body: `${err.message}`})
+                    throw new Error(`unable to update teacher: ${err.message}`);
+                }
+                if(!err)
+                    resolve({status: 200, body: 'Teacher Updated'});
+
+            })
         });
     }
 }
