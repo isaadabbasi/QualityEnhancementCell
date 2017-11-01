@@ -107,11 +107,29 @@ const
             .createReadStream(pathToForm)
             // .pipe(jsonify)
             .pipe(res);
+    },
+        
+    testCb = (req, res) => {
+        surveyJoint.getAllSurveys()
+            .then(resolve => {
+
+                console.time('mt');
+                for(let i=0; i<90000000; i++){};
+                console.timeEnd('mt');
+                
+                
+                // surveyJoint.test(resolve.body);
+                // surveys.forEach(survey =>{
+                res.sendStatus(200);
+                // })
+            })
     }
+
     
 router.get('/', getAllSurveysCb);
 router.get('/id/:_id', getSurveyByIdCb);
 router.post('/list', getSurveyByListCb);
 router.post('/add', addSurveyCb);
 router.get('/form/:name', getTeacherEvaluationForm);
+router.get('/test', testCb);
 module.exports = router;
