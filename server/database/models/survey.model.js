@@ -3,15 +3,16 @@ const
     Schema = mongoose.Schema,
     identity = 'Surveys',
     survey = new Schema({
-        id: Number, 
+        id: Schema.Types.Mixed, 
         selection: String, 
-        value: Number,
+        value: Schema.Types.Mixed,
         type: {type: String, default: 'direct'}
     }, {_id: false}),
     surveySchema = new Schema({
         created: { type: Schema.Types.Date, default: Date.now },
+        course: { type: String, maxlength: 30, trim: true },
         evaluation: { type: String, maxlength: 30, trim: true },
-        target: { type: String, maxlength: 30, trim: true },
+        teacher: { type: String, maxlength: 30, trim: true },
         survey: [survey]
 
     },{collection: identity})
