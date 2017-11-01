@@ -30,13 +30,13 @@ export class CourseEvalForm implements OnInit{
         console.log(id, selection)
         
         this.quizReplied.emit({
-            id, value, selection 
+            id, selection: value, value: selection 
         })
     }
-    getTextValue(id, value){
-        console.log(id, value);
+    getTextValue(id, comment){
+        console.log(id, comment);
         this.commentsReplied.emit({
-            id, value
+            id, comment
         })
     }
 }
