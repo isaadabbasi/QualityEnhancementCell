@@ -103,7 +103,8 @@ export class MainFormComponent implements OnInit{
         
         let surveyDetails = {
             evaluation: this.surveyMetaData.evaluation,    //this.subject ? 'course':'teacher',
-            target: this.surveyMetaData.course,    //this.subject || this.selectedTeacher, // should the target be dynamically changed to course name?
+            course: this.surveyMetaData.course,    //this.subject || this.selectedTeacher, // should the target be dynamically changed to course name?
+            teacher: this.surveyMetaData.teacher,
             survey: this.survey
         }
 
