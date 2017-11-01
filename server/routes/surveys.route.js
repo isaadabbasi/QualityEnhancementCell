@@ -1,6 +1,9 @@
 const 
     express = require('express'),
     router = express.Router(),
+    napajs = require('napajs'),
+    cores = require('os').cpus().length, 
+    MultiCores = napajs.zone.create('cores',{workers: cores}),
     teacherJoint = require('../joints/teachers.joint'),
     surveyJoint = require('../joints/survey.joint'),
     fs = require('fs'),
@@ -99,6 +102,23 @@ const
                 this.push(JSON.stringify(chunk))
                 callback();
             });
+
+// MultiCores.broadcast('console.log(`listening at ${process.pid}...`)');
+        console.time('mt');
+        MultiCores.execute(
+            (text)=> {
+                // let x = 0;
+                for(let i=0; i<90000000; i++){};
+                return text;
+                // return x;
+            },
+            ['hello']
+        ).then(resolve=>{
+            console.log('final value: ',resolve.value);
+            console.timeEnd('mt');
+        })
+
+
         if(!form){
             res.status(400).send('You must specify form name');
             return;
