@@ -74,6 +74,34 @@ class SurveyJoint {
         });
     }
 
+    test(surveys){
+        let 
+            combined = [];
+        
+        for(let survey of surveys) {
+            let date = survey.created,
+                target = `${date.getMonth()},${date.getDate()},${date.getYear()}`;
+            
+            survey.dated = target;
+            
+            console.log(survey.dated);
+            
+            if(!combined.length){
+                combined.push(survey);
+            } else {
+                for(let i=0; i<combined.length; i++){
+                    if(combined[i].dated === survey.dated){
+                        combineSurvey(i, combined[i], survey)
+                    }
+                }
+            }
+        }
+    
+        function combineSurvey(index, stored, curr){
+            
+        }
+    
+    }
     
 
 }
