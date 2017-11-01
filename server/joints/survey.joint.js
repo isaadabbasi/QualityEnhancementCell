@@ -98,7 +98,7 @@ class SurveyJoint {
         }
     
         function combineSurvey(index, stored, curr){
-            
+            console.log(index, stored, curr);
         }
     
     }
