@@ -16,25 +16,36 @@ export class SurveysComponent implements OnInit {
   @Output('surveyId') SurveyId: EventEmitter<number> = new EventEmitter<number>();
   surveysArray;
   ngOnInit(){
+                              
     this.sharedService.getCall(SURVEY_LIST)
     .subscribe(
-      next => { this.surveysArray = next; console.log(next); },
+      next => { 
+        // console.log(this.surveysArray.filter(sur => sur["evalutaion"] == "teacher"));
+        this.surveysArray = next; console.log(next); 
+      },
       err => console.log(err),
       () => {
-        // let byTeacherName = 
-        //   _.groupBy(this.surveysArray, item => item.target)
-        //   .map(target => {
-              
-        //   });
-        // console.log(byTeacherName);
-        
-        
-        
-        
-        
-        
-        
-        
+        console.log(_.filter(this.surveysArray, survey => {
+          return survey["evalutaion"] === "teacher"
+        }));
+        let surveyByDate: Array<Object> = [];
+        _.each(this.surveysArray, survey => {
+          let index = _.findIndex(surveyByDate, obj => {
+            return obj["course"] === survey.course
+                && obj["teacher"] === survey.teacher
+                && obj["evaluation"] === survey["evaluation"]
+                && obj["created"].slice(0, 10) === survey["created"].slice(0, 10)
+          });
+          if(index == -1 ){
+            _.forEach(survey["survey"], survey => {
+              survey["count" + 1] = 1;
+            })
+            surveyByDate.push(survey);
+            console.log(surveyByDate);
+          }else{
+            
+          }
+        })
         let surveyByName = [];
         _.each(this.surveysArray,(survey) => {
           // console.log(survey);

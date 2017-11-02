@@ -39,12 +39,6 @@ export class MainFormComponent implements OnInit{
         this.selectedDepartment = JSON.parse(localStorage.getItem('activeUser'))["department"];
         this.selectedDepartment = (Departments.find(o => (o as any).value == this.selectedDepartment))["name"];        
         this.getSurveys();
-        _.each(this.questions, question => {
-            console.log(_.filter(question, q => {
-                return q["type"] === 'ss' ? q: null;
-            }));
-            
-        });
     }
     getSurveys(){
         this._sharedService.getCall(GET_SURVEY + this.surveyMetaData.evaluation)
@@ -122,8 +116,9 @@ export class MainFormComponent implements OnInit{
             .debounceTime(500)
             .subscribe({
                 next: res => { 
+                    this.router.navigate(['/']);
                     console.log( res );
-                    this.router.navigate(['/dashboard']);
+                    
                 },
                 error: error => { console.log( error ) }
             })    
