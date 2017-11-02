@@ -16,7 +16,6 @@ export class DashboardModalComponent implements OnInit {
     inputOptions;
     constructor(private router: Router, 
                 private sharedService: SharedService) {
-        console.log(this.idtoDelete);
     }
     ngOnInit(){
         if(this.modalPurpose.toLocaleLowerCase() === 'evaluation'){
@@ -150,6 +149,6 @@ export class DashboardModalComponent implements OnInit {
           )
           }, function () {  
             swal.resetDefaults()
-          })
+          }).catch( () => self.modalStatus.emit(false))
     }
 }

@@ -1,4 +1,8 @@
+import { OnInit } from '@angular/core';
+import { SURVEY_LIST, TEACHER_BASE_URL, TEACHER_DETAILS_URL } from './../../../shared/global-vars';
+import { SharedService } from './../../../shared/shared.service';
 import { Component, ViewChild } from '@angular/core';
+import * as _ from "lodash";
 
 @Component({
     selector: 'stats',
@@ -7,7 +11,8 @@ import { Component, ViewChild } from '@angular/core';
     // `
     templateUrl: './stats.template.html'
 })
-export class StatsComponent {
+export class StatsComponent implements OnInit{
+  
   showDetails: Boolean = false;
     // lineChart
   public surveys = [
@@ -53,7 +58,24 @@ export class StatsComponent {
     console.log(e);
   }
   options: Object;
-  constructor(){
+  ngOnInit(){
+    this.sharedService.getCall(TEACHER_DETAILS_URL)
+      .subscribe( next => {
+        console.log(next["body"]);
+      })
+  }
+  constructor(private sharedService: SharedService){
+    this.sharedService.getCall(SURVEY_LIST).subscribe(
+        next => {
+          console.log(next)
+          console.log(_.filter(next, (survey) => survey["evaluation"] == "teacher"));
+        },
+        err => console.log(err),
+        () => {
+          
+        }
+      )
+      // survey.subscribe(next => console.log(next))
     this.options = {
       title: { text: 'simple chart'},
       series: [{
