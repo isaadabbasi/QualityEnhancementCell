@@ -1,7 +1,9 @@
 
 const 
-    Surveys = require('../database/models/survey.model');
-
+    Surveys = require('../database/models/survey.model')
+    napajs = require('napajs'),
+    cores = require('os').cpus().length, 
+    MultiCores = napajs.zone.create('cores',{workers: cores});
 
 class SurveyJoint {
     constructor(){
@@ -74,37 +76,115 @@ class SurveyJoint {
         });
     }
 
-    test(surveys){
-        let 
-            combined = [];
+    multiThreadsExecution(surveysArgs){
         
-        for(let survey of surveys) {
-            let date = survey.created,
-                target = `${date.getMonth()},${date.getDate()},${date.getYear()}`;
-            
-            survey.dated = target;
-            
-            console.log(survey.dated);
-            
-            if(!combined.length){
-                combined.push(survey);
-            } else {
-                for(let i=0; i<combined.length; i++){
-                    if(combined[i].dated === survey.dated){
-                        combineSurvey(i, combined[i], survey)
+        // return new Promise((resolve, reject) => {
+            // console.log('MTE execution: ')
+            return  MultiCores.execute(
+                (surveys)=> {
+    
+                let 
+                combined = [],
+                totalSurveys = surveys.length;
+                    
+                for(let survey of surveys) {
+                    let date = new Date(survey.created),
+                        target = `${date.getMonth()},${date.getDate()},${date.getYear()}`,
+                        // target = `${date.getDate()}`,
+                        matchFound = false;
+                    survey.dated = target;
+                    
+                    console.log(survey.dated);
+                    
+                    if(!combined.length){
+                        combined.push(survey);
+                    } else {
+                        for(let i=0; i<combined.length; i++){
+                            if(combined[i].dated === survey.dated){
+                                matchFound = true;
+                                let merged = mergeSurvey(combined[i], survey);
+                                combined[i] = merged;
+                            }
+                        }
+                        if(!matchFound)
+                            combined.push(survey);
                     }
                 }
-            }
-        }
-    
-        function combineSurvey(index, stored, curr){
-            console.log(index, stored, curr);
-        }
-    
-    }
-    
+                function mergeSurvey(_stored, {survey: curr}){
+                    console.log('stored dated: ', _stored.dated)
+                    // TODO; what to choose for length;
+                    let stored = _stored.survey;
+                    for (let i=0; i<stored.length; i++){
+                        if(!(typeof stored[i].id === 'string'))
+                        stored[i].value = +( (stored[i].value + curr[i].value)/2 ).toPrecision(3);
+                    }
+                    // console.log('combine method end');
+                    _stored.survey = stored;
+                    return _stored;
+                }
+                
+                return combined;
+                },
+                [surveysArgs])
+            // ).then(combined=>{
+            //     // res.send(combined);
+            //     console.log('finalized..');
+            //     resolve(combined.value);
+            // })
+            // .catch(err => {console.log(err);})
 
+        // })
+
+    }
+
+    syncMergeSurvey(surveys){
+        // return new Promise((resolve, reject)=> {
+            console.log('invoked sync merge survey')
+            let 
+            combined = [],
+            totalSurveys = surveys.length;
+                
+            for(let survey of surveys) {
+                let date = new Date(survey.created),
+                    target = `${date.getMonth()},${date.getDate()},${date.getYear()}`,
+                    // target = `${date.getDate()}`,
+                    matchFound = false;
+                survey.dated = target;
+                
+                console.log(survey.dated);
+                
+                if(!combined.length){
+                    combined.push(survey);
+                } else {
+                    for(let i=0; i<combined.length; i++){
+                        if(combined[i].dated === survey.dated){
+                            matchFound = true;
+                            let merged = mergeSurvey(combined[i], survey);
+                            combined[i] = merged;
+                        }
+                    }
+                    if(!matchFound)
+                        combined.push(survey);
+                }
+            }
+            function mergeSurvey(_stored, {survey: curr}){
+                console.log('stored dated: ', _stored.dated)
+                // TODO; what to choose for length;
+                let stored = _stored.survey;
+                for (let i=0; i<stored.length; i++){
+                    if(!(typeof stored[i].id === 'string'))
+                    stored[i].value = +( (stored[i].value + curr[i].value)/2 ).toPrecision(3);
+                }
+                // console.log('combine method end');
+                _stored.survey = stored;
+                return _stored;
+            }
+            console.log(combined)
+            return combined;
+        // })
+    }
 }
+
 function getInstanceOfSurveyJoint(){
     return new SurveyJoint()
 }

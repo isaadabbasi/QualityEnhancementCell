@@ -1,9 +1,6 @@
 const 
     express = require('express'),
     router = express.Router(),
-    napajs = require('napajs'),
-    cores = require('os').cpus().length, 
-    MultiCores = napajs.zone.create('cores',{workers: cores}),
     teacherJoint = require('../joints/teachers.joint'),
     surveyJoint = require('../joints/survey.joint'),
     fs = require('fs'),
@@ -60,32 +57,30 @@ const
 
     addSurveyCb = (req, res, next) => {
         console.log('request body', req.body);
-        let 
-            evaluation = req.body.evaluation.trim(),
-            target = req.body.target.trim(),
-            survey = req.body.survey;             
-        
+        let {
+            course = null, teacher = null, evaluation = null, survey = null
+        } = req.body;
         let surveyModel = {
-            evaluation, target, survey
+            evaluation, course, teacher, survey
         };
         surveyJoint.saveSurvey(surveyModel)
             .then(result => {
                 let body = result.body;
                 console.log(body)
                 // console.log('\n  .then is being exeute ... ', result.body )
-                !!~ body.evaluation.indexOf('teacher') ?
-                    teacherJoint.addSurveyReference(body)
-                        .then( prores =>{
-                            // console.log('on promise resolve', prores)
-                            // console.log(`${res.status}- Teacher ref update made, msg: ${res.msg}`);
-                            res.status(prores.status).send("Survey Added");
-                        })
-                        .catch( err => {
-                            console.log('on err response', err);
-                            // console.error(`${err.status}- Teacher ref update error, msg: ${err.msg}`);
-                            res.status(501).send(err.msg)
-                        })
-                :
+                // !!~ body.evaluation.indexOf('teacher') ?
+                //     teacherJoint.addSurveyReference(body)
+                //         .then( prores =>{
+                //             // console.log('on promise resolve', prores)
+                //             // console.log(`${res.status}- Teacher ref update made, msg: ${res.msg}`);
+                //             res.status(prores.status).send("Survey Added");
+                //         })
+                //         .catch( err => {
+                //             console.log('on err response', err);
+                //             // console.error(`${err.status}- Teacher ref update error, msg: ${err.msg}`);
+                //             res.status(501).send(err.msg)
+                //         })
+                // :
                     res.status(201).send("Survey Added");
                 })
             .catch(err=>{
@@ -105,19 +100,6 @@ const
 
 // MultiCores.broadcast('console.log(`listening at ${process.pid}...`)');
         console.time('mt');
-        MultiCores.execute(
-            (text)=> {
-                // let x = 0;
-                for(let i=0; i<90000000; i++){};
-                return text;
-                // return x;
-            },
-            ['hello']
-        ).then(resolve=>{
-            console.log('final value: ',resolve.value);
-            console.timeEnd('mt');
-        })
-
 
         if(!form){
             res.status(400).send('You must specify form name');
@@ -130,19 +112,23 @@ const
     },
         
     testCb = (req, res) => {
+        let testMethod = surveyJoint.test;
         surveyJoint.getAllSurveys()
-            .then(resolve => {
-
-                console.time('mt');
-                for(let i=0; i<90000000; i++){};
-                console.timeEnd('mt');
-                
-                
-                // surveyJoint.test(resolve.body);
-                // surveys.forEach(survey =>{
-                res.sendStatus(200);
-                // })
+            .then(surveys => {
+                surveyJoint.multiThreadsExecution(surveys.body)
+                    .then(finalizedSurveys => {
+                        res.status(200).send(finalizedSurveys.value);
+                    })            
             })
+    },
+    testsync = (req, res) => {
+        console.log('synced')
+        surveyJoint.getAllSurveys()
+        .then(surveys => {
+            const merged = surveyJoint.syncMergeSurvey(surveys.body);
+            res.send(merged);
+
+        })
     }
 
     
@@ -152,4 +138,5 @@ router.post('/list', getSurveyByListCb);
 router.post('/add', addSurveyCb);
 router.get('/form/:name', getTeacherEvaluationForm);
 router.get('/test', testCb);
+router.get('/testsync', testsync);
 module.exports = router;
