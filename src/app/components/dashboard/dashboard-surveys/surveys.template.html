@@ -5,10 +5,13 @@
 			<thead>
 				<tr>
 					<th>
-						Serial No.
+						S No.
 					</th>
 					<th>
-						Name
+						Teacher
+					</th>
+					<th>
+						Course
 					</th>
 					<th>
 						Evaluation Type
@@ -27,13 +30,16 @@
 						{{ i + 1 }}
 					</td>
 					<td>
-						{{ survey.target }}
+						{{ survey.teacher }}
 					</td>
 					<td>
-						{{survey.evaluation}}
+						{{ survey.course }}
 					</td>
 					<td>
-						{{survey.created | date}}
+						{{ survey.evaluation }}
+					</td>
+					<td>
+						{{ survey.created | date }}
 					</td>
 					<td>
 						<a [routerLink]="survey._id">

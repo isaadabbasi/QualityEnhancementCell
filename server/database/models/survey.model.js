@@ -10,8 +10,8 @@ const
     }, {_id: false}),
     surveySchema = new Schema({
         created: { type: Schema.Types.Date, default: new Date().getTime() },
-        teacher: { type: String, maxlength: 30, trim: true },
         course: { type: String, maxlength: 30, trim: true },
+        teacher: { type: String, maxlength: 30, trim: true },
         evaluation: { type: String, maxlength: 30, trim: true },
         survey: [survey]
 
