@@ -23,20 +23,20 @@ class TeacherJoint {
             created: surveyReference.created,
             _reference: surveyReference._id
         },
-        target = surveyReference.target;
+        teacher = surveyReference.teacher;
         // console.log('\n \n what is refObject', refObject);
         return new Promise((resolve, reject)=>{
             console.log('CB invoked');
             
-            Teachers.update({fullname: {$regex: target}}, {$push: {surveys: refObject}}, (err, update)=> {
+            Teachers.update({fullname: {$regex: teacher}}, {$push: {surveys: refObject}}, (err, update)=> {
                 // console.log('update ok?', !!update.ok)
                 if(err)
                     reject({status: 404, msg: 'No Such Teacher Exist'});
                 if(!err)    
-                     update.ok ?
-                    resolve({status: 201, msg: 'Reference Updated'})
-                    :
-                    reject({status: 501, msg: 'Unable to Update'});
+                    update.ok ?
+                        resolve({status: 201, msg: 'Reference Updated'})
+                        :
+                        reject({status: 501, msg: 'Unable to Update'});
             })
 
         })

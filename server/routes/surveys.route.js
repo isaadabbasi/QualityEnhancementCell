@@ -59,33 +59,30 @@ const
         console.log('request body', req.body);
         let {
             course = null, teacher = null, evaluation = null, survey = null
-        } = req.body;
-        let surveyModel = {
+        } = req.body,
+        surveyModel = {
             evaluation, course, teacher, survey
         };
+        
+        console.log(surveyModel);
         surveyJoint.saveSurvey(surveyModel)
             .then(result => {
                 let body = result.body;
                 console.log(body)
-                // console.log('\n  .then is being exeute ... ', result.body )
-                // !!~ body.evaluation.indexOf('teacher') ?
-                //     teacherJoint.addSurveyReference(body)
-                //         .then( prores =>{
-                //             // console.log('on promise resolve', prores)
-                //             // console.log(`${res.status}- Teacher ref update made, msg: ${res.msg}`);
-                //             res.status(prores.status).send("Survey Added");
-                //         })
-                //         .catch( err => {
-                //             console.log('on err response', err);
-                //             // console.error(`${err.status}- Teacher ref update error, msg: ${err.msg}`);
-                //             res.status(501).send(err.msg)
-                //         })
-                // :
+                !!~ body.evaluation.indexOf('teacher') ?
+                    teacherJoint.addSurveyReference(body)
+                        .then( prores =>{
+                            res.status(prores.status).send("Survey Added");
+                        })
+                        .catch( err => {
+                            res.status(501).send(err.msg)
+                        })
+                :
                     res.status(201).send("Survey Added");
                 })
             .catch(err=>{
                 console.log(err)
-                // res.status(500).send();
+                res.status(500).send(err.message);
             })
     },
     getTeacherEvaluationForm = (req, res)=> {

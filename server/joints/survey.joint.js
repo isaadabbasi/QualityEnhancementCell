@@ -2,7 +2,7 @@
 const 
     Surveys = require('../database/models/survey.model')
     napajs = require('napajs'),
-    cores = require('os').cpus().length, 
+    cores = require('os').cpus().length -3 , 
     MultiCores = napajs.zone.create('cores',{workers: cores});
 
 class SurveyJoint {
@@ -94,7 +94,7 @@ class SurveyJoint {
                         matchFound = false;
                     survey.dated = target;
                     
-                    console.log(survey.dated);
+                    // console.log(survey.dated);
                     
                     if(!combined.length){
                         combined.push(survey);
@@ -111,7 +111,7 @@ class SurveyJoint {
                     }
                 }
                 function mergeSurvey(_stored, {survey: curr}){
-                    console.log('stored dated: ', _stored.dated)
+                    // console.log('stored dated: ', _stored.dated)
                     // TODO; what to choose for length;
                     let stored = _stored.survey;
                     for (let i=0; i<stored.length; i++){
@@ -151,7 +151,7 @@ class SurveyJoint {
                     matchFound = false;
                 survey.dated = target;
                 
-                console.log(survey.dated);
+                // console.log(survey.dated);
                 
                 if(!combined.length){
                     combined.push(survey);
