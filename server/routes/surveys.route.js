@@ -48,7 +48,7 @@ const
     },
 
     getSurveyByListCb = (req, res, next)=>{
-        let _list = req.body.list;
+        let {list: _list, optimize} = req.body;
         console.log('list: ', _list)
         // if the list is provided in array wrapped in string,
         if(typeof req.body.list === 'string'){ // method to reconvert to simple array
@@ -63,7 +63,12 @@ const
         
         surveyJoint.getSurveyList(_list)
             .then( prores => {
-                res.status(prores.status).send(prores.body)
+                optimize?
+                    surveyJoint.optimize(prores.body)
+                        .then(opt => {res.status(200).send(opt.body)})
+                        .catch(err=> { res.status(400).send(err.body) })
+                    :
+                    res.status(prores.status).send(prores.body)
             })
             .catch(err => {
                 if(err.status===404)
@@ -156,6 +161,7 @@ router.route('/')
     .get(getSurveyByParams)
     .post(getSurveyByListCb);
 
+router.post('/add', addSurveyCb);
 router.get('/id/:_id', getSurveyByIdCb);
 router.get('/form/:name', getTeacherEvaluationForm);
 router.get('/test', testCb);
