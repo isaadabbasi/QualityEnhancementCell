@@ -1,4 +1,22 @@
-<h1>Stats</h1>
+<loader *ngIf="showLoader"></loader>
+<div class=" row">
+  <div class="col-xs-3">			
+    <h1>Stats</h1>
+	</div>
+  <div class="col-xs-3 form-group pull-right">
+    <select [disabled]="!showTeachersList" #teacher name="teacher" class="form-control" (change)="showSurvey(teacher.value)">
+      <option value="" name="teachers" value="0" [selected]="teachers">Select Teacher</option>
+      <option *ngFor="let teacher of teachersList" [ngValue]="teacher.fullname"> {{ teacher.fullname }} </option>      
+    </select>
+  </div>
+  <div class="col-xs-3 pull-right form-group">
+    <select #department name="department" class="form-control" (change)="getNextList('teachers', department.value)">
+      <!-- <option value="" name="departments" [selected]="departments">Select Department</option> -->
+      <option *ngFor="let dept of deparmentsList" [value]="dept.value"> {{ dept.name }} </option>      
+    </select>
+  </div>
+</div>
+<!-- <h1>Stats</h1> -->
 <div class="row">
   <div class="col-md-6 col-md-offset-2">
     <div style="display: block;">
