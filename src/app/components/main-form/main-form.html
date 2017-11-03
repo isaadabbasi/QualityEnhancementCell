@@ -31,4 +31,5 @@
             <button (click)="getStudentRemarks()" class=" btn-lg btn-block btn btn-primary">Submit</button>
         </div>
     </div>                
-</div>  
+</div>
+<dashoard-modal *ngIf="openModal && purpose == 'confirm'" (modalStatus)="modalState($event)" [modalPurpose]="purpose" [surveyDetails]="finalSurveyDetails"></dashoard-modal>
