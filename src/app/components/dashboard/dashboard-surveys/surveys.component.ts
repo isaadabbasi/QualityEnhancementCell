@@ -1,4 +1,9 @@
-import { SURVEY_LIST } from './../../../shared/global-vars';
+import { Observable } from 'rxjs/Observable';
+import { SURVEY_LIST, 
+         Departments, 
+         TEACHER_DETAILS_BY_DEPARTMENT, 
+         TEACHER_DETAILS_BY_NAME
+         } from './../../../shared/global-vars';
 import { Component, ViewChild, Output, EventEmitter, OnInit } from '@angular/core';
 import { SharedService } from "./../../../shared/shared.service";
 import * as _ from "lodash";
@@ -13,75 +18,88 @@ import * as _ from "lodash";
     ]
 })
 export class SurveysComponent implements OnInit {
+  surveyReferencesList: {}[];
+  length: any;
+  timeToFetch = null;
+  showLoader: boolean;
+  teachersList: Array<Object>;
+  showTeachersList: boolean = false;
   @Output('surveyId') SurveyId: EventEmitter<number> = new EventEmitter<number>();
   surveysArray;
+  deparmentsList = Departments;
   ngOnInit(){
-                              
+    console.log(this.deparmentsList); 
+    let start = Date.now();              
     this.sharedService.getCall(SURVEY_LIST)
     .subscribe(
       next => { 
         // console.log(this.surveysArray.filter(sur => sur["evalutaion"] == "teacher"));
         this.surveysArray = next; console.log(next); 
+        this.length = this.surveysArray.length;
       },
       err => console.log(err),
       () => {
-        console.log(_.filter(this.surveysArray, survey => {
-          return survey["evalutaion"] === "teacher"
-        }));
-        let surveyByDate: Array<Object> = [];
-        _.each(this.surveysArray, survey => {
-          let index = _.findIndex(surveyByDate, obj => {
-            return obj["course"] === survey.course
-                && obj["teacher"] === survey.teacher
-                && obj["evaluation"] === survey["evaluation"]
-                && obj["created"].slice(0, 10) === survey["created"].slice(0, 10)
-          });
-          if(index == -1 ){
-            _.forEach(survey["survey"], survey => {
-              survey["count" + 1] = 1;
-            })
-            surveyByDate.push(survey);
-            console.log(surveyByDate);
-          }else{
-            
-          }
-        })
-        let surveyByName = [];
-        _.each(this.surveysArray,(survey) => {
-          // console.log(survey);
-          
-          if(_.findIndex(surveyByName, (obj) => {
-            return survey.target === obj.target && survey.evaluation === obj.evaluation;
-          }) !== -1){
-            console.log(true);
-
-          }else{
-            console.log(false);
-            surveyByName.push(survey);
-            console.log(surveyByName);  
-          }
-        });
-        
-        // let b =[];
-        // let i = 0; 
-        // _.each(this.surveysArray, item => {
-        //   b[i] = b[item.target] || [];
-        //   b[i].push(item);
-        // });
-        // console.log(b);
-        
-        // // this.surveysArray = a;
-        // console.log(a);
+        this.surveysArray.reverse();  
       }
     );
+    let end = Date.now();
+    this.timeToFetch = end - start;
   }
   constructor(private sharedService: SharedService){
-    
-      console.log(_.chunk(['a', 'b', 'c', 'd'], 2));
-      
   }
-
+  getNextList(entity: string, value: string){
+    let URL = entity === 'teachers' && value != "0"? 
+      TEACHER_DETAILS_BY_DEPARTMENT + value 
+      :
+      '';
+    if(value != "0"){
+      this.showTeachersList = true;
+      console.log(URL, value, this.showTeachersList);
+      this.sharedService.getCall(URL)
+        .subscribe(
+          next => {
+            this.showTeachersList = true;
+            console.log(next)
+            this.teachersList = next["body"];
+          },
+          err => console.log(err),
+          () => console.log('complete')
+        )
+      }else{
+        this.showTeachersList = false;
+      }
+    }
+      
   viewSurvey(id){
     this.SurveyId.emit(id);  
+  }
+  showSurvey(teacherName: string){
+    
+    let selectedTeacher: Object = {};
+    let singleSurveys = [];
+    // console.time()
+    let start = Date.now()
+    if(teacherName !== '0'){
+      this.loaderState(true);
+      selectedTeacher = (this.teachersList.filter(teacher => teacher["fullname"] === teacherName))[0];
+      this.surveysArray = selectedTeacher["surveys"];
+
+      // Should be used to avoid overhead.
+      this.surveyReferencesList = _.map(this.surveysArray, '_reference');
+      this.sharedService.postCall(SURVEY_LIST, {list: this.surveyReferencesList})
+        .subscribe(     
+          result => this.surveysArray = JSON.parse(result["_body"]),
+          err => {console.log(err); setTimeout(this.loaderState(false), 2500)},
+          () => setTimeout(this.loaderState(false), 2500)
+        );
+      this.length = this.surveysArray.length;
+      console.log(this.surveysArray.length);
+    }
+    let end = Date.now();
+    this.timeToFetch = end - start;
+    console.log(this.timeToFetch, 'ms');
+  }
+  loaderState(hidden: boolean){
+    this.showLoader = hidden;
   }
 }

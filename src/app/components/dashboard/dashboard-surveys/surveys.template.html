@@ -1,4 +1,26 @@
-<h1>Surveys</h1>
+<loader *ngIf="showLoader"></loader>
+<div class="row inline-headers">
+	<div class="col-xs-3">			
+		<h1>Surveys</h1>
+	</div>
+	<div class="col-xs-3 form-group pull-right">
+		<select [disabled]="!showTeachersList" #teacher name="teacher" class="form-control" (change)="showSurvey(teacher.value)">
+			<option value="" name="teachers" value="0" [selected]="teachers">Select Teacher</option>
+			<option *ngFor="let teacher of teachersList" [ngValue]="teacher.fullname"> {{ teacher.fullname }} </option>      
+		</select>
+	</div>
+	<div class="col-xs-3 pull-right form-group">
+		<select #department name="department" class="form-control" (change)="getNextList('teachers', department.value)">
+			<!-- <option value="" name="departments" [selected]="departments">Select Department</option> -->
+			<option *ngFor="let dept of deparmentsList" [value]="dept.value"> {{ dept.name }} </option>      
+		</select>
+	</div>
+		
+	<!-- <div class="col-xs-3 form-group">
+		
+		<input type="text" class="form-control" placeholder="Select Department">
+	</div> -->
+</div>
 <div id="table-wrapper">
 	<div id="table-scroll">
 		<table class="table table-bordered table-striped table-hover table-condensed table-responsive">
@@ -49,6 +71,10 @@
 					</td>	
 				</tr>
 			</tbody>
-		</table>		
+		</table>	
 	</div>
+	<div class="pull-right" *ngIf="timeToFetch">
+		<br>
+		Fetched {{ length }} results in about {{ timeToFetch }} ms
+	</div>	
 </div>
