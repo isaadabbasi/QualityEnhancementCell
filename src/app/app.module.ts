@@ -1,3 +1,4 @@
+import { LoaderComponent } from './components/loader/loader';
 import { DashboardModalComponent } from './components/dashboard/dashboard-modal/dashboard-modal';
 import { SettingsComponent } from './components/dashboard/dashboard-settings/settings.component';
 import { CourseEvalForm } from './components/main-form/course-eval-form.component';
@@ -58,7 +59,8 @@ export function highchartsFactory() {
     DashboardSurveyComponent,
     CourseEvalForm,
     SettingsComponent,
-    DashboardModalComponent
+    DashboardModalComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,

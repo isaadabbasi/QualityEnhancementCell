@@ -1,6 +1,16 @@
 #table-wrapper {
     position:relative;
   }
+.inline-headers h1, 
+.inline-headers h2, 
+.inline-headers h4{
+    display: inline-block;
+    
+}
+.inline-headers .form-group{
+    display: inline-block;
+    top: 4vh;
+}
 tbody{
 
     height: 70vh;
@@ -8,7 +18,7 @@ tbody{
     overflow-y: scroll;
 }
 #table-scroll {
-    height: 70vh;
+    height: 67vh;
     overflow:auto;  
     margin-top:20px;
 }

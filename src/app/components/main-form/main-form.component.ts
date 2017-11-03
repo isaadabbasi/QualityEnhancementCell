@@ -23,7 +23,10 @@ interface SurveyModel {
 
 
 export class MainFormComponent implements OnInit{
-    constructor(private _sharedService: SharedService, private router: Router){}
+    finalSurveyDetails: { evaluation: any; course: any; teacher: any; survey: SurveyModel[]; };
+    purpose: string;
+    openModal: any;
+    constructor(private _sharedService: SharedService, private router: Router) { }
     surveyComplete = false;
     selectedTeacher: string = '';
     selectedDepartment: string = '';
@@ -37,8 +40,9 @@ export class MainFormComponent implements OnInit{
         this.selectedTeacher = this.surveyMetaData.teacher || this.surveyMetaData.target;
         this.subject = this.surveyMetaData.course; 
         this.selectedDepartment = JSON.parse(localStorage.getItem('activeUser'))["department"];
-        this.selectedDepartment = (Departments.find(o => (o as any).value == this.selectedDepartment))["name"];        
+        this.selectedDepartment = (Departments.find(o => (o as any).value == this.selectedDepartment))["name"];                
         this.getSurveys();
+                
     }
     getSurveys(){
         this._sharedService.getCall(GET_SURVEY + this.surveyMetaData.evaluation)
@@ -108,20 +112,14 @@ export class MainFormComponent implements OnInit{
         console.log(lastQID);
         console.log('finalized result',  surveyDetails)
         if(surveyDetails.survey.length >= lastQID){
+            this.purpose = 'confirm';
+            this.finalSurveyDetails = surveyDetails;
+            this.confirmAndSend(this.purpose, true, surveyDetails)
             this.surveyComplete = true;
             console.log('Send Http Request');
             // subscribe also takes and object as param, 
             // in which first key is successResponse, second is Error, third is onComplete Event
-            this._sharedService.postCall(ADD_SURVEY_URL, surveyDetails)
-            .debounceTime(500)
-            .subscribe({
-                next: res => { 
-                    this.router.navigate(['/']);
-                    console.log( res );
-                    
-                },
-                error: error => { console.log( error ) }
-            })    
+             
         }else{
             
             
@@ -131,6 +129,12 @@ export class MainFormComponent implements OnInit{
                 this.showMessage = false;
             }, 1500);
         }
-        
+    }
+    modalState(value: boolean){
+        this.openModal = value;
+    }
+    confirmAndSend(purpose, value, body){
+        this.openModal = value;
+           
     }
 }

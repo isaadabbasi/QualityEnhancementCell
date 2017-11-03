@@ -98,8 +98,6 @@ export class StartSurveyComponent implements OnInit {
         this.selectedDepartment = (this.deparmentsList.find(department => department["value"] == activeUser.department))["name"];
         console.log(this.selectedDepartment, activeUser.department);
         this.getDepartmentTeacherList(activeUser.department);
-        // console.log(this.deptReference)
-        // let node = this.deptReference.nativeElement;
-        // node.value = this.selectedDepartment;
+        console.log(localStorage.getItem('surveysAdded'));
      }
 }
