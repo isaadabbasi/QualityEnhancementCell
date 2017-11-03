@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { SharedService } from './../../../shared/shared.service';
-import { TEACHER_BASE_URL } from './../../../shared/global-vars';
+import { TEACHER_BASE_URL, ADD_SURVEY_URL } from './../../../shared/global-vars';
 import { Http } from '@angular/http';
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import swal from "sweetalert2";
@@ -12,19 +12,23 @@ import swal from "sweetalert2";
 export class DashboardModalComponent implements OnInit {
     @Input() modalPurpose: string = '';
     @Input() idtoDelete: string = '';
+    @Input() surveyDetails = null;
     @Output() modalStatus: EventEmitter<Boolean> = new EventEmitter<Boolean>();
     inputOptions;
     constructor(private router: Router, 
                 private sharedService: SharedService) {
     }
     ngOnInit(){
-        if(this.modalPurpose.toLocaleLowerCase() === 'evaluation'){
+        this.modalPurpose = this.modalPurpose.toLowerCase();
+        if(this.modalPurpose === 'evaluation'){
           this.generateEvaluationModal();
-        }else if(this.modalPurpose.toLocaleLowerCase() == 'delete'){
+        }else if(this.modalPurpose == 'delete'){
           this.generateDeleteModal(this.idtoDelete);
           console.log(this.idtoDelete);
-        }else if(this.modalPurpose.toLocaleLowerCase() == 'add'){
+        }else if(this.modalPurpose == 'add'){
           this.generateAddModal();
+        }else if(this.modalPurpose === 'confirm'){
+          this.generateConfirmModal();
         }
         
         
@@ -150,5 +154,51 @@ export class DashboardModalComponent implements OnInit {
           }, function () {  
             swal.resetDefaults()
           }).catch( () => self.modalStatus.emit(false))
+    }
+    generateConfirmModal(): any {
+      let self = this;
+      swal({
+        title: 'Are you sure?',
+        text: "You won't be able to revert or edit this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes!',
+        cancelButtonText: 'Let me recheck.'
+      }).then(function () {
+        
+        console.log(TEACHER_BASE_URL + '/' +  self.surveyDetails);
+        self.sharedService.postCall(ADD_SURVEY_URL, self.surveyDetails)
+          .subscribe(
+            next => {
+              console.log(next);             
+              swal(
+                'Submitted!',
+                'Survey submitted successfully.',
+                'success'
+              ).then( () => {
+                self.modalStatus.emit(false);
+                self.router.navigate(['/']); 
+                localStorage.setItem('surveysAdded', JSON.stringify([
+                  {
+                    teacher: self.surveyDetails.teacher,
+                    course: self.surveyDetails.course,
+                    evaluation: self.surveyDetails.evaluation
+                  }
+                ]));
+              }).catch( err => {
+                console.log(err);
+                self.router.navigate(['/']); 
+                self.modalStatus.emit(false);
+              } )
+            },
+            err => console.log(err),
+            () => {}
+          );        
+      }).catch( err => {
+        console.log(err);
+        self.modalStatus.emit(false);
+      })
     }
 }
