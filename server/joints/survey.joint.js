@@ -1,9 +1,12 @@
-
+// import { createReadStream } from 'fs';
+// import { createWriteStream } from 'fs';
 const 
     Surveys = require('../database/models/survey.model')
     napajs = require('napajs'),
-    cores = require('os').cpus().length -3 , 
-    MultiCores = napajs.zone.create('cores',{workers: cores});
+    fs = require('fs'),
+    execFile = require('child_process').execFile,
+    cores = require('os').cpus().length -1 , 
+    NapaZone = napajs.zone.create('cores',{ workers: cores });
 
 class SurveyJoint {
     constructor(){
@@ -27,7 +30,7 @@ class SurveyJoint {
         })
     }
 
-    getAllSurveys(){
+    getAllSurveys(params){
         return new Promise((resolve, reject)=>{
             let cb = (err, surveys) =>{
                 if(err)
@@ -37,7 +40,7 @@ class SurveyJoint {
                     surveys ? resolve({status: 302, body: surveys}) : reject({status: 404, body: "No Results Found"})
 
             }
-            Surveys.find({}, cb)
+            Surveys.find(params, cb)
         })
     }
     
@@ -67,9 +70,10 @@ class SurveyJoint {
                     if(err)
                         throw new Error(err);
                     
-                    if(!err)
-                        result ?
-                            resolve({status: 200, body: result}) : reject({status: 404, body: "Record not found for desired data"})
+                    if(results.length)
+                        resolve({status: 200, body: results})
+                    else
+                        reject({status: 404, body: "No Surveys Found"})
                 }
 
             Surveys.find({_id: {$in: list}}, findCb);
@@ -78,70 +82,10 @@ class SurveyJoint {
 
     multiThreadsExecution(surveysArgs){
         
-        // return new Promise((resolve, reject) => {
-            // console.log('MTE execution: ')
-            return  MultiCores.execute(
-                (surveys)=> {
-    
-                let 
-                combined = [],
-                totalSurveys = surveys.length;
-                    
-                for(let survey of surveys) {
-                    let date = new Date(survey.created),
-                        target = `${date.getMonth()},${date.getDate()},${date.getYear()}`,
-                        // target = `${date.getDate()}`,
-                        matchFound = false;
-                    survey.dated = target;
-                    
-                    // console.log(survey.dated);
-                    
-                    if(!combined.length){
-                        combined.push(survey);
-                    } else {
-                        for(let i=0; i<combined.length; i++){
-                            if(combined[i].dated === survey.dated){
-                                matchFound = true;
-                                let merged = mergeSurvey(combined[i], survey);
-                                combined[i] = merged;
-                            }
-                        }
-                        if(!matchFound)
-                            combined.push(survey);
-                    }
-                }
-                function mergeSurvey(_stored, {survey: curr}){
-                    // console.log('stored dated: ', _stored.dated)
-                    // TODO; what to choose for length;
-                    let stored = _stored.survey;
-                    for (let i=0; i<stored.length; i++){
-                        if(!(typeof stored[i].id === 'string'))
-                        stored[i].value = +( (stored[i].value + curr[i].value)/2 ).toPrecision(3);
-                    }
-                    // console.log('combine method end');
-                    _stored.survey = stored;
-                    return _stored;
-                }
-                
-                return combined;
-                },
-                [surveysArgs])
-            // ).then(combined=>{
-            //     // res.send(combined);
-            //     console.log('finalized..');
-            //     resolve(combined.value);
-            // })
-            // .catch(err => {console.log(err);})
-
-        // })
-
-    }
-
-    syncMergeSurvey(surveys){
-        // return new Promise((resolve, reject)=> {
-            console.log('invoked sync merge survey')
+        function mergeSurveys(surveys){
             let 
             combined = [],
+            // surveys = surveysArgs,
             totalSurveys = surveys.length;
                 
             for(let survey of surveys) {
@@ -149,8 +93,8 @@ class SurveyJoint {
                     target = `${date.getMonth()},${date.getDate()},${date.getYear()}`,
                     // target = `${date.getDate()}`,
                     matchFound = false;
-                survey.dated = target;
                 
+                    survey.dated = target;
                 // console.log(survey.dated);
                 
                 if(!combined.length){
@@ -168,7 +112,7 @@ class SurveyJoint {
                 }
             }
             function mergeSurvey(_stored, {survey: curr}){
-                console.log('stored dated: ', _stored.dated)
+                // console.log('stored dated: ', _stored.dated)
                 // TODO; what to choose for length;
                 let stored = _stored.survey;
                 for (let i=0; i<stored.length; i++){
@@ -179,9 +123,48 @@ class SurveyJoint {
                 _stored.survey = stored;
                 return _stored;
             }
-            console.log(combined)
+            
             return combined;
-        // })
+        }
+            NapaZone.broadcast( mergeSurveys.toString() );
+            return  NapaZone.execute(
+                (surveys)=> {
+                    return global.mergeSurveys(surveys);
+
+                },
+                [surveysArgs]);
+    }
+
+    optimize(surveys){
+            let 
+                dirPath = `${__dirname}/../utils/process/`,
+                filePath = `${dirPath}merge_surveys.js`,
+                surveysJson = JSON.stringify(surveys),
+                file_sys = {
+                    flags: 'rw',
+                    encoding: 'utf8',
+                    mode: 0o660
+                };
+            // createReadStream(surveys).pipe(createWriteStream('x.txt'));
+            // fs..pipe(fs.createWriteStream('x.txt'));
+            // fs.writeFile()
+            return new Promise( (resolve, reject) => {
+                fs.writeFile(`${dirPath}/record`, surveysJson, file_sys, (err, done)=>{
+                    if(err){
+                        reject({status: 400, body: "Unable to optimize survey"});
+                    }
+                    execFile('node',[filePath], (eerr, data)=> {
+                        if(eerr)
+                            console.log(eerr)
+                        try {
+                            // let result = JSON.parse(data);
+                            resolve({status: 200, body: data})
+                        } catch (e) {
+                            reject({status: 400, body: "Unable to parse data"});
+                        }
+                    });
+                }) 
+            })               
     }
 }
 
