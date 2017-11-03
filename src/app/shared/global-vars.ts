@@ -1,5 +1,3 @@
-import { LoginComponent } from './../components/login/login.component';
-import { Routes } from '@angular/router';
 //APIs
 /*
  * naming of global variables does have conventions.
@@ -10,7 +8,11 @@ import { Routes } from '@angular/router';
     * if global variable is Observable or Stream post-append $.
 **/
 
-export const BASE_URL: string = `http://localhost:3000`  //Will be updated on deployment
+import { LoginComponent } from './../components/login/login.component';
+import { Routes } from '@angular/router';
+
+
+export const BASE_URL             : string = `http://localhost:3000`  //Will be updated on deployment
 
 export const SIGNIN_URL           : string = `${BASE_URL}/users/login`; // should be renamed 
 export const SIGNUP_URL           : string = `${BASE_URL}/users/register`;
@@ -20,8 +22,12 @@ export const ADD_SURVEY_URL       : string = `${BASE_URL}/surveys/add`; // shoul
 export const TEACHER_BASE_URL     : string = `${BASE_URL}/teachers`
 export const SURVEY_START_URL     : string = `${BASE_URL}/surveys/start`;
 export const TEACHER_DETAILS_URL  : string = `${TEACHER_BASE_URL}/details`;
+export const 
+ TEACHER_DETAILS_BY_DEPARTMENT    : string = `${TEACHER_DETAILS_URL}?department=`;
+export const 
+ TEACHER_DETAILS_BY_NAME          : string = `${TEACHER_DETAILS_URL}?fullname=`; 
 
-export const Departments: Array<Object> = [
+export const Departments          : Array<Object> = [
   {value: '0', name: 'Please Select'},
   {value: 'AP', name: 'Architecture and Planning'},
   {value: 'CH', name: 'Chemical Engineering'},
