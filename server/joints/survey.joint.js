@@ -157,8 +157,9 @@ class SurveyJoint {
                         if(eerr)
                             console.log(eerr)
                         try {
-                            // let result = JSON.parse(data);
-                            resolve({status: 200, body: data})
+                            let result = JSON.parse(data);
+                            // console.log('typeof surveys', typeof result);
+                            resolve({status: 200, body: result})
                         } catch (e) {
                             reject({status: 400, body: "Unable to parse data"});
                         }

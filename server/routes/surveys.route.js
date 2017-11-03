@@ -165,5 +165,5 @@ router.post('/add', addSurveyCb);
 router.get('/id/:_id', getSurveyByIdCb);
 router.get('/form/:name', getTeacherEvaluationForm);
 router.get('/test', testCb);
-router.get('/testsync', testsync);
+router.get('/testopt', testsync);
 module.exports = router;
