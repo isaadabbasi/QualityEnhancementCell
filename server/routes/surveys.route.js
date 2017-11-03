@@ -6,17 +6,7 @@ const
     fs = require('fs'),
     join = require('path').join,
     through$ = require('through2'),
-    getAllSurveysCb = function(req, res, next){
-        surveyJoint.getAllSurveys()
-            .then( prores => {
-                prores.status === 302 ?
-                    res.status(200).send(prores.body) : res.status(404).send("No Results Found")
 
-            }).catch(err => {
-                res.status(500).send("Internal Server Error");
-            })
-            
-    },
     getSurveyByIdCb = function(req, res, next){
         console.log(`gettings params.surveyId ${req.params._id}`);
         let 
@@ -27,15 +17,40 @@ const
                     res.status(prores.status).send(prores.body);
                 })
                 .catch(err=>{
-                    console.log(err);
+                    // console.log(err);
                     res.status(err.status).send(err.body);
                 })
+    },
+
+    getSurveyByParams = (req, res) => {
+        let 
+            query = req.query,
+            params = {};
+
+        if(query.department)
+            params.department = query.department;
+        if(query.fullname)
+            params.teacher = query.fullname;
+        
+        surveyJoint.getAllSurveys(params)
+            .then( prores => {
+                query.optimize ? 
+                    surveyJoint.optimize(prores.body)
+                        .then(opt => {res.status(200).send(opt.body)})
+                        .catch(err=> { res.status(400).send(err.body) }) 
+                    : 
+                    prores.status === 302 ?
+                        res.status(200).send(prores.body) : res.status(404).send("No Results Found")
+            }).catch(err => {
+                res.status(500).send("Internal Server Error");
+            })
+        console.log(params);
     },
 
     getSurveyByListCb = (req, res, next)=>{
         let _list = req.body.list;
         console.log('list: ', _list)
-        //if the list is provided in array wrapped in string,
+        // if the list is provided in array wrapped in string,
         if(typeof req.body.list === 'string'){ // method to reconvert to simple array
             let list = req.body.list;
             list = list.replace('[','');
@@ -51,7 +66,10 @@ const
                 res.status(prores.status).send(prores.body)
             })
             .catch(err => {
-                res.status(err.status).send(err.body)
+                if(err.status===404)
+                    res.status(err.status).send(err.body)
+                else 
+                    console.log(err);
             })
     }, 
 
@@ -69,7 +87,7 @@ const
             .then(result => {
                 let body = result.body;
                 console.log(body)
-                !!~ body.evaluation.indexOf('teacher') ?
+                ~body.evaluation.indexOf('teacher') ?
                     teacherJoint.addSurveyReference(body)
                         .then( prores =>{
                             res.status(prores.status).send("Survey Added");
@@ -85,6 +103,7 @@ const
                 res.status(500).send(err.message);
             })
     },
+
     getTeacherEvaluationForm = (req, res)=> {
         // console.log(req.params)
         let 
@@ -94,9 +113,6 @@ const
                 this.push(JSON.stringify(chunk))
                 callback();
             });
-
-// MultiCores.broadcast('console.log(`listening at ${process.pid}...`)');
-        console.time('mt');
 
         if(!form){
             res.status(400).send('You must specify form name');
@@ -110,7 +126,7 @@ const
         
     testCb = (req, res) => {
         let testMethod = surveyJoint.test;
-        surveyJoint.getAllSurveys()
+        surveyJoint.getAllSurveys({})
             .then(surveys => {
                 surveyJoint.multiThreadsExecution(surveys.body)
                     .then(finalizedSurveys => {
@@ -118,21 +134,29 @@ const
                     })            
             })
     },
-    testsync = (req, res) => {
-        console.log('synced')
-        surveyJoint.getAllSurveys()
-        .then(surveys => {
-            const merged = surveyJoint.syncMergeSurvey(surveys.body);
-            res.send(merged);
 
+    testsync = (req, res) => {
+        surveyJoint.getAllSurveys({})
+        .then(surveys => {
+            surveyJoint.optimize(surveys.body)
+                .then(resolved => {
+                    res.status(resolved.status).send(resolved.body);
+                })
+                .catch(error=> {
+                    if(error.status == 400)
+                        res.status(error.status).send(error.body);
+                    else 
+                        console.log(error.message);
+                })
         })
     }
-
     
-router.get('/', getAllSurveysCb);
+    
+router.route('/')
+    .get(getSurveyByParams)
+    .post(getSurveyByListCb);
+
 router.get('/id/:_id', getSurveyByIdCb);
-router.post('/list', getSurveyByListCb);
-router.post('/add', addSurveyCb);
 router.get('/form/:name', getTeacherEvaluationForm);
 router.get('/test', testCb);
 router.get('/testsync', testsync);
