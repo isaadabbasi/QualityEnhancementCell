@@ -11,6 +11,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
     styleUrls: [`./dashboard-survey.css`]
 })
 export class DashboardSurveyComponent implements OnInit, OnDestroy{
+    survey: any;
     date: any;
     evaluationType: any;
     subject: any;
@@ -44,8 +45,9 @@ export class DashboardSurveyComponent implements OnInit, OnDestroy{
                     this.evaluationType = this.surveyResult["evaluation"];
                     this.date = this.surveyResult["created"];
                     this.getForm(this.evaluationType);
+                    this.survey = this.surveyResult["survey"]
                     // this.surveyResult = result["surveys"];
-                    // console.log(this.surveyResult["surveys"]);
+                    console.log(this.survey);
                 }
             ),
             err => console.log(err),
