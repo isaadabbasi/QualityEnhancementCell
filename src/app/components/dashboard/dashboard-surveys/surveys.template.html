@@ -15,11 +15,12 @@
 			<option *ngFor="let dept of deparmentsList" [value]="dept.value"> {{ dept.name }} </option>      
 		</select>
 	</div>
-		
-	<!-- <div class="col-xs-3 form-group">
-		
-		<input type="text" class="form-control" placeholder="Select Department">
-	</div> -->
+</div>
+<div class="row">
+	<div class="col-xs-3 pull-right form-group">
+		<label for="optimize" class="pull-right">Optimized</label>
+		<input type="checkbox" id="optimize" [(ngModel)]="optimize" [disabled]="teacher.value != 0 ? disabled : ''" (change)="onOptimize(teacher.value)" name="optimize" class="pull-left">
+	</div>
 </div>
 <div id="table-wrapper">
 	<div id="table-scroll">
@@ -72,9 +73,8 @@
 				</tr>
 			</tbody>
 		</table>	
-	</div>
+	</div>	
 	<div class="pull-right" *ngIf="timeToFetch">
-		<br>
 		Fetched {{ length }} results in about {{ timeToFetch }} ms
 	</div>	
 </div>

@@ -27,6 +27,11 @@ export class SurveysComponent implements OnInit {
   @Output('surveyId') SurveyId: EventEmitter<number> = new EventEmitter<number>();
   surveysArray;
   deparmentsList = Departments;
+  optimize;
+  onOptimize(teacher){
+    console.log(this.optimize, teacher);
+    this.showSurvey(teacher, this.optimize);
+  }
   ngOnInit(){
     console.log(this.deparmentsList); 
     let start = Date.now();              
@@ -73,7 +78,7 @@ export class SurveysComponent implements OnInit {
   viewSurvey(id){
     this.SurveyId.emit(id);  
   }
-  showSurvey(teacherName: string){
+  showSurvey(teacherName: string, optimize){
     
     let selectedTeacher: Object = {};
     let singleSurveys = [];
@@ -86,14 +91,19 @@ export class SurveysComponent implements OnInit {
 
       // Should be used to avoid overhead.
       this.surveyReferencesList = _.map(this.surveysArray, '_reference');
-      this.sharedService.postCall(SURVEY_LIST, {list: this.surveyReferencesList})
+      console.log(this.surveyReferencesList)
+      let list = {
+        list: this.surveyReferencesList
+      };
+      list["optimize"] = optimize;
+      this.sharedService.postCall(SURVEY_LIST, list)
         .subscribe(     
-          result => this.surveysArray = JSON.parse(result["_body"]),
+          result => this.surveysArray = result,
           err => {console.log(err); setTimeout(this.loaderState(false), 2500)},
           () => setTimeout(this.loaderState(false), 2500)
         );
       this.length = this.surveysArray.length;
-      console.log(this.surveysArray.length);
+      console.log(this.surveysArray);
     }
     let end = Date.now();
     this.timeToFetch = end - start;

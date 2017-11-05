@@ -19,6 +19,7 @@ export class SharedService{
 
     postCall(url: string, body: any, options?){
         return this.http.post(url, body, options)
+            .map(response => response.json())
     }
 
     deleteCall(url: string, option?){
