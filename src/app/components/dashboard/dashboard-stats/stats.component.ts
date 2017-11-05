@@ -11,6 +11,9 @@ import * as _ from "lodash";
     styleUrls: ['./stats.css']
 })
 export class StatsComponent implements OnInit{
+  surveyOnly: any;
+  finalSurveysArray: any;
+  surveyReferencesList: {}[];
   teacherSurvey: {}[];
   showLoader: boolean;
   timeToFetch: number;
@@ -22,36 +25,8 @@ export class StatsComponent implements OnInit{
   deparmentsList = Departments;
   showDetails: Boolean = false;
     // lineChart
-  public surveys = [
-    { data : [4.6, 4.1, 4.6, 4.1], label: 'Engr. Fahad Iqbal'},
-    // { data: [1,2,3,4,5,6,7,8,9,1], avg: 4.6, label: 'Survey 1'},
-    // { data: [1,9,3,6,5,4,7,8,2,1], avg: 4.1, label: 'Survey 2'},
-    // { data: [1,2,3,4,5,6,7,8,9,1], avg: 4.6, label: 'Survey 3'},
-    // { data: [5,2,7,4,5,6,1,8,2,1], avg: 4.1, label: 'Survey 4'}
-  ];
-  public lineChartData:Array<any> = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'}
-  ];    //Get data from server.
-  public lineChartLabels:Array<any> = ['Survey 1'];
-  public lineChartOptions:any = {
-    responsive: true
-  };
   
-  public lineChartLegend:boolean = true;
-  public lineChartType:string = 'bar';  //line, bar, radar, pie, polarArea, doughnut
-  public detailsChartType: string = 'bar'
-  public randomize():void {
-    let _lineChartData:Array<any> = new Array(this.lineChartData.length);
-    for (let i = 0; i < this.lineChartData.length; i++) {
-      _lineChartData[i] = {data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label};
-      for (let j = 0; j < this.lineChartData[i].data.length; j++) {
-        _lineChartData[i].data[j] = Math.floor((Math.random() * 100) + 1);
-      }
-    }
-    this.lineChartData = _lineChartData;
-  }
- 
-  @ViewChild('myModal') myModal;
+  
   // events
   public chartClicked(e:any):void {
     this.showDetails = true;
@@ -70,24 +45,7 @@ export class StatsComponent implements OnInit{
       })
   }
   constructor(private sharedService: SharedService){
-    this.sharedService.getCall(SURVEY_LIST).subscribe(
-        next => {
-          console.log(next)
-          console.log(_.filter(next, (survey) => survey["evaluation"] == "teacher"));
-        },
-        err => console.log(err),
-        () => {
-          
-        }
-      )
-    this.options = {
-      title: { text: 'simple chart'},
-      series: [{
-        name: 'Question No.',
-        data: [2, 3, 5, 8, 13],
-        allowPointSelect: true
-      }]
-    }
+  
   }
   getNextList(entity: string, value: string){
     let URL = entity === 'teachers' && value != "0"? 
@@ -125,22 +83,62 @@ export class StatsComponent implements OnInit{
       this.loaderState(true);
       selectedTeacher = (this.teachersList.filter(teacher => teacher["fullname"] === teacherName))[0];
       this.surveysArray = selectedTeacher["surveys"];
-      _.forEach(this.surveysArray, survey => {
-        singleSurveys.push(this.sharedService.getCall(`${SURVEY_LIST}/id/${survey._reference}`));
-        
-      });
       
-      Observable.forkJoin(singleSurveys)
-        .subscribe(
+      // Should be used to avoid overhead.
+      this.surveyReferencesList = _.map(this.surveysArray, '_reference').slice(5, 10);
+      console.log(this.surveyReferencesList);
+      
+      let take5 = this.sharedService.postCall(SURVEY_LIST, {list: this.surveyReferencesList})
+        .take(5);
+      take5
+        .subscribe(     
           result => {
-            console.log(result)
-            this.teacherSurvey = result;
+            console.log(result["surveys"], result);
+            this.finalSurveysArray = result
           },
-          err => console.log(err),
-          () => setTimeout(this.loaderState(false), 2500)
-        )
-      this.length = this.surveysArray.length;
-      console.log(this.surveysArray.length);
+          err => {console.log(err); setTimeout(this.loaderState(false), 2500)},
+          () => {
+            console.log(this.finalSurveysArray)
+            let firstSurvey = [];
+            let index = 1;
+            _.each(this.finalSurveysArray, surveys => {
+              console.log(surveys);
+              let value = [];
+              _.map(surveys["survey"], survey => {value.push(survey["value"])})
+              value = value.slice(0, length-1);
+              firstSurvey.push({
+                "name": 'Survey No.' + index,
+                "data": value,
+                "allowPointSelect": true
+              });
+              index += 1;
+              
+              // firstSurvey.push(_.map(surveys["survey"], survey => value.push(survey["value"])))
+            });
+            this.options = {
+              
+              title: { text: this.finalSurveysArray[0].teacher},
+              chart: {
+                type: 'spline'
+              },
+              
+              xAxis: [{
+                categories: ['Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 
+                'Q10', 'Q11', 'Q12', 'Q13','Q14', 'Q15', 'Q16','Q17', 'Q18'],
+                crosshair: true
+            }],
+              series: firstSurvey,
+            }
+            console.log(firstSurvey);
+            console.log(this.options);
+            setTimeout(this.loaderState(false), 2500)
+
+          
+        }
+      );
+      
+      
+      
     }
     let end = Date.now();
     this.timeToFetch = end - start;
