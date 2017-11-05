@@ -98,7 +98,9 @@ export class SurveysComponent implements OnInit {
       list["optimize"] = optimize;
       this.sharedService.postCall(SURVEY_LIST, list)
         .subscribe(     
-          result => this.surveysArray = result,
+          result => {
+            if(result.status == 200)
+              this.surveysArray = JSON.parse(result["_body"]).reverse()},
           err => {console.log(err); setTimeout(this.loaderState(false), 2500)},
           () => setTimeout(this.loaderState(false), 2500)
         );
