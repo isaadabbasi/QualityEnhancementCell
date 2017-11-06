@@ -13,16 +13,33 @@
                 </ul>
             </div>
         </div>
-        <div class="scrollbar" id="scrollbar" style="height: 70vh; overflow-y: scroll;">
+        
+        <div class="scrollbar" id="scrollbar" style="width: 90%; height: 70vh; overflow-y: scroll;">
+            <table class="table table-bordered table-striped table-hover table-responsive">
+                <thead>
+                    <tr>
+                        <th>Question Number</th>
+                        <th>Selection</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let surveys of survey; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ surveys.selection }}</td>
+                        <td>{{ surveys.value }}</td>
+                    </tr>
+                </tbody>
+            </table>
             <div>
-                <course-eval-form *ngFor="let section of questions, let i=index"
+                <!-- <course-eval-form *ngFor="let section of questions, let i=index"
                     [index]="i"
                     [heading]="section.name"
                     [question]="section.queries"
                     [canComment]="section.canComment"
                     (quizReplied)="optionSelected($event)"
                     (commentsReplied)="optionSelected($event)"                
-                ></course-eval-form>
+                ></course-eval-form> -->
             </div>
         </div>                
     </div>

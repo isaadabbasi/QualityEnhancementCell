@@ -168,7 +168,7 @@ export class DashboardModalComponent implements OnInit {
         cancelButtonText: 'Let me recheck.'
       }).then(function () {
         
-        console.log(TEACHER_BASE_URL + '/' +  self.surveyDetails);
+        console.log(TEACHER_BASE_URL, JSON.stringify(self.surveyDetails));
         self.sharedService.postCall(ADD_SURVEY_URL, self.surveyDetails)
           .subscribe(
             next => {

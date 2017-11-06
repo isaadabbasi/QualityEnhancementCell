@@ -93,8 +93,8 @@ export class StatsComponent implements OnInit{
       take5
         .subscribe(     
           result => {
-            console.log(result["surveys"], result);
-            this.finalSurveysArray = result
+            if(result.status == 200)
+              console.log(result["surveys"], result);this.finalSurveysArray = JSON.parse(result["_body"]).reverse();
           },
           err => {console.log(err); setTimeout(this.loaderState(false), 2500)},
           () => {
