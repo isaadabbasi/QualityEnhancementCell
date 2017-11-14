@@ -88,7 +88,6 @@ export class StatsComponent implements OnInit{
       this.surveysArray = selectedTeacher.surveys;
       
       // Should be used to avoid overhead.
-
       this.surveyReferencesList = map(this.surveysArray, '_reference').slice(5, 10);
       console.log(this.surveyReferencesList);
       
