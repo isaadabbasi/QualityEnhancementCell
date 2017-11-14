@@ -21,7 +21,7 @@ export class StartSurveyComponent implements OnInit {
     subjectsList;
     deparmentsList = Departments;
     surveyMetaData = {
-        evaluation: "teacher",
+        evaluation: "",
         course: "",
         teacher: ""
     }

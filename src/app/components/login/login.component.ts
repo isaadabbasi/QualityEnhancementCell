@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit{
                     if(res.status == 200){
                         console.log(res);
                         localStorage.setItem('activeUser', (res['_body']))
-                        console.log(JSON.parse(localStorage.getItem('activeUser')));
+                        // console.log(JSON.parse(localStorage.getItem('activeUser')));
                         this.router.navigate(['/dashboard']);     
                     }
                     

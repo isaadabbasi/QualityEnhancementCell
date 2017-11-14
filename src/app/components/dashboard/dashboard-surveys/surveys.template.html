@@ -27,43 +27,21 @@
 		<table class="table table-bordered table-striped table-hover table-condensed table-responsive">
 			<thead>
 				<tr>
-					<th>
-						S No.
-					</th>
-					<th>
-						Teacher
-					</th>
-					<th>
-						Course
-					</th>
-					<th>
-						Evaluation Type
-					</th>
-					<th>
-						Date
-					</th>
-					<th>
-						View
-					</th>
+					<th>S No.</th>
+					<th>Teacher</th>
+					<th>Course</th>
+					<th>Evaluation Type</th>
+					<th>Date</th>
+					<th>View</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr *ngFor="let survey of surveysArray;let i = index">
-					<td>
-						{{ i + 1 | number }}
-					</td>
-					<td>
-						{{ survey.teacher }}
-					</td>
-					<td>
-						{{ survey.course }}
-					</td>
-					<td>
-						{{ survey.evaluation }}
-					</td>
-					<td>
-						{{ survey.created | date }}
-					</td>
+					<td>{{ i + 1 | number }}</td>
+					<td>{{ survey.teacher }}</td>
+					<td>{{ survey.course }}</td>
+					<td>{{ survey.evaluation }}</td>
+					<td>{{ survey.created | date }}</td>
 					<td>
 						<a [routerLink]="survey._id">
 							<!-- <span class="glyphicon glyphicon-eye-open" center></span> -->
