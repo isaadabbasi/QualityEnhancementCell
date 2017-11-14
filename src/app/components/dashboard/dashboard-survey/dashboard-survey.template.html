@@ -18,16 +18,16 @@
             <table class="table table-bordered table-striped table-hover table-responsive">
                 <thead>
                     <tr>
-                        <th>Question Number</th>
-                        <th>Selection</th>
-                        <th>Value</th>
+                        <th colspan="6">Question Number</th>
+                        <th colspan="1">Selection</th>
+                        <th colspan="1">Value</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let surveys of survey; let i = index">
-                        <td>{{ i + 1 }}</td>
-                        <td>{{ surveys.selection }}</td>
-                        <td>{{ surveys.value }}</td>
+                        <td colspan="6">{{ i + 1 }}</td>
+                        <td colspan="1">{{ surveys.selection }}</td>
+                        <td colspan="1">{{ surveys.value }}</td>
                     </tr>
                 </tbody>
             </table>

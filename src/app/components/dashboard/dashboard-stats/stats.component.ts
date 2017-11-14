@@ -23,7 +23,8 @@ export class StatsComponent implements OnInit{
   teachersList: any;
   showTeachersList: boolean;
   deparmentsList = Departments;
-  showDetails: Boolean = false;
+  showDetails: boolean = false;
+  optimize: boolean = false;
     // lineChart
   
   
@@ -75,38 +76,51 @@ export class StatsComponent implements OnInit{
   }
   showSurvey(teacherName: string){
     
-    let selectedTeacher: Object = {};
+    let selectedTeacher: any= {};
     let singleSurveys = [];
     // console.time()
     let start = Date.now()
     if(teacherName !== '0'){
       this.loaderState(true);
       selectedTeacher = (this.teachersList.filter(teacher => teacher["fullname"] === teacherName))[0];
-      this.surveysArray = selectedTeacher["surveys"];
+      this.surveysArray = selectedTeacher.surveys;
       
       // Should be used to avoid overhead.
-      this.surveyReferencesList = _.map(this.surveysArray, '_reference').slice(5, 10);
-      console.log(this.surveyReferencesList);
+      let { length } = this.surveyReferencesList = _.map(this.surveysArray, '_reference');
+      // console.log(` ${length} survey references:`, this.surveyReferencesList);
       
-      let take5 = this.sharedService.postCall(SURVEY_LIST, {list: this.surveyReferencesList})
-        .take(5);
-      take5
+      let take5 = this.sharedService.postCall(SURVEY_LIST, {list: this.surveyReferencesList, optimize: this.optimize})
         .subscribe(     
           result => {
-            if(result.status == 200)
-              console.log(result["surveys"], result);this.finalSurveysArray = JSON.parse(result["_body"]).reverse();
+            if(result.status == 200){
+              let res = JSON.parse(result["_body"]).reverse(),
+                {length} = res;
+            
+              if(length > 5)
+                res = res.slice(length-5, length);
+
+            this.finalSurveysArray = res;
+            }
           },
           err => {console.log(err); setTimeout(this.loaderState(false), 2500)},
           () => {
-            console.log(this.finalSurveysArray)
-            let firstSurvey = [];
-            let index = 1;
+            // console.log(this.finalSurveysArray)
+            let series = [],
+                index = 1,
+                categories = null;
             _.each(this.finalSurveysArray, surveys => {
-              console.log(surveys);
-              let value = [];
-              _.map(surveys["survey"], survey => {value.push(survey["value"])})
-              value = value.slice(0, length-1);
-              firstSurvey.push({
+              // console.log(surveys);
+              let value = surveys.survey
+              .filter(v => typeof v.value === 'number')
+              .map( v => v.value);
+
+              categories = surveys.survey
+                .filter(v => typeof v.id === 'number')
+                .map(v=> `Q${v.id}`);
+              // _.map(surveys["survey"], survey => {value.push(survey["value"])})
+              // value = value.sl ice(0, length-1);
+              // console.log(value);
+              series.push({
                 "name": 'Survey No.' + index,
                 "data": value,
                 "allowPointSelect": true
@@ -117,23 +131,20 @@ export class StatsComponent implements OnInit{
             });
             this.options = {
               
-              title: { text: this.finalSurveysArray[0].teacher},
+              title: { text: this.finalSurveysArray[0].teacher },
               chart: {
-                type: 'spline'
+                type: 'spline',
+                width: 600
               },
-              
               xAxis: [{
-                categories: ['Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 
-                'Q10', 'Q11', 'Q12', 'Q13','Q14', 'Q15', 'Q16','Q17', 'Q18'],
+                categories: categories,
                 crosshair: true
             }],
-              series: firstSurvey,
+              series: series,
             }
-            console.log(firstSurvey);
-            console.log(this.options);
+            // console.log(firstSurvey);
+            // console.log(this.options);
             setTimeout(this.loaderState(false), 2500)
-
-          
         }
       );
       
