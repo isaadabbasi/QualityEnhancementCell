@@ -6,7 +6,7 @@ import { SURVEY_LIST,
          } from './../../../shared/global-vars';
 import { Component, ViewChild, Output, EventEmitter, OnInit } from '@angular/core';
 import { SharedService } from "./../../../shared/shared.service";
-import * as _ from "lodash";
+import { map } from "lodash";
 @Component({
     selector: 'surveys',
     templateUrl: './surveys.template.html',
@@ -90,7 +90,7 @@ export class SurveysComponent implements OnInit {
       this.surveysArray = selectedTeacher["surveys"];
 
       // Should be used to avoid overhead.
-      this.surveyReferencesList = _.map(this.surveysArray, '_reference');
+      this.surveyReferencesList = map(this.surveysArray, '_reference');
       console.log(this.surveyReferencesList)
       let list = {
         list: this.surveyReferencesList

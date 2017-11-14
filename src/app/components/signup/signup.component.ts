@@ -3,7 +3,7 @@ import { StudentModel } from './../../shared/models';
 import { Router } from '@angular/router';
 import { SharedService } from './../../shared/shared.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import * as _ from "lodash";
+import { find } from "lodash";
 
 @Component({
     templateUrl: './signup.template.html',
@@ -34,7 +34,7 @@ export class SignupComponent implements OnInit{
     loging(deptIdx){
         this.userCredentials.department = this.departments[deptIdx]["value"];
         console.log(this.departments);
-        _.find(this.departments, (dept) =>{
+        find(this.departments, (dept) =>{
             
         })
         console.log(this.userCredentials);

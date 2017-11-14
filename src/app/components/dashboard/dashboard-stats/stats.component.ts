@@ -3,8 +3,10 @@ import { OnInit } from '@angular/core';
 import { SURVEY_LIST, TEACHER_BASE_URL, TEACHER_DETAILS_URL, Departments, TEACHER_DETAILS_BY_DEPARTMENT } from './../../../shared/global-vars';
 import { SharedService } from './../../../shared/shared.service';
 import { Component, ViewChild } from '@angular/core';
-import * as _ from "lodash";
-
+// import * as _ from "lodash";
+import { map, each } from "lodash";
+//4.76MB
+//map, each
 @Component({
     selector: 'stats',
     templateUrl: './stats.template.html',
@@ -86,8 +88,9 @@ export class StatsComponent implements OnInit{
       this.surveysArray = selectedTeacher.surveys;
       
       // Should be used to avoid overhead.
-      let { length } = this.surveyReferencesList = _.map(this.surveysArray, '_reference');
-      // console.log(` ${length} survey references:`, this.surveyReferencesList);
+
+      this.surveyReferencesList = map(this.surveysArray, '_reference').slice(5, 10);
+      console.log(this.surveyReferencesList);
       
       let take5 = this.sharedService.postCall(SURVEY_LIST, {list: this.surveyReferencesList, optimize: this.optimize})
         .subscribe(     
@@ -108,7 +111,7 @@ export class StatsComponent implements OnInit{
             let series = [],
                 index = 1,
                 categories = null;
-            _.each(this.finalSurveysArray, surveys => {
+            each(this.finalSurveysArray, surveys => {
               // console.log(surveys);
               let value = surveys.survey
               .filter(v => typeof v.value === 'number')

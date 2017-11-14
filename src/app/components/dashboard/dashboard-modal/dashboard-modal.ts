@@ -14,7 +14,7 @@ export class DashboardModalComponent implements OnInit {
     @Input() idtoDelete: string = '';
     @Input() surveyDetails = null;
     @Output() modalStatus: EventEmitter<Boolean> = new EventEmitter<Boolean>();
-    inputOptions;
+
     constructor(private router: Router, 
                 private sharedService: SharedService) {
     }
@@ -35,7 +35,8 @@ export class DashboardModalComponent implements OnInit {
 
     }
     generateEvaluationModal(){
-      this.inputOptions = new Promise(function (resolve) {
+      let inputOptions;
+      inputOptions = new Promise(function (resolve) {
         setTimeout(function () {
           resolve({
             teacher: 'Teacher Evaluation',
@@ -47,7 +48,7 @@ export class DashboardModalComponent implements OnInit {
       swal({
           title: 'Select Evaluation Type',
           input: 'radio',
-          inputOptions: this.inputOptions,
+          inputOptions: inputOptions,
           inputValidator: function (result): Promise<void> {
               return new Promise<void>(function (resolve, reject) {
                 if (result) {

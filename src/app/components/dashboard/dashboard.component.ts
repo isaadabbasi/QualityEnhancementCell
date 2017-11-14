@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import * as localforage from 'localforage';
+// import * as localforage from 'localforage';
 
 @Component({
     selector: 'qec-dashboard',
