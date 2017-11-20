@@ -9,7 +9,7 @@ const
   routes_users = require('./server/routes/users.route'),
   routes_survey = require('./server/routes/surveys.route'),
   routes_teachers = require('./server/routes/teacher.route'),
-  
+  excel = require('./server/routes/excel.route'),
   //import connection libs;
   establish_connection = require('./server/connections/mongo.connection'),
 
@@ -30,6 +30,8 @@ app.use(express.static(path.join(__dirname, 'dist')));
 app.use('/users', routes_users);
 app.use('/surveys', routes_survey);
 app.use('/teachers', routes_teachers);
+app.use('/excel', excel);
+
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/index.html'));

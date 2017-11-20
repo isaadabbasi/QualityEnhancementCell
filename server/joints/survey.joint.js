@@ -15,7 +15,7 @@ class SurveyJoint {
 
     saveSurvey(surveyModel){
         console.log('surveyModel recieved: ', surveyModel);
-        let 
+        let u
             survey = new Surveys(surveyModel);
         return new Promise((resolve, reject)=>{
             survey.save((err, result) => {
@@ -130,7 +130,6 @@ class SurveyJoint {
             return  NapaZone.execute(
                 (surveys)=> {
                     return global.mergeSurveys(surveys);
-
                 },
                 [surveysArgs]);
     }
@@ -145,10 +144,8 @@ class SurveyJoint {
                     encoding: 'utf8',
                     mode: 0o660
                 };
-            // createReadStream(surveys).pipe(createWriteStream('x.txt'));
-            // fs..pipe(fs.createWriteStream('x.txt'));
-            // fs.writeFile()
-            return new Promise( (resolve, reject) => {
+
+                return new Promise( (resolve, reject) => {
                 fs.writeFile(`${dirPath}/record`, surveysJson, file_sys, (err, done)=>{
                     if(err){
                         reject({status: 400, body: "Unable to optimize survey"});

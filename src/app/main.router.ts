@@ -17,7 +17,7 @@ import { StatsComponent } from "./components/dashboard/dashboard-stats/stats.com
 
 const fallback: Route = {
     path: '**',
-    component: StartSurveyComponent
+    component: LoginComponent
 }
 
 export const routes: Routes = [
