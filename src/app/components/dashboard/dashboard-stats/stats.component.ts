@@ -50,6 +50,10 @@ export class StatsComponent implements OnInit{
   constructor(private sharedService: SharedService){
   
   }
+  onOptimize(teacher){
+    console.log(this.optimize, teacher);
+    this.showSurvey(teacher, this.optimize);
+  }
   getNextList(entity: string, value: string){
     let URL = entity === 'teachers' && value != "0"? 
       TEACHER_DETAILS_BY_DEPARTMENT + value 
@@ -76,7 +80,7 @@ export class StatsComponent implements OnInit{
   viewSurvey(id){
     this.SurveyId.emit(id);  
   }
-  showSurvey(teacherName: string){
+  showSurvey(teacherName: string, optimize?: boolean){
     
     let selectedTeacher: any= {};
     let singleSurveys = [];
@@ -91,7 +95,7 @@ export class StatsComponent implements OnInit{
       this.surveyReferencesList = map(this.surveysArray, '_reference').slice(5, 10);
       console.log(this.surveyReferencesList);
       
-      let take5 = this.sharedService.postCall(SURVEY_LIST, {list: this.surveyReferencesList, optimize: this.optimize})
+      this.sharedService.postCall(SURVEY_LIST, {list: this.surveyReferencesList, optimize: this.optimize})
         .subscribe(     
           result => {
             if(result.status == 200){
