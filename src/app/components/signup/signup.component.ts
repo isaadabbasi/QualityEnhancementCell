@@ -16,8 +16,7 @@ import * as _ from "lodash";
 export class SignupComponent implements OnInit{
     signupErrorMessage: any;
     signupError: boolean;
-    departments = Departments;
-    selectedDepartment = this.departments[0];    
+    departments = Departments;    
     signUpContainer = document.getElementById('signup-container');
     userCredentials: StudentModel = {
         fullname: '',
@@ -31,12 +30,9 @@ export class SignupComponent implements OnInit{
         console.log(this.userCredentials);
         console.log(this.departments);
     }
-    loging(deptIdx){
-        this.userCredentials.department = this.departments[deptIdx]["value"];
-        console.log(this.departments);
-        _.find(this.departments, (dept) =>{
-            
-        })
+    loging(dept){
+        this.userCredentials.department = dept;
+        console.log(this.departments, dept);
         console.log(this.userCredentials);
     }
     validateCredentials(){
