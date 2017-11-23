@@ -19,7 +19,6 @@ export class DashboardSurveyComponent implements OnInit, OnDestroy{
     selectedTeacher: any;
     questions: any;
     surveyResult: any;
-    params: string;
     sub: Subscription;
     surveyResultId;
     constructor(private route: ActivatedRoute,
@@ -33,12 +32,10 @@ export class DashboardSurveyComponent implements OnInit, OnDestroy{
                     this.surveyId = params.get("id");
                     this.getSurvey(this.surveyId);
                 }),
-            err => console.log(err),
-            () => console.log('Hello World!');
+            err => console.error(err)
     }
     getSurvey(id: string){
         this.surveyResultId = id;
-        console.log(id);
         this.sharedService.getCall(`${SURVEY_LIST}/id/${id}`)
             .subscribe(
                 result => {
@@ -48,21 +45,17 @@ export class DashboardSurveyComponent implements OnInit, OnDestroy{
                     this.evaluationType = this.surveyResult["evaluation"];
                     this.date = this.surveyResult["created"];
                     this.getForm(this.evaluationType);
-                    this.survey = this.surveyResult["survey"]
-                    // this.surveyResult = result["surveys"];
-                    console.log(this.survey);
+                    this.survey = this.surveyResult["survey"];
                 }
             ),
-            err => console.log(err),
+            err => console.error(err),
             () => {}
     }
     getForm(type: string){
-        console.log(type)
         this.sharedService.getCall(GET_SURVEY + type)
             .subscribe(
                 result => this.questions = result["sections"],
-                err => console.log(err),
-                () => console.log('complete', this.questions)
+                err => console.error(err)
             );
     }
     ngOnDestroy(){
@@ -70,13 +63,6 @@ export class DashboardSurveyComponent implements OnInit, OnDestroy{
     }
 
     downloadCSV(){
-        // console.log(this.route.params.)
         window.open(`${BASE_URL}/excel/${this.surveyId}`, '__blank');
-        // this.sharedService.postCall(`${BASE_URL}/users/excel`, this.questions)
-        // .map(res=> res.json())
-        //     .subscribe(
-        //         console.log,
-        //         console.error
-        //     )
     }
 }

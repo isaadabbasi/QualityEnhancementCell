@@ -1,7 +1,6 @@
 import { Router } from '@angular/router';
 import { SharedService } from './../../../shared/shared.service';
 import { TEACHER_BASE_URL, ADD_SURVEY_URL } from './../../../shared/global-vars';
-import { Http } from '@angular/http';
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import swal from "sweetalert2";
 
@@ -24,7 +23,6 @@ export class DashboardModalComponent implements OnInit {
           this.generateEvaluationModal();
         }else if(this.modalPurpose == 'delete'){
           this.generateDeleteModal(this.idtoDelete);
-          console.log(this.idtoDelete);
         }else if(this.modalPurpose == 'add'){
           this.generateAddModal();
         }else if(this.modalPurpose === 'confirm'){
@@ -54,12 +52,9 @@ export class DashboardModalComponent implements OnInit {
           },
             allowEscapeKey: true
         }).then(function (result) {
-          console.log(self.router);
           let surveyMetaData = JSON.parse(localStorage.getItem('surveyMetaData'));
           surveyMetaData.evaluation = result;
           localStorage.setItem('surveyMetaData', JSON.stringify(surveyMetaData));
-          console.log(surveyMetaData);
-          
           self.router.navigate(['survey']);
         })
     }
@@ -75,12 +70,9 @@ export class DashboardModalComponent implements OnInit {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, delete it!'
       }).then(function () {
-        
-        console.log(TEACHER_BASE_URL + '/' +  deleteThis);
         self.sharedService.deleteCall(`${TEACHER_BASE_URL}/${deleteThis}`)
           .subscribe(
             next => {
-              console.log(next)
               swal(
                 'Deleted!',
                 'Teacher deleted successfully.',
@@ -88,7 +80,6 @@ export class DashboardModalComponent implements OnInit {
               ).then( () => {
                 self.modalStatus.emit(false);
               }).catch( err => {
-                console.log(err);
                 self.modalStatus.emit(false);
               } )
             },
@@ -118,18 +109,15 @@ export class DashboardModalComponent implements OnInit {
       
       swal.queue(steps).then(function (result) {
         swal.resetDefaults()
-        console.log(result);
         let teacher = {
           fullname: result[0],
           designation: result[1],
           subjects: result[2].split(','),
           departments: result[3].split(',')
         }
-        console.log(teacher);
         self.sharedService.postCall(`${TEACHER_BASE_URL}/add`, teacher)
           .subscribe(
             next => {
-              console.log(next);
               swal(
                 'Added!',
                 'Teaccher added successfully.',
@@ -160,12 +148,9 @@ export class DashboardModalComponent implements OnInit {
         confirmButtonText: 'Yes!',
         cancelButtonText: 'Let me recheck.'
       }).then(function () {
-        
-        console.log(TEACHER_BASE_URL, JSON.stringify(self.surveyDetails));
         self.sharedService.postCall(ADD_SURVEY_URL, self.surveyDetails)
           .subscribe(
             next => {
-              console.log(next);             
               swal(
                 'Submitted!',
                 'Survey submitted successfully.',

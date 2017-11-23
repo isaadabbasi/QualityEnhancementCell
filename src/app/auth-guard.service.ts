@@ -30,26 +30,20 @@ export class AuthGuard implements CanActivate, CanActivateChild{
         
     canActivate(){
         if(this.authService.isLoggedIn()) {
-            // console.log('Authenticated');
             return true;
         }
         else this.router.navigate(['/login']);
-
-        // console.log('i am checking to see if you are logged in');
     }
     canActivateChild() {
         this.isLoggedIn$ = 
            Observable.fromPromise(new Promise((resolve, reject)=>{
                   
            }))
-        // console.log('this.is logged in: ', this.isLoggedIn$);
 
         if(this.authService.isLoggedIn()) {
-            // console.log('Child Authenticated');
             return true;
         }
         else this.router.navigate(['/login']);
-        // console.log('checking child route access');
     }
 }
 
@@ -61,11 +55,9 @@ export class SessionGuard implements CanActivate{
     }
     canActivate(){
         if(!this.authService.isLoggedIn()) {
-            // console.log('Not Authenticated');
             return true;
     }
-    else this.router.navigate(['/dashboard']);
-
-    // console.log('i am checking to see if you are logged in');
+    else 
+        this.router.navigate(['/dashboard']);
     }
 }

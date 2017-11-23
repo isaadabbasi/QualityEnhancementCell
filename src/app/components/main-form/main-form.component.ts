@@ -48,82 +48,48 @@ export class MainFormComponent implements OnInit{
         this._sharedService.getCall(GET_SURVEY + this.surveyMetaData.evaluation.value)
             .subscribe(
                 next => {
-                    console.log(next);
                     this.questions = next.sections;
                 },
-                err => console.log(err),
-                () => {
-                    console.log(this.questions);
-                     
-                }
+                err => console.error(err)
             )
     }
     optionSelected(event: SurveyModel){
-        console.log(event)
-        // this.survey.push(event)
-        function isSimilar(element  ) {
-            // console.log(element.id, event["id"]);
-            
-            return element;
-        }
-
         let indexOfEvent = this.survey.findIndex((surveyElement:any) => surveyElement.id == (event as any).id);
         if(indexOfEvent === -1){
             this.survey.push(event)
-            
         }else{
             this.survey[indexOfEvent] = event;
         }
-        console.log(this.survey);
         
     }
     checkSurveyStatus(){
-        console.log(this.questions[this.questions.length - 1]["queries"])
         let surveyDetails = {
-            evaluation: this.surveyMetaData.evaluation,    //this.subject ? 'course':'teacher',
             teacher: this.surveyMetaData.teacher,
             course: this.surveyMetaData.course,
             survey: this.survey
         }
-
-        console.log(surveyDetails);
-        
-
-        // localStorage.setItem('surveys', JSON.stringify([this.survey]));        
-        // if(this.questions.length === this.survey.length)
-        console.log('finalized result',  surveyDetails)
         if(surveyDetails.survey.length === this.questions.length){
             return true
         }
     }
-    getStudentRemarks(){
-        // let surveyMetaData = JSON.parse(localStorage.getItem('surveyMetaData'));
-        
+    getStudentRemarks(){        
         let surveyDetails = {
-            evaluation: this.surveyMetaData.evaluation,    //this.subject ? 'course':'teacher',
-            course: this.surveyMetaData.course,    //this.subject || this.selectedTeacher, // should the target be dynamically changed to course name?
+            evaluation: this.surveyMetaData.evaluation,    
+            course: this.surveyMetaData.course,    
             teacher: this.surveyMetaData.teacher,
             survey: this.survey
         }
-
-        console.log(surveyDetails);
         let lastSection = this.questions[this.questions.length - 1]["queries"];
         let lastQID = lastSection[lastSection.length - 1]["qid"];
-        console.log(lastQID);
-        console.log('finalized result',  surveyDetails)
         if(surveyDetails.survey.length >= lastQID){
             this.purpose = 'confirm';
             this.finalSurveyDetails = surveyDetails;
             this.confirmAndSend(this.purpose, true, surveyDetails)
             this.surveyComplete = true;
-            console.log('Send Http Request');
             // subscribe also takes and object as param, 
             // in which first key is successResponse, second is Error, third is onComplete Event
              
         }else{
-            
-            
-            console.log('Stop Http Request');
             this.showMessage = true;
             setTimeout(() => {
                 this.showMessage = false;
