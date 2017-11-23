@@ -79,15 +79,18 @@ const
     }, 
 
     addSurveyCb = (req, res, next) => {
-        // console.log('request body', req.body);
+        console.log('request body', req.body);
         let {
-            course = null, teacher = null, evaluation = null, survey = null
+            course = null, teacher = null, evaluation = null,
+            survey = null, batch: studentBatch = null, 
+            studentId = null, dept: studentDept = null
         } = req.body,
         surveyModel = {
-            evaluation, course, teacher, survey
+            evaluation, course, teacher, survey, 
+            studentBatch, studentDept, studentId
         };
         
-        console.log(surveyModel);
+        // console.log(surveyModel);
         surveyJoint.saveSurvey(surveyModel)
             .then(result => {
                 let body = result.body;
