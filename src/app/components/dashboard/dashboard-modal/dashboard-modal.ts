@@ -147,7 +147,9 @@ export class DashboardModalComponent implements OnInit {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes!',
         cancelButtonText: 'Let me recheck.'
-      }).then(function () {
+      }).then(function (result) {
+        console.log(result)
+        if(result.dismiss != 'cancel'){
         self.sharedService.postCall(ADD_SURVEY_URL, self.surveyDetails)
           .subscribe(
             next => {
@@ -171,9 +173,10 @@ export class DashboardModalComponent implements OnInit {
                 self.modalStatus.emit(false);
               } )
             },
-            err => console.log(err),
-            () => {}
-          );        
+            err => {console.log(err), self.modalStatus.emit(false);}
+          );
+        }else
+          self.modalStatus.emit(false);
       }).catch( err => {
         console.log(err);
         self.modalStatus.emit(false);

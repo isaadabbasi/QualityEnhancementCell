@@ -24,14 +24,14 @@ export class CourseEvalForm implements OnInit{
         this.options = this.question.options;
         
     }
-    optionSelected(id, selection, value){        
+    optionSelected(id, value, selection, question){             
         this.quizReplied.emit({
-            id, selection: value, value: selection 
+            id, value, selection,question
         })
     }
-    getTextValue(id, value){
+    getTextValue(id, value,question){
         this.commentsReplied.emit({
-            id, value
+            id, value, question
         })
     }
 }
