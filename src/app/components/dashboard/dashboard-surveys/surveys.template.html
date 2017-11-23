@@ -21,6 +21,7 @@
 		<label for="optimize" class="pull-right">Optimized</label>
 		<input type="checkbox" id="optimize" [(ngModel)]="optimize" [disabled]="teacher.value != 0 ? disabled : ''" (change)="onOptimize(teacher.value)" name="optimize" class="pull-left">
 	</div>
+	<!-- <button (click)="export()">export</button> -->
 </div>
 <div id="table-wrapper">
 	<div id="table-scroll">

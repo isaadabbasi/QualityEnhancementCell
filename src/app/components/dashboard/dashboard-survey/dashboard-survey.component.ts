@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { SURVEY_LIST, GET_SURVEY } from './../../../shared/global-vars';
+import { BASE_URL, GET_SURVEY, SURVEY_LIST } from './../../../shared/global-vars';
 import { SharedService } from './../../../shared/shared.service';
 import { OnInit } from '@angular/core';
 import { Component, OnDestroy } from '@angular/core';
@@ -12,6 +12,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 })
 export class DashboardSurveyComponent implements OnInit, OnDestroy{
     survey: any;
+    surveyId: string;
     date: any;
     evaluationType: any;
     subject: any;
@@ -28,8 +29,10 @@ export class DashboardSurveyComponent implements OnInit, OnDestroy{
     ngOnInit(){
         this.sub = this.route.paramMap
             .subscribe(
-                params => this.getSurvey(params.get("id"))
-            ),
+                params => {
+                    this.surveyId = params.get("id");
+                    this.getSurvey(this.surveyId);
+                }),
             err => console.log(err),
             () => console.log('Hello World!');
     }
@@ -64,5 +67,16 @@ export class DashboardSurveyComponent implements OnInit, OnDestroy{
     }
     ngOnDestroy(){
         this.sub.unsubscribe(); 
+    }
+
+    downloadCSV(){
+        // console.log(this.route.params.)
+        window.open(`${BASE_URL}/excel/${this.surveyId}`, '__blank');
+        // this.sharedService.postCall(`${BASE_URL}/users/excel`, this.questions)
+        // .map(res=> res.json())
+        //     .subscribe(
+        //         console.log,
+        //         console.error
+        //     )
     }
 }

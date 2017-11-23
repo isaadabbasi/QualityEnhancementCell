@@ -1,3 +1,4 @@
+// import { createReadStream } from 'fs';
 const 
     express = require('express'),
     router = express.Router(),
@@ -5,7 +6,8 @@ const
     Student = require('../database/models/student.model'),
     bcrypt = require('bcrypt'),
     saltRounds = 10, 
-
+    { createReadStream } = require('fs'),
+    // XLSX = require('xlsx'),
     generateHash = (password)=>{
         console.log(`password about to encrypt: ${password}`);
         return new Promise((resolve, reject)=>{
@@ -109,9 +111,16 @@ const
                 }).catch(err=>{
                     throw new Error(err)
                 })
+    },
+    excel = (req, res) => {
+        console.log('req.body: ', req.body);
+        
+        res.attachment('csv.xls');
+        res.status(200).send(csv);
     }
 
 
+router.post('/excel', excel)
 router.post('/login', loginCallback);
 router.post('/register', registrationCallback);
 
