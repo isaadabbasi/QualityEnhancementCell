@@ -5,19 +5,11 @@ const
     express = require('express'),
     router = express.Router(),
     json2csv = require('json2csv'),
-    SurveyJoint = require('../joints/survey.joint');
+    SurveyJoint = require('../joints/survey.joint'),
+    {flatten} = require('lodash');
+    
 
 function transformIntoExcel(data){
-    var fields = ['Q.id', 'selected', 'score'];
-    let survey = data.survey
-        .filter(sur => typeof sur.id === 'number')
-        .map(sur => ({
-        "Q.id":sur.id,
-        "selected": sur.selection,
-        "score": sur.value
-    }));
-    
-    var csv = json2csv({ data: survey, fields: fields, unwindPath: 'score' });
     return csv;
 }
 
@@ -27,19 +19,32 @@ function printById(req, res){
     console.log('checking params')
     if(id)
         SurveyJoint.getSurveyById(id)
-            .then(survey => {
-                let csv = transformIntoExcel(survey.body, SINGLE);
-                res.attachment('survey.xls');
-                res.status(200).send(csv);
-            })
+            .then(result => {
+                // let csv = transformIntoExcel(survey.body, SINGLE);
+                var fields = ['Q.id', 'selected', 'score'];
+                let survey = result.body.survey
+                    .filter(sur => typeof sur.id === 'number')
+                    .map(sur => ({
+                    "Q.id":sur.id,
+                    "selected": sur.selection,
+                    "score": sur.value
+                }));
+        
+        var csv = json2csv({ data: survey, fields: fields, unwindPath: 'score' });
+        
+        
+        res.attachment('survey.xls');
+        res.status(200).send(csv);
+    })
     else 
         res.status(400).send('choose a record to get record for');
 }
 
 function printByQuery(req, res){
     let query = req.query,
-        params = {};
+    params = {};
 
+    // Array.prototype.flatten = flatten;
     query.fullname && (params.fullname = query.fullname);
 
     // if(! Object.keys(params).length){
@@ -48,18 +53,52 @@ function printByQuery(req, res){
     // }
     SurveyJoint.getAllSurveys(query)
         .then(prores => {
-            let counter = [];
-            let body = prores.body
+            let counter = [],
+                noOfSurveys = prores.body.length,
+                body = prores.body
             .map(surveys => surveys.survey
-                .filter(s=> typeof s.id === 'number'));
-                
-            for (let i=0; i<body.length; i++){
-                counter.push({ 1:0, 2:0, 3:0, 4:0, 5:0 })
-                for(let j=0; j<body[i].length; j++)
-                    counter[i][body[i][j].value]++;
+            .filter(s=> typeof s.id === 'number')),
+            flattenbody = flatten(body);
+
+
+            for (let question of flattenbody){
+                if(!counter[question.id])
+                    counter[question.id]={ 1:0, 2:0, 3:0, 4:0, 5:0, 'sum':0, 'average':0 };
+                counter[question.id][question.value]++;
+                counter[question.id]['sum']  += question.value;
             }
-            console.log(counter);
-            res.status(prores.status).send(body);    
+            counter.splice(0,1);
+            flattenbody = null;
+            // for(let counts of counter ){
+
+            // }
+            let lastSurvey = prores.body[prores.body.length-1],
+            length = lastSurvey.survey.filter(s => typeof s === 'number').length;
+            console.log(counter); 
+            
+            // .filter(sur => typeof sur === 'number');
+            
+            let fields = ['Q.id', 'Question', 'Strongly Disagree', 'Disagree', 'Uncertain', 'Agree', 'Strongly Agree', "Sum", "Average"],
+                data = [];
+
+                for(let i=0; i<counter.length; i++){
+                    counter[i].average = counter[i].sum/noOfSurveys;
+                    data[i] = {
+                        'Q.id': lastSurvey.survey[i].id || '',
+                        "Question": lastSurvey.survey[i].question || 'Some question will render here',
+                        "Strongly Disagree": counter[i]['1'],
+                        "Disagree": counter[i]['2'],
+                        "Uncertain": counter[i]['3'],
+                        "Agree": counter[i]['4'],
+                        "Strongly Agree": counter[i]['5'],
+                        "Sum": counter[i].sum,
+                        "Average": counter[i].average
+                    }
+                }
+            
+            var csv = json2csv({ data, fields, unwindPath: 'score' });
+            res.attachment('xls.csv');
+            res.status(200).send(csv);
         })
         .catch(console.error)
 }

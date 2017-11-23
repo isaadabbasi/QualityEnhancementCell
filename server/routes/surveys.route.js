@@ -79,7 +79,7 @@ const
     }, 
 
     addSurveyCb = (req, res, next) => {
-        console.log('request body', req.body);
+        // console.log('request body', req.body);
         let {
             course = null, teacher = null, evaluation = null, survey = null
         } = req.body,
@@ -91,7 +91,7 @@ const
         surveyJoint.saveSurvey(surveyModel)
             .then(result => {
                 let body = result.body;
-                console.log(body)
+                // console.log(body)
                 ~body.evaluation.indexOf('teacher') ?
                     teacherJoint.addSurveyReference(body)
                         .then( prores =>{

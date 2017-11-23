@@ -15,8 +15,7 @@ class SurveyJoint {
 
     saveSurvey(surveyModel){
         console.log('surveyModel recieved: ', surveyModel);
-        let u
-            survey = new Surveys(surveyModel);
+        let survey = new Surveys(surveyModel);
         return new Promise((resolve, reject)=>{
             survey.save((err, result) => {
                 if(err)
