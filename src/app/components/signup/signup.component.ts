@@ -26,13 +26,9 @@ export class SignupComponent implements OnInit{
     constructor(public router: Router,
                 private sharedService: SharedService){}
     ngOnInit(){
-        console.log(this.userCredentials);
-        console.log(this.departments);
     }
     loging(value){
         this.userCredentials.department = value;
-        console.log(this.departments);
-        console.log(this.userCredentials);
     }
     validateCredentials(){
         return this.userCredentials.fullname && this.userCredentials.department != "0"
@@ -47,7 +43,7 @@ export class SignupComponent implements OnInit{
                         this.router.navigate(['/login']);
                     }
                 }, err => {
-                    console.log(this.signUpContainer);
+                    console.error(this.signUpContainer);
                     
                     this.signupError = true;
                     this.signupErrorMessage = err['_body'];

@@ -13,11 +13,9 @@ export class QuestionComponent implements OnInit{
     @Input() _id = null;
     @Input() index = null;
     @Output() quizReplied = new EventEmitter();
-    @Input() options = null;
-    // options: Array<String> = ['Strongly Disagree', 'Disagree', 'Average', 'Agree', 'Strongly Agree'];
+    @Input() options = null;    
 
     ngOnInit(){
-        console.log('main form initialized');
     }
 
     minimizeQuest(){
@@ -27,7 +25,6 @@ export class QuestionComponent implements OnInit{
         console.log('close tab #'+id);
     }
     optionSelected(id, selection){
-        // console.log(_id, reply)
         let value:number = this.options.indexOf(selection)+1;
 
         this.quizReplied.emit({

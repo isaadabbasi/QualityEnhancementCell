@@ -17,7 +17,6 @@ export class NavBarComponent {
 
     logout(){
         localStorage.removeItem('authid');
-        // this.af.auth.logout();
         this.router.navigate(['/'])
     }
 }

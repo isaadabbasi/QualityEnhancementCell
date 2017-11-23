@@ -91,7 +91,5 @@ export class DashboardSidebarComponent implements OnInit {
         setTimeout(() => {
             this.router.navigate(['/login']);
         }, 500);
-        
-        console.log(localStorage.getItem('activeUser'));
     }
 }

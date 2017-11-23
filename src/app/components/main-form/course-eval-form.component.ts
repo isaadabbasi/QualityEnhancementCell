@@ -21,19 +21,15 @@ export class CourseEvalForm implements OnInit{
     // options: Array<String> = ['Strongly Disagree', 'Disagree', 'Uncertain', 'Agree', 'Strongly Agree'];
     
     ngOnInit(){
-        console.log(this.question);
         this.options = this.question.options;
         
     }
-    optionSelected(id, selection, value){
-        console.log(id, selection)
-        
+    optionSelected(id, selection, value){        
         this.quizReplied.emit({
             id, selection: value, value: selection 
         })
     }
     getTextValue(id, value){
-        console.log(id, value);
         this.commentsReplied.emit({
             id, value
         })
