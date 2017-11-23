@@ -49,17 +49,9 @@ export class DashboardModalComponent implements OnInit {
           title: 'Select Evaluation Type',
           input: 'radio',
           inputOptions: inputOptions,
-          inputValidator: function (result): Promise<void> {
-              return new Promise<void>(function (resolve, reject) {
-                if (result) {
-                  resolve()
-                } else {
-                  this.openModal = false;
-                  reject('You need to select something!');
-
-                }
-              })
-            },
+          inputValidator: function (value) {
+            return !value && 'You need to choose something!'
+          },
             allowEscapeKey: true
         }).then(function (result) {
           console.log(self.router);
