@@ -74,28 +74,28 @@ function printByQuery(req, res){
             // }
             let lastSurvey = prores.body[prores.body.length-1],
             length = lastSurvey.survey.filter(s => typeof s === 'number').length;
-            console.log(counter); 
             
             // .filter(sur => typeof sur === 'number');
             
             let fields = ['Q.id', 'Question', 'Strongly Disagree', 'Disagree', 'Uncertain', 'Agree', 'Strongly Agree', "Sum", "Average"],
-                data = [];
-
-                for(let i=0; i<counter.length; i++){
-                    counter[i].average = counter[i].sum/noOfSurveys;
-                    data[i] = {
-                        'Q.id': lastSurvey.survey[i].id || '',
-                        "Question": lastSurvey.survey[i].question || 'Some question will render here',
-                        "Strongly Disagree": counter[i]['1'],
-                        "Disagree": counter[i]['2'],
-                        "Uncertain": counter[i]['3'],
-                        "Agree": counter[i]['4'],
-                        "Strongly Agree": counter[i]['5'],
-                        "Sum": counter[i].sum,
-                        "Average": counter[i].average
-                    }
-                }
+            data = [];
             
+            for(let i=0; i<counter.length; i++){
+                counter[i].average = +(counter[i].sum/noOfSurveys).toFixed(3);
+                data[i] = {
+                    'Q.id': lastSurvey.survey[i].id || '',
+                    "Question": lastSurvey.survey[i].question || 'Some question will render here',
+                    "Strongly Disagree": counter[i]['1'],
+                    "Disagree": counter[i]['2'],
+                    "Uncertain": counter[i]['3'],
+                    "Agree": counter[i]['4'],
+                    "Strongly Agree": counter[i]['5'],
+                    "Sum": counter[i].sum,
+                    "Average": counter[i].average
+                }
+            }
+            
+            console.log(counter); 
             var csv = json2csv({ data, fields, unwindPath: 'score' });
             res.attachment('xls.csv');
             res.status(200).send(csv);
