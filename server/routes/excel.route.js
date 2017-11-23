@@ -21,19 +21,20 @@ function printById(req, res){
         SurveyJoint.getSurveyById(id)
             .then(result => {
                 // let csv = transformIntoExcel(survey.body, SINGLE);
-                var fields = ['Q.id', 'selected', 'score'];
+                var fields = ['Q.id',"Question", 'selected', 'score'];
                 let survey = result.body.survey
                     .filter(sur => typeof sur.id === 'number')
                     .map(sur => ({
                     "Q.id":sur.id,
                     "selected": sur.selection,
+                    "Question": sur.question,
                     "score": sur.value
                 }));
         
         var csv = json2csv({ data: survey, fields: fields, unwindPath: 'score' });
         
         
-        res.attachment('survey.xls');
+        res.attachment('single-survey.xls');
         res.status(200).send(csv);
     })
     else 
@@ -44,23 +45,28 @@ function printByQuery(req, res){
     let query = req.query,
     params = {};
 
-    // Array.prototype.flatten = flatten;
-    query.fullname && (params.fullname = query.fullname);
+    query.fullname && (params.teacher = query.fullname);
+    query.batch && (params.studentBatch = query.batch);
 
-    // if(! Object.keys(params).length){
-    //     res.status(400).send('Must send some details to get record for...');
-    //     return;
-    // }
-    SurveyJoint.getAllSurveys(query)
+    if(! Object.keys(params).length){
+        res.status(400).send('Must send some details to get record for...');
+        return;
+    }
+    SurveyJoint.getAllSurveys(params)
         .then(prores => {
+
             let counter = [],
                 noOfSurveys = prores.body.length,
                 body = prores.body
             .map(surveys => surveys.survey
             .filter(s=> typeof s.id === 'number')),
             flattenbody = flatten(body);
-
-
+            
+            if(!body.length){
+                res.status(400).send('Data is invalid to generate report for...');
+                return;
+            }
+            // console.log('-----', body);
             for (let question of flattenbody){
                 if(!counter[question.id])
                     counter[question.id]={ 1:0, 2:0, 3:0, 4:0, 5:0, 'sum':0, 'average':0 };
@@ -84,7 +90,7 @@ function printByQuery(req, res){
                 counter[i].average = +(counter[i].sum/noOfSurveys).toFixed(3);
                 data[i] = {
                     'Q.id': lastSurvey.survey[i].id || '',
-                    "Question": lastSurvey.survey[i].question || 'Some question will render here',
+                    "Question": lastSurvey.survey[i].question || '',
                     "Strongly Disagree": counter[i]['1'],
                     "Disagree": counter[i]['2'],
                     "Uncertain": counter[i]['3'],
@@ -97,8 +103,8 @@ function printByQuery(req, res){
             
             console.log(counter); 
             var csv = json2csv({ data, fields, unwindPath: 'score' });
-            res.attachment('xls.csv');
-            res.status(200).send(csv);
+            // res.attachment('details-survey.xls');
+            res.status(200).send(data);
         })
         .catch(console.error)
 }
