@@ -16,17 +16,17 @@
                 <p class="text-center">{{ quest.qid }}. {{quest.question}}</p>
                 <br>
                 <div class="text-center" *ngIf="quest.type == 'ss'" style="margin:-10px auto"> 
-                    <div class="radio-inline" *ngFor="let opt of quest.options" (change)="optionSelected(quest.qid, opt.value, opt.message)">
+                    <div class="radio-inline" *ngFor="let opt of quest.options" (change)="optionSelected(quest.qid, opt.value, opt.message, quest.question)">
                         <input type="radio" name="{{ quest.qid }}" value="{{opt.value}}">{{ opt.message }} &nbsp;
                     </div>
                 </div>
                 <div class="text-center" *ngIf="quest.type == 'text'" style="margin:-10px auto"> 
-                    <textarea class="form-control" (focusout)="getTextValue(quest.qid, textarea.value)" #textarea style="overflow: hidden;resize: none;" placeholder="{{ quest.question }}" rows=2 wrap=Off></textarea>                
+                    <textarea class="form-control" (focusout)="getTextValue(quest.qid, textarea.value, quest.question)" #textarea style="overflow: hidden;resize: none;" placeholder="{{ quest.question }}" rows=2 wrap=Off></textarea>                
                 </div>
                 <hr>
             </div>
             <div class="col-xs-12 text-center" *ngIf="canComment === true" style="margin:-10px auto"> 
-                <textarea (focusout)="getTextValue(comment.id, comment.value)" #comment id="comment{{ index + 1 }}" class="form-control" style="overflow: hidden;resize: none;" placeholder="Comments" ([ngModel])="comments" rows=2 wrap=Off></textarea>
+                <textarea (focusout)="getTextValue(comment.id, comment.value, null)" #comment id="comment{{ index + 1 }}" class="form-control" style="overflow: hidden;resize: none;" placeholder="Comments" ([ngModel])="comments" rows=2 wrap=Off></textarea>
             </div>
         </div>
     </div>
