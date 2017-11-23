@@ -3,8 +3,10 @@ import { OnInit } from '@angular/core';
 import { SURVEY_LIST, TEACHER_BASE_URL, TEACHER_DETAILS_URL, Departments, TEACHER_DETAILS_BY_DEPARTMENT } from './../../../shared/global-vars';
 import { SharedService } from './../../../shared/shared.service';
 import { Component, ViewChild } from '@angular/core';
-import * as _ from "lodash";
-
+// import * as _ from "lodash";
+import { map, each } from "lodash";
+//4.76MB
+//map, each
 @Component({
     selector: 'stats',
     templateUrl: './stats.template.html',
@@ -48,6 +50,10 @@ export class StatsComponent implements OnInit{
   constructor(private sharedService: SharedService){
   
   }
+  onOptimize(teacher){
+    console.log(this.optimize, teacher);
+    this.showSurvey(teacher, this.optimize);
+  }
   getNextList(entity: string, value: string){
     let URL = entity === 'teachers' && value != "0"? 
       TEACHER_DETAILS_BY_DEPARTMENT + value 
@@ -74,7 +80,7 @@ export class StatsComponent implements OnInit{
   viewSurvey(id){
     this.SurveyId.emit(id);  
   }
-  showSurvey(teacherName: string){
+  showSurvey(teacherName: string, optimize?: boolean){
     
     let selectedTeacher: any= {};
     let singleSurveys = [];
@@ -86,10 +92,10 @@ export class StatsComponent implements OnInit{
       this.surveysArray = selectedTeacher.surveys;
       
       // Should be used to avoid overhead.
-      let { length } = this.surveyReferencesList = _.map(this.surveysArray, '_reference');
-      // console.log(` ${length} survey references:`, this.surveyReferencesList);
+      this.surveyReferencesList = map(this.surveysArray, '_reference').slice(5, 10);
+      console.log(this.surveyReferencesList);
       
-      let take5 = this.sharedService.postCall(SURVEY_LIST, {list: this.surveyReferencesList, optimize: this.optimize})
+      this.sharedService.postCall(SURVEY_LIST, {list: this.surveyReferencesList, optimize: this.optimize})
         .subscribe(     
           result => {
             if(result.status == 200){
@@ -108,7 +114,7 @@ export class StatsComponent implements OnInit{
             let series = [],
                 index = 1,
                 categories = null;
-            _.each(this.finalSurveysArray, surveys => {
+            each(this.finalSurveysArray, surveys => {
               // console.log(surveys);
               let value = surveys.survey
               .filter(v => typeof v.value === 'number')
