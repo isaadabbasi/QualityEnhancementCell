@@ -10,8 +10,8 @@
                 </div>
                 
                 <div class="form-group">
-                    <select #depart (ngModelChange)="loging(depart.selectedIndex)" class="form-control" name="department" id="department" [(ngModel)]="selectedDepartment">
-                        <option *ngFor="let dept of departments" [ngValue]="dept" [selected]="userCredentials.department"> {{ dept.name }} </option>      
+                    <select #depart (change)="loging(depart.value)" class="form-control" name="department" id="department">
+                        <option *ngFor="let dept of departments" [value]="dept"> {{ dept.name }} </option>      
                     </select>
                 </div>
                 <div class="form-group">

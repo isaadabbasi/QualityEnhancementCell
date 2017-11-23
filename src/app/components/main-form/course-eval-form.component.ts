@@ -1,5 +1,4 @@
 import { Component,OnInit, Input, Output, EventEmitter } from "@angular/core";
-import * as _ from "lodash";
 
 @Component({
     selector: 'course-eval-form',

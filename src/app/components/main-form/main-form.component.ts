@@ -1,13 +1,13 @@
 import { TeacherEvaluationForm, courseEvaluationForm } from './../../shared/forms/teacher-evaluation-form';
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import 'rxjs/add/operator/debounceTime';
 
 import { QuestionComponent } from './quest.component';
 import { CourseEvalForm } from "./course-eval-form.component";
 import { SharedService } from '../../shared/shared.service';
-import {GET_SURVEY, ADD_SURVEY_URL, Departments } from '../../shared/global-vars';
-import * as _ from "lodash";
+import { GET_SURVEY, ADD_SURVEY_URL, Departments } from '../../shared/global-vars';
+
 interface SurveyModel {
     _id: number, 
     reply: string,
@@ -45,7 +45,7 @@ export class MainFormComponent implements OnInit{
                 
     }
     getSurveys(){
-        this._sharedService.getCall(GET_SURVEY + this.surveyMetaData.evaluation)
+        this._sharedService.getCall(GET_SURVEY + this.surveyMetaData.evaluation.value)
             .subscribe(
                 next => {
                     console.log(next);
@@ -54,7 +54,7 @@ export class MainFormComponent implements OnInit{
                 err => console.log(err),
                 () => {
                     console.log(this.questions);
-                    
+                     
                 }
             )
     }
