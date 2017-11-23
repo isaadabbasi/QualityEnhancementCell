@@ -45,7 +45,7 @@ export class MainFormComponent implements OnInit{
                 
     }
     getSurveys(){
-        this._sharedService.getCall(GET_SURVEY + this.surveyMetaData.evaluation)
+        this._sharedService.getCall(GET_SURVEY + this.surveyMetaData.evaluation.value)
             .subscribe(
                 next => {
                     console.log(next);
@@ -54,7 +54,7 @@ export class MainFormComponent implements OnInit{
                 err => console.log(err),
                 () => {
                     console.log(this.questions);
-                    
+                     
                 }
             )
     }
