@@ -53,7 +53,7 @@ export class DashboardModalComponent implements OnInit {
             allowEscapeKey: true
         }).then(function (result) {
           let surveyMetaData = JSON.parse(localStorage.getItem('surveyMetaData'));
-          surveyMetaData.evaluation = result;
+          surveyMetaData.evaluation = result.value;
           localStorage.setItem('surveyMetaData', JSON.stringify(surveyMetaData));
           self.router.navigate(['survey']);
         })

@@ -2,6 +2,7 @@ import { TeacherEvaluationForm, courseEvaluationForm } from './../../shared/form
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import 'rxjs/add/operator/debounceTime';
+import { each } from "lodash";
 
 import { QuestionComponent } from './quest.component';
 import { CourseEvalForm } from "./course-eval-form.component";
@@ -11,7 +12,8 @@ import { GET_SURVEY, ADD_SURVEY_URL, Departments } from '../../shared/global-var
 interface SurveyModel {
     _id: number, 
     reply: string,
-    value: number
+    value: number,
+    question: string
 }
 
 @Component({
@@ -23,7 +25,7 @@ interface SurveyModel {
 
 
 export class MainFormComponent implements OnInit{
-    finalSurveyDetails: { evaluation: any; course: any; teacher: any; survey: SurveyModel[]; };
+    finalSurveyDetails: { evaluation: any; course: any; teacher: any; survey: SurveyModel[]; }; //DOM Binding
     purpose: string;
     openModal: any;
     constructor(private _sharedService: SharedService, private router: Router) { }
@@ -45,15 +47,20 @@ export class MainFormComponent implements OnInit{
                 
     }
     getSurveys(){
-        this._sharedService.getCall(GET_SURVEY + this.surveyMetaData.evaluation.value)
+        this._sharedService.getCall(GET_SURVEY + this.surveyMetaData.evaluation)
             .subscribe(
                 next => {
+                    each(next.sections, section => {
+                        console.log(section);
+                        
+                    })
                     this.questions = next.sections;
                 },
                 err => console.error(err)
             )
     }
     optionSelected(event: SurveyModel){
+        console.log(event);
         let indexOfEvent = this.survey.findIndex((surveyElement:any) => surveyElement.id == (event as any).id);
         if(indexOfEvent === -1){
             this.survey.push(event)
