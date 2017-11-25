@@ -3,18 +3,15 @@ import { OnInit } from '@angular/core';
 import { SURVEY_LIST, TEACHER_BASE_URL, TEACHER_DETAILS_URL, Departments, TEACHER_DETAILS_BY_DEPARTMENT } from './../../../shared/global-vars';
 import { SharedService } from './../../../shared/shared.service';
 import { Component, ViewChild } from '@angular/core';
-import * as _ from "lodash";
-
+import { map, each } from "lodash";
 @Component({
     selector: 'stats',
     templateUrl: './stats.template.html',
     styleUrls: ['./stats.css']
 })
 export class StatsComponent implements OnInit{
-  surveyOnly: any;
   finalSurveysArray: any;
   surveyReferencesList: {}[];
-  teacherSurvey: {}[];
   showLoader: boolean;
   timeToFetch: number;
   length: any;
@@ -30,23 +27,20 @@ export class StatsComponent implements OnInit{
   
   // events
   public chartClicked(e:any):void {
-    this.showDetails = true;
-    console.log(e);
-    
+    this.showDetails = true;    
   }
 
   public chartHovered(e:any):void {
-    console.log(e);
   }
   options: Object;
   ngOnInit(){
-    this.sharedService.getCall(TEACHER_DETAILS_URL)
-      .subscribe( next => {
-        console.log(next["body"]);
-      })
+    
   }
   constructor(private sharedService: SharedService){
   
+  }
+  onOptimize(teacher){
+    this.showSurvey(teacher, this.optimize);
   }
   getNextList(entity: string, value: string){
     let URL = entity === 'teachers' && value != "0"? 
@@ -55,16 +49,13 @@ export class StatsComponent implements OnInit{
       '';
     if(value != "0"){
       this.showTeachersList = true;
-      console.log(URL, value, this.showTeachersList);
       this.sharedService.getCall(URL)
         .subscribe(
           next => {
             this.showTeachersList = true;
-            console.log(next)
             this.teachersList = next["body"];
           },
-          err => console.log(err),
-          () => console.log('complete')
+          err => console.error(err)
         )
       }else{
         this.showTeachersList = false;
@@ -74,22 +65,20 @@ export class StatsComponent implements OnInit{
   viewSurvey(id){
     this.SurveyId.emit(id);  
   }
-  showSurvey(teacherName: string){
-    
-    let selectedTeacher: any= {};
-    let singleSurveys = [];
-    // console.time()
-    let start = Date.now()
+  showSurvey(teacherName: string, optimize?: boolean){
+    let selectedTeacher: any= {},
+        singleSurveys = [],
+        start = Date.now();
+
     if(teacherName !== '0'){
       this.loaderState(true);
       selectedTeacher = (this.teachersList.filter(teacher => teacher["fullname"] === teacherName))[0];
       this.surveysArray = selectedTeacher.surveys;
       
       // Should be used to avoid overhead.
-      let { length } = this.surveyReferencesList = _.map(this.surveysArray, '_reference');
-      // console.log(` ${length} survey references:`, this.surveyReferencesList);
+      this.surveyReferencesList = map(this.surveysArray, '_reference').slice(5, 10);
       
-      let take5 = this.sharedService.postCall(SURVEY_LIST, {list: this.surveyReferencesList, optimize: this.optimize})
+      this.sharedService.postCall(SURVEY_LIST, {list: this.surveyReferencesList, optimize: this.optimize})
         .subscribe(     
           result => {
             if(result.status == 200){
@@ -102,14 +91,12 @@ export class StatsComponent implements OnInit{
             this.finalSurveysArray = res;
             }
           },
-          err => {console.log(err); setTimeout(this.loaderState(false), 2500)},
+          err => {console.error(err); setTimeout(this.loaderState(false), 2500)},
           () => {
-            // console.log(this.finalSurveysArray)
             let series = [],
                 index = 1,
                 categories = null;
-            _.each(this.finalSurveysArray, surveys => {
-              // console.log(surveys);
+            each(this.finalSurveysArray, surveys => {
               let value = surveys.survey
               .filter(v => typeof v.value === 'number')
               .map( v => v.value);
@@ -117,17 +104,12 @@ export class StatsComponent implements OnInit{
               categories = surveys.survey
                 .filter(v => typeof v.id === 'number')
                 .map(v=> `Q${v.id}`);
-              // _.map(surveys["survey"], survey => {value.push(survey["value"])})
-              // value = value.sl ice(0, length-1);
-              // console.log(value);
               series.push({
                 "name": 'Survey No.' + index,
                 "data": value,
                 "allowPointSelect": true
               });
               index += 1;
-              
-              // firstSurvey.push(_.map(surveys["survey"], survey => value.push(survey["value"])))
             });
             this.options = {
               
@@ -142,8 +124,6 @@ export class StatsComponent implements OnInit{
             }],
               series: series,
             }
-            // console.log(firstSurvey);
-            // console.log(this.options);
             setTimeout(this.loaderState(false), 2500)
         }
       );
@@ -153,7 +133,6 @@ export class StatsComponent implements OnInit{
     }
     let end = Date.now();
     this.timeToFetch = end - start;
-    console.log(this.timeToFetch, 'ms');
   }
   loaderState(hidden: boolean){
     this.showLoader = hidden;

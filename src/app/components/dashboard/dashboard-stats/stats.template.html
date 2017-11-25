@@ -18,9 +18,14 @@
   </div>
   <div class="col-xs-3 pull-right">
     <label for="optimize" class="pull-right">Optimized</label>
-    <input type="checkbox" id="optimize" [(ngModel)]="optimize"  name="optimize" class="pull-left">
+    <input type="checkbox" id="optimize" [(ngModel)]="optimize" name="optimize" class="pull-left">
   </div>
-    
+  <!-- <div class="row">
+    <div class="col-xs-3 pull-right form-group">
+      <label for="optimize" class="pull-right">Optimized</label>
+      <input type="checkbox" id="optimize" [(ngModel)]="optimize" [disabled]="teacher.value != 0 ? disabled : ''" (change)="onOptimize(teacher.value)" name="optimize" class="pull-left">
+    </div>
+  </div> -->
 <!-- <h1>Stats</h1> -->
 <div class="row" style="margin-top:40px;">
   <div class="col-md-8 col-md-offset-2">

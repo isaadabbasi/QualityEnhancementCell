@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-
-import * as localforage from 'localforage';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'qec-dashboard',
@@ -31,12 +29,8 @@ import * as localforage from 'localforage';
     </div>`
 })
 
-export class DashboardComponent implements OnInit{
-    sidebars: Array<String> = ['1', '3', '5'];
-    
+export class DashboardComponent{    
     constructor(){
-        // console.log(localStorage.getItem("activeUser"));
     }
-    ngOnInit(){ }
 
 }

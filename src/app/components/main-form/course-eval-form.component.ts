@@ -1,5 +1,4 @@
 import { Component,OnInit, Input, Output, EventEmitter } from "@angular/core";
-import * as _ from "lodash";
 
 @Component({
     selector: 'course-eval-form',
@@ -22,21 +21,17 @@ export class CourseEvalForm implements OnInit{
     // options: Array<String> = ['Strongly Disagree', 'Disagree', 'Uncertain', 'Agree', 'Strongly Agree'];
     
     ngOnInit(){
-        console.log(this.question);
         this.options = this.question.options;
         
     }
-    optionSelected(id, selection, value){
-        console.log(id, selection)
-        
+    optionSelected(id, value, selection, question){             
         this.quizReplied.emit({
-            id, selection: value, value: selection 
+            id, value, selection,question
         })
     }
-    getTextValue(id, value){
-        console.log(id, value);
+    getTextValue(id, value,question){
         this.commentsReplied.emit({
-            id, value
+            id, value, question
         })
     }
 }

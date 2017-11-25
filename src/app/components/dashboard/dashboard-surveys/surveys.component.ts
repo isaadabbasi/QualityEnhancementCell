@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs/Observable';
 import { SURVEY_LIST, 
          Departments, 
          TEACHER_DETAILS_BY_DEPARTMENT, 
@@ -6,7 +5,7 @@ import { SURVEY_LIST,
          } from './../../../shared/global-vars';
 import { Component, ViewChild, Output, EventEmitter, OnInit } from '@angular/core';
 import { SharedService } from "./../../../shared/shared.service";
-import * as _ from "lodash";
+import { map } from "lodash";
 @Component({
     selector: 'surveys',
     templateUrl: './surveys.template.html',
@@ -29,20 +28,17 @@ export class SurveysComponent implements OnInit {
   deparmentsList = Departments;
   optimize;
   onOptimize(teacher){
-    console.log(this.optimize, teacher);
     this.showSurvey(teacher, this.optimize);
   }
   ngOnInit(){
-    console.log(this.deparmentsList); 
     let start = Date.now();              
     this.sharedService.getCall(SURVEY_LIST)
     .subscribe(
-      next => { 
-        // console.log(this.surveysArray.filter(sur => sur["evalutaion"] == "teacher"));
-        this.surveysArray = next; console.log(next); 
+      next => {
+        this.surveysArray = next;
         this.length = this.surveysArray.length;
       },
-      err => console.log(err),
+      err => console.error(err),
       () => {
         this.surveysArray.reverse();  
       }
@@ -59,16 +55,13 @@ export class SurveysComponent implements OnInit {
       '';
     if(value != "0"){
       this.showTeachersList = true;
-      console.log(URL, value, this.showTeachersList);
       this.sharedService.getCall(URL)
         .subscribe(
           next => {
             this.showTeachersList = true;
-            console.log(next)
             this.teachersList = next["body"];
           },
-          err => console.log(err),
-          () => console.log('complete')
+          err => console.error(err)
         )
       }else{
         this.showTeachersList = false;
@@ -90,8 +83,7 @@ export class SurveysComponent implements OnInit {
       this.surveysArray = selectedTeacher["surveys"];
 
       // Should be used to avoid overhead.
-      this.surveyReferencesList = _.map(this.surveysArray, '_reference');
-      console.log(this.surveyReferencesList)
+      this.surveyReferencesList = map(this.surveysArray, '_reference');
       let list = {
         list: this.surveyReferencesList
       };
@@ -101,15 +93,13 @@ export class SurveysComponent implements OnInit {
           result => {
             if(result.status == 200)
               this.surveysArray = JSON.parse(result["_body"]).reverse()},
-          err => {console.log(err); setTimeout(this.loaderState(false), 2500)},
+          err => {console.error(err); setTimeout(this.loaderState(false), 2500)},
           () => setTimeout(this.loaderState(false), 2500)
         );
       this.length = this.surveysArray.length;
-      console.log(this.surveysArray);
     }
     let end = Date.now();
     this.timeToFetch = end - start;
-    console.log(this.timeToFetch, 'ms');
   }
   loaderState(hidden: boolean){
     this.showLoader = hidden;
