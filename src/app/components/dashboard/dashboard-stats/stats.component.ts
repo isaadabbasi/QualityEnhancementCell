@@ -1,16 +1,22 @@
+import { Component, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { OnInit } from '@angular/core';
-import { SURVEY_LIST, TEACHER_BASE_URL, TEACHER_DETAILS_URL, Departments, TEACHER_DETAILS_BY_DEPARTMENT } from './../../../shared/global-vars';
-import { SharedService } from './../../../shared/shared.service';
-import { Component, ViewChild } from '@angular/core';
 import { map, each } from "lodash";
+import { Subscription } from 'rxjs/Subscription';
+
+import { SURVEY_LIST, 
+         Departments, 
+         TEACHER_DETAILS_BY_DEPARTMENT, 
+         BASE_URL} from './../../../shared/global-vars';
+import { SharedService } from './../../../shared/shared.service';
 @Component({
     selector: 'stats',
     templateUrl: './stats.template.html',
     styleUrls: ['./stats.css']
 })
 export class StatsComponent implements OnInit{
-  finalSurveysArray: any;
+  finalSurveysArray: Array<any> = [];
   surveyReferencesList: {}[];
   showLoader: boolean;
   timeToFetch: number;
@@ -22,6 +28,8 @@ export class StatsComponent implements OnInit{
   deparmentsList = Departments;
   showDetails: boolean = false;
   optimize: boolean = false;
+  sub: Subscription;
+  singleSurvey: boolean = false;
     // lineChart
   
   
@@ -34,10 +42,16 @@ export class StatsComponent implements OnInit{
   }
   options: Object;
   ngOnInit(){
-    
+    this.sub = this.route.paramMap
+    .subscribe(
+        params => {
+            this.SurveyId = params.get("id");
+            this.showSurvey('0', false, this.SurveyId);
+        }),
+    err => console.error(err)
   }
-  constructor(private sharedService: SharedService){
-  
+  constructor(private route: ActivatedRoute,
+              private sharedService: SharedService){                
   }
   onOptimize(teacher){
     this.showSurvey(teacher, this.optimize);
@@ -65,12 +79,25 @@ export class StatsComponent implements OnInit{
   viewSurvey(id){
     this.SurveyId.emit(id);  
   }
-  showSurvey(teacherName: string, optimize?: boolean){
+  showSurvey(teacherName: string, optimize?: boolean, surveyId?: string){
     let selectedTeacher: any= {},
         singleSurveys = [],
         start = Date.now();
-
+    
+    if(!!surveyId){
+      this.singleSurvey = true;
+      this.sharedService.getCall(`${SURVEY_LIST}/id/${surveyId}`)
+        .subscribe(
+          res => {
+            this.finalSurveysArray.push(res);
+          }, console.error,
+          () => {
+            plotGraph(this.finalSurveysArray);
+          }
+        )
+    }
     if(teacherName !== '0'){
+      this.singleSurvey = false;
       this.loaderState(true);
       selectedTeacher = (this.teachersList.filter(teacher => teacher["fullname"] === teacherName))[0];
       this.surveysArray = selectedTeacher.surveys;
@@ -93,38 +120,8 @@ export class StatsComponent implements OnInit{
           },
           err => {console.error(err); setTimeout(this.loaderState(false), 2500)},
           () => {
-            let series = [],
-                index = 1,
-                categories = null;
-            each(this.finalSurveysArray, surveys => {
-              let value = surveys.survey
-              .filter(v => typeof v.value === 'number')
-              .map( v => v.value);
-
-              categories = surveys.survey
-                .filter(v => typeof v.id === 'number')
-                .map(v=> `Q${v.id}`);
-              series.push({
-                "name": 'Survey No.' + index,
-                "data": value,
-                "allowPointSelect": true
-              });
-              index += 1;
-            });
-            this.options = {
-              
-              title: { text: this.finalSurveysArray[0].teacher },
-              chart: {
-                type: 'spline',
-                width: 600
-              },
-              xAxis: [{
-                categories: categories,
-                crosshair: true
-            }],
-              series: series,
-            }
-            setTimeout(this.loaderState(false), 2500)
+            plotGraph(this.finalSurveysArray);
+            setTimeout(this.loaderState(false), 2500);
         }
       );
       
@@ -133,8 +130,46 @@ export class StatsComponent implements OnInit{
     }
     let end = Date.now();
     this.timeToFetch = end - start;
+
+    let plotGraph = (surveyArray, type?: string) => {
+      let series = [],
+      index = 1,
+      categories = null;
+      each(surveyArray, surveys => {
+        let value = surveys.survey
+        .filter(v => typeof v.value === 'number')
+        .map( v => v.value);
+
+        categories = surveys.survey
+          .filter(v => typeof v.id === 'number')
+          .map(v=> `Q${v.id}`);
+        series.push({
+          "name": 'Survey No.' + index,
+          "data": value,
+          "allowPointSelect": true
+        });
+        index += 1;
+      });
+      this.options = {
+        
+        title: { text: surveyArray[0].teacher },
+        chart: {
+          type: type || 'spline',
+          width: 600,
+          height: 350
+        },
+        xAxis: [{
+          categories: categories,
+          crosshair: true
+      }],
+        series: series,
+      }
+    }
   }
   loaderState(hidden: boolean){
     this.showLoader = hidden;
+  }
+  downloadCSV(){
+    window.open(`${BASE_URL}/excel/${this.SurveyId}`, '__blank');
   }
 }
