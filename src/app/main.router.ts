@@ -27,6 +27,7 @@ export const routes: Routes = [
         {path:'start', component: StartSurveyComponent },
         {path:'rankings', component: RankingComponent },
         {path:'stats', component: StatsComponent },
+        {path:'stats/:id', component: StatsComponent },
         {path: 'view-surveys', component: SurveysComponent },
         {path: 'view-surveys/:id', component: DashboardSurveyComponent },
         {path: 'settings', component: SettingsComponent },

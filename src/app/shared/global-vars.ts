@@ -26,6 +26,7 @@ export const
  TEACHER_DETAILS_BY_DEPARTMENT    : string = `${TEACHER_DETAILS_URL}?department=`;
 export const 
  TEACHER_DETAILS_BY_NAME          : string = `${TEACHER_DETAILS_URL}?fullname=`; 
+export const DOWNLOAD_EXCEL       : string = `${BASE_URL}/excel`
 
 export const Departments          : Array<Object> = [
   {value: '0', name: 'Please Select'},

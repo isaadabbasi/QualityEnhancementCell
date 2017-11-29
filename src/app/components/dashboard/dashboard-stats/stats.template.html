@@ -18,44 +18,30 @@
   </div>
   <div class="col-xs-3 pull-right">
     <label for="optimize" class="pull-right">Optimized</label>
-    <input type="checkbox" id="optimize" [(ngModel)]="optimize" name="optimize" class="pull-left">
+    <input type="checkbox" id="optimize" [disabled]="teacher.value != 0 ? disabled : ''" [(ngModel)]="optimize" (change)="onOptimize(teacher.value)" name="optimize" class="pull-left">
   </div>
-  <!-- <div class="row">
-    <div class="col-xs-3 pull-right form-group">
-      <label for="optimize" class="pull-right">Optimized</label>
-      <input type="checkbox" id="optimize" [(ngModel)]="optimize" [disabled]="teacher.value != 0 ? disabled : ''" (change)="onOptimize(teacher.value)" name="optimize" class="pull-left">
-    </div>
-  </div> -->
-<!-- <h1>Stats</h1> -->
 <div class="row" style="margin-top:40px;">
-  <div class="col-md-8 col-md-offset-2">
+  <div class="col-xs-8 col-xs-offset-2">
     <div style="display: block;">
         <chart [options]="options"></chart>
     </div>
   </div>
-  <div class="col-md-6" style="margin-bottom: 10px">
-    
-    <!-- <table *ngIf="!showDetails" class="table table-responsive table-condensed">
-      <tr>
-        <th *ngFor="let label of lineChartLabels">{{label}}</th>
-      </tr>
-      <tr *ngFor="let d of lineChartData">
-        <td *ngFor="let label of lineChartLabels; let j=index">{{d && d.data[j]}}</td>
-      </tr>
-    </table> -->
-
-    <!-- <div *ngIf="showDetails" style="display: block">
-      <canvas baseChart width="500" height="500"
-      [datasets]="surveys"
-      [labels]="lineChartLabels"
-      [options]="lineChartOptions"
-      [colors]="lineChartColors"
-      [legend]="lineChartLegend"
-      [chartType]="detailsChartType"
-      (chartHover)="chartHovered($event)"
-      (chartClick)="chartClicked($event)"></canvas>
-    </div> -->
-    <!-- <button (click)="randomize()">CLICK</button> -->
+</div>
+<br>
+<div *ngIf="singleSurvey" class="row">
+  <div class="col-xs-7 col-xs-offset-2">
+      <button type="button" class="btn btn-primary pull-left" (click)="downloadCSV()"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp; Download to Excel</button>                    
+      <button class="btn btn-primary pull-right" [routerLink]="['/dashboard/view-surveys', SurveyId]">View Table&nbsp;  <i class="fa fa-line-chart" aria-hidden="true"></i></button>   
   </div>
+  <div class="col-xs-4" style="display: none">
+    Hello
+  </div>
+  
+</div>
+<div *ngIf="!options">
+    <alert-message 
+      [top]="'20%'"
+      [alert-type]="'info'" 
+      [message]="'Please select department and teacher to view graph.'"></alert-message>
 </div>
 

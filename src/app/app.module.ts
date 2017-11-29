@@ -1,9 +1,3 @@
-import { LoaderComponent } from './components/loader/loader';
-import { DashboardModalComponent } from './components/dashboard/dashboard-modal/dashboard-modal';
-import { SettingsComponent } from './components/dashboard/dashboard-settings/settings.component';
-import { CourseEvalForm } from './components/main-form/course-eval-form.component';
-import { DashboardSurveyComponent } from './components/dashboard/dashboard-survey/dashboard-survey.component';
-import { SurveysComponent } from './components/dashboard/dashboard-surveys/surveys.component';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -30,7 +24,13 @@ import { SignupComponent } from './components/signup/signup.component';
 import { SharedService } from './shared/shared.service';
 import { AuthGuard, SessionGuard } from './auth-guard.service';
 import { StatsComponent } from "./components/dashboard/dashboard-stats/stats.component";
-
+import { LoaderComponent } from './components/loader/loader';
+import { DashboardModalComponent } from './components/dashboard/dashboard-modal/dashboard-modal';
+import { SettingsComponent } from './components/dashboard/dashboard-settings/settings.component';
+import { CourseEvalForm } from './components/main-form/course-eval-form.component';
+import { DashboardSurveyComponent } from './components/dashboard/dashboard-survey/dashboard-survey.component';
+import { SurveysComponent } from './components/dashboard/dashboard-surveys/surveys.component';
+import { AlertComponent } from "./components/alert-message/alert-message";
 declare var require: any;
 
 export function highchartsFactory() {
@@ -60,7 +60,8 @@ export function highchartsFactory() {
     CourseEvalForm,
     SettingsComponent,
     DashboardModalComponent,
-    LoaderComponent
+    LoaderComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
