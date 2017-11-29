@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { SharedService } from './../../../shared/shared.service';
-import { TEACHER_BASE_URL, ADD_SURVEY_URL } from './../../../shared/global-vars';
+import { TEACHER_BASE_URL, ADD_SURVEY_URL, DOWNLOAD_EXCEL } from './../../../shared/global-vars';
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import swal from "sweetalert2";
 
@@ -27,6 +27,8 @@ export class DashboardModalComponent implements OnInit {
           this.generateAddModal();
         }else if(this.modalPurpose === 'confirm'){
           this.generateConfirmModal();
+        }else if(this.modalPurpose === 'survey'){
+          this.generateExcelModal();
         }
         
         
@@ -181,5 +183,59 @@ export class DashboardModalComponent implements OnInit {
         console.log(err);
         self.modalStatus.emit(false);
       })
+    }
+    generateExcelModal():any {
+      let self = this;
+      swal.setDefaults({
+        input: 'text',
+        confirmButtonText: 'Next &rarr;',
+        showCancelButton: true,
+        progressSteps: ['1', '2']
+      });
+      let steps = [
+        'Enter batch (optional)', 
+        'Enter subject (optional)'
+      ]
+      swal.queue(steps)
+        .then(result => {
+          if(result.value){
+            swal.resetDefaults();
+            let details = {
+              batch: result.value[0] || '',
+              subject: result.value[1] || ''
+            }
+            swal({
+              title: 'Please confirm',
+              html: 
+                'Download excel for ' + self.surveyDetails.teacher +
+                ' from department ' + self.surveyDetails.dept + 
+                (result.value[0] ? ', batch ' + result.value[0] : '') +
+                (result.value[1] ? ' and subject ' + result.value[1]: ''),
+                confirmButtonText: 'Yes! Let me download.',
+                showCancelButton: true,
+                cancelButtonText: 'No! Let me edit.',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+            }).then(
+              result => {
+                if(result.dismiss != 'cancel' && result.dismiss != 'overlay' && result.dismiss != 'esc'){
+                    let batch = !!details.batch ? `&batch=${details.batch}` : '',
+                      subject = !!details.subject ? `&subject=${details.subject}`: '',
+                      URL     = `${DOWNLOAD_EXCEL}?teacher=${self.surveyDetails.teacher}&dept=${self.surveyDetails.dept}${batch}${subject}`;  
+                      console.log(URL);
+                    window.open(URL, '__blank');        
+                      self.modalStatus.emit(false);
+                    }else
+                      self.modalStatus.emit(false);
+              }
+            ).catch( err => {
+                console.log(err);
+                self.modalStatus.emit(false);
+              })
+          }
+        }).catch( err => {
+            console.log(err);
+            self.modalStatus.emit(false);
+          });
     }
 }
