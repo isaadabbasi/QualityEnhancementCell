@@ -1,7 +1,8 @@
 import { TeacherEvaluationForm, courseEvaluationForm } from './../../shared/forms/teacher-evaluation-form';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import 'rxjs/add/operator/debounceTime';
+import { debounceTime } from 'rxjs/operators';
+
 import { sortBy } from "lodash";
 
 import { QuestionComponent } from './quest.component';
@@ -86,7 +87,7 @@ export class MainFormComponent implements OnInit{
     getStudentRemarks(){  
         console.log(this.survey)
         console.log(sortBy(this.survey, [function(o) { 
-            return typeof o.id  == 'number' ? o.id: null; 
+            return typeof o.id  == 'number' ? o.id: null 
         }]))
         let rollnumber = JSON.parse(localStorage.getItem('activeUser'))["rollnumber"].split('-'),
             surveyDetails = {
