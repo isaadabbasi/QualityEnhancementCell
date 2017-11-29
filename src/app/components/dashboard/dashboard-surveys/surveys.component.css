@@ -13,14 +13,14 @@
 }
 tbody{
 
-    height: 66vh;
+    height: 70vh;
     overflow-x: hidden;
     overflow-y: scroll;
 }
 #table-scroll {
-    height: 62vh;
+    height: 65vh;
     overflow:auto;  
-    margin-top:20px;
+    margin-top: 0;
 }
 #table-wrapper table {
     width:100%;
