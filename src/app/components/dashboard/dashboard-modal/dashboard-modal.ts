@@ -198,7 +198,9 @@ export class DashboardModalComponent implements OnInit {
       ]
       swal.queue(steps)
         .then(result => {
+          console.log(result)
           if(result.value){
+            
             swal.resetDefaults();
             let details = {
               batch: result.value[0] || '',
