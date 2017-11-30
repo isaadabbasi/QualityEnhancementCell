@@ -16,6 +16,7 @@ import { Component } from '@angular/core';
        
     `],
     template: `
+        <app-modal [options]="modalOptions"></app-modal>
         <div  class="placeholder-container"> 
             <img 
                 id="placeholder-image" 
@@ -25,6 +26,39 @@ import { Component } from '@angular/core';
     `
 })  
 export class PlaceHolderComponent {
+    // modalOptions = [,]
+    modalOptions = {
+        metaData: {
+          chaining: false,
+          labels: false,
+          setOnTop: false
+        },
+        header: 'Generate Excel',
+        body: [{
+                type: 'text',
+                label: 'Enter Batch',
+                placeholder: 'Enter Batch',
+                id: 'batch'
+            },{
+                type: 'text',
+                label: 'Enter Subject',
+                placeholder: 'Enter Subject',
+                id: 'subject'
+            }
+        ],
+        footer: [{
+                type: 'button',
+                label: 'Submit',
+                id: 'submit',
+                icon: 'fa fa-check'
+            },{
+                type: 'button',
+                label: 'Cancel',
+                id: 'cancel',
+                icon: 'fa fa-times'
+            }
+        ]
+    }
     constructor() { }
     
 }
