@@ -11,17 +11,16 @@
 	</div>
 	<div class="col-xs-3 pull-right form-group">
 		<select #department name="department" class="form-control" (change)="getNextList('teachers', department.value)">
-			<!-- <option value="" name="departments" [selected]="departments">Select Department</option> -->
 			<option *ngFor="let dept of deparmentsList" [value]="dept.value"> {{ dept.name }} </option>      
 		</select>
 	</div>
 </div>
 <div class="row">
+	
 	<div class="col-xs-3 pull-right form-group">
 		<label for="optimize" class="pull-right">Optimized</label>
 		<input type="checkbox" id="optimize" [(ngModel)]="optimize" [disabled]="teacher.value != 0 ? disabled : ''" (change)="onOptimize(teacher.value)" name="optimize" class="pull-left">
 	</div>
-	<!-- <button (click)="export()">export</button> -->
 </div>
 <div id="table-wrapper">
 	<div id="table-scroll">
@@ -45,7 +44,6 @@
 					<td>{{ survey.created | date }}</td>
 					<td>
 						<a [routerLink]="survey._id">
-							<!-- <span class="glyphicon glyphicon-eye-open" center></span> -->
 							View Survey
 						</a>
 					</td>	
@@ -53,7 +51,17 @@
 			</tbody>
 		</table>	
 	</div>	
-	<div class="pull-right" *ngIf="timeToFetch">
+	<div style="margin-top: 0.5%" class="col-xs-3 pull-left form-group">
+		<button 
+			type="button" 
+			class="btn btn-primary pull-left" 
+			[disabled]="!(teacher.value != 0)" 
+			[ngClass]="{ 'disabled': teacher.value == '0'}" 
+			(click)="downloadCSV()">
+				<i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp; Download to Excel</button>              
+	</div>
+	<div class="pull-right" style="position: absolute; bottom:-8%; right: 0%;" *ngIf="timeToFetch">
 		Fetched {{ length }} results in about {{ timeToFetch }} ms
 	</div>	
 </div>
+<dashoard-modal *ngIf="openModal && modalPurpose == 'survey'" (modalStatus)="modalState($event)" [modalPurpose]="'survey'" [surveyDetails]="{teacher: teacher.value, dept: department.value}"></dashoard-modal>

@@ -47,7 +47,7 @@ import { Component, OnInit } from '@angular/core';
                             <div class="sidenav-text">View Surveys</div>
                     </li>
                 </a>
-                <a class="col-xs-12 col-md-12 side-option" title="Rankings" routerLinkActive="active-link" routerLink="rankings">
+                <a *ngIf="null" class="col-xs-12 col-md-12 side-option" title="Rankings" routerLinkActive="active-link" routerLink="rankings">
                     <li class="sidenav-item">
                             <div class="fa fa-trophy fa-3x active"></div>
                             <div class="sidenav-text">Rankings</div>

@@ -20,7 +20,7 @@ tbody{
 #table-scroll {
     height: 65vh;
     overflow:auto;  
-    margin-top:20px;
+    margin-top: 0;
 }
 #table-wrapper table {
     width:100%;

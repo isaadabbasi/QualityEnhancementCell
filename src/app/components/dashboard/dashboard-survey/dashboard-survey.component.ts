@@ -1,10 +1,10 @@
-import { Subscription } from 'rxjs';
-import { BASE_URL, GET_SURVEY, SURVEY_LIST } from './../../../shared/global-vars';
-import { SharedService } from './../../../shared/shared.service';
 import { OnInit } from '@angular/core';
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Subscription } from 'rxjs';
 
+import { BASE_URL, GET_SURVEY, SURVEY_LIST, DOWNLOAD_EXCEL } from './../../../shared/global-vars';
+import { SharedService } from './../../../shared/shared.service';
 @Component({
     selector: 'dashboard-survey',
     templateUrl: './dashboard-survey.template.html',
@@ -63,6 +63,6 @@ export class DashboardSurveyComponent implements OnInit, OnDestroy{
     }
 
     downloadCSV(){
-        window.open(`${BASE_URL}/excel/${this.surveyId}`, '__blank');
+        window.open(`${DOWNLOAD_EXCEL}/${this.surveyId}`, '__blank');        
     }
 }

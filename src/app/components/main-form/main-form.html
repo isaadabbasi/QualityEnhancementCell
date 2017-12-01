@@ -1,9 +1,11 @@
-<div  *ngIf="showMessage" id="message" class="col-xs-6 col-xs-offset-3">
-    <div id="inner-message" class="alert alert-danger text-center">
-        Please answer all questions.
-    </div>
-</div>
-<div class="questionare-body col-xs-12 col-md-offset-1 col-md-10">
+<alert-message 
+    *ngIf="showMessage"
+    [top]="'20%'"
+    [alert-type]="'danger'" 
+    [message]="'Please select department and teacher to view graph.'">
+</alert-message>
+<!-- <alert-message [alert-type]="danger" [message]="'Please answer all questions.'"></alert-message> -->
+<div *ngIf="!!questions" class="questionare-body col-xs-12 col-md-offset-1 col-md-10">
     <div class="row main-form-header">
         <div class="" style="display: inline">
             <img class="teacher-image " src="./assets/images/duet_logo.png">

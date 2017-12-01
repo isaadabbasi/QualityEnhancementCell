@@ -1,46 +1,40 @@
 <div class="questionare-body col-xs-12 col-md-offset-1 col-md-10">
-        <div class="row main-form-header">
-            <div class="" style="display: inline">
-                <img class="teacher-image " src="./assets/images/duet_logo.png">
-            </div>
-            <div class="pull-right">
-                <ul class="teacher-details">
-                    <li>{{selectedDepartment}}</li>
-                    <li>Teacher: {{selectedTeacher}}</li>
-                    <li>Course: {{subject? subject: ''}}</li>
-                    <li>Evaluation: {{evaluationType}}</li>
-                    <li>Date: {{date | date}}</li>
-                </ul>
-            </div>
+    <div class="row main-form-header">
+        <div class="" style="display: inline">
+            <img class="teacher-image " src="./assets/images/duet_logo.png">
         </div>
-        
-        <div class="scrollbar" id="scrollbar" style="width: 90%; height: 70vh; overflow-y: scroll;">
-            <table class="table table-bordered table-striped table-hover table-responsive">
-                <thead>
-                    <tr>
-                        <th colspan="6">Question Number</th>
-                        <th colspan="1">Selection</th>
-                        <th colspan="1">Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let surveys of survey; let i = index">
-                        <td colspan="6">{{ i + 1 }}</td>
-                        <td colspan="1">{{ surveys.selection }}</td>
-                        <td colspan="1">{{ surveys.value }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div>
-                <!-- <course-eval-form *ngFor="let section of questions, let i=index"
-                    [index]="i"
-                    [heading]="section.name"
-                    [question]="section.queries"
-                    [canComment]="section.canComment"
-                    (quizReplied)="optionSelected($event)"
-                    (commentsReplied)="optionSelected($event)"                
-                ></course-eval-form> -->
-            </div>
-            <button class="btn btn-primary" (click)="downloadCSV()">Print to CSV</button>  
-        </div>                
+        <div class="pull-right">
+            <ul class="teacher-details">
+                <li>{{selectedDepartment}}</li>
+                <li>Teacher: {{selectedTeacher}}</li>
+                <li>Course: {{subject? subject: ''}}</li>
+                <li>Evaluation: {{evaluationType}}</li>
+                <li>Date: {{date | date}}</li>
+            </ul>
+        </div>
     </div>
+    <div class="scrollbar" id="scrollbar" style="width: 90%; height: 55vh; overflow-y: scroll;">
+        <table class="table table-bordered table-striped table-hover table-responsive">
+            <thead>
+                <tr>
+                    <th colspan="1">ID</th>
+                    <th colspan="5">Question</th>
+                    <th colspan="2">Selection</th>
+                    <th colspan="1">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let surveys of survey; let i = index">
+                    <td colspan="1">{{ i + 1 }}</td>
+                    <td colspan="5">{{ surveys.question || 'Comments' }}</td>
+                    <td colspan="2">{{ surveys.selection || '-' }}</td>
+                    <td colspan="1">{{ surveys.value }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>    
+    <div style="margin:0 4vw 0 2vw">
+        <button type="button" class="btn btn-primary pull-left" (click)="downloadCSV()"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp; Download to Excel</button>              
+        <button class="btn btn-primary pull-right" [routerLink]="['/dashboard/stats', surveyId]">View Graph&nbsp;  <i class="fa fa-line-chart" aria-hidden="true"></i></button>   
+    </div>
+</div>

@@ -5,9 +5,6 @@ import { Http } from "@angular/http";
 
 @Injectable()
 export class SharedService{
-    
-    
-
     constructor(
         private http: Http
         ){}
