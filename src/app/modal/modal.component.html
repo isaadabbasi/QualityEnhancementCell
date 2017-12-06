@@ -1,0 +1,36 @@
+<div #modal class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 animated bounceInRight">
+  <div id="login-container" class="account-wall">
+    <img class="survey-form-image img-responsive" src="./assets/images/duet_logo.png">
+    <h1 class="text-center app-modal-title">{{ options.header }}</h1>
+    <form class="form-signin">
+      <div class="form-group" *ngFor="let option of options.body">
+        <label *ngIf="options.metaData.labels" for="{{ option.id }}">{{ option.label }} </label>
+        <input *ngIf="option.type == 'text'" class="form-control" 
+               type="{{ option.type }}"
+               id="{{ option.id }}"
+               placeholder="{{ option.placeholder }}">
+              
+        
+        <!-- {{ option | json }} -->
+      </div>
+      <hr>
+      <span class="form-group" *ngFor="let el of options.footer">
+        <button 
+          id="{{ el.id }}"
+          class="btn btn-primary" 
+          [ngClass]="{ 
+            'btn-danger pull-right': el.id == 'cancel', 
+            'btn-info pull-left': el.id == 'submit',
+            'btn-success pull-left': el.id == 'next'
+          }" 
+          (click)="buttonClicked(el.id)"
+        >
+        {{  el.label }}
+        <i [class]="el.icon" aria-hidden="true"></i>        
+        </button>
+      </span>
+      <br>
+    </form>
+  </div>
+</div>
+  
