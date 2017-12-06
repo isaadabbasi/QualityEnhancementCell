@@ -75,6 +75,9 @@ export function highchartsFactory() {
     routing
     
   ],
+  entryComponents:[
+    ModalComponent
+  ],
   providers: [
     AuthGuard, 
     SessionGuard,

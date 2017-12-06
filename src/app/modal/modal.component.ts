@@ -4,7 +4,9 @@ import { Component,
          HostBinding, 
          ViewChild,
          ElementRef, 
-         ViewContainerRef } from '@angular/core';
+         ViewContainerRef, 
+         Output,
+         EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'app-modal',
@@ -14,9 +16,11 @@ import { Component,
 export class ModalComponent implements OnInit {
   @Input('options') options : Object = {};
   @Input('main-title') mainTitle: string = '';
-  
+  @Output('output') output: EventEmitter<Map<string, any>> = new EventEmitter();
   @ViewChild('modal', {read: ElementRef}) modal: ElementRef;
   @HostBinding('class.set-on-top') onTop: boolean = true;
+
+  _ref: any;
 
   constructor(private vcRef: ViewContainerRef) { }
 
@@ -25,11 +29,12 @@ export class ModalComponent implements OnInit {
   }
 
   buttonClicked(buttonId){
+    this._ref.destroy();
     console.log(buttonId);
     if(buttonId === 'cancel'){
-      console.log(this.modal);  
-      let parentComponent = this.vcRef.parentInjector;
-      console.log(parentComponent)  
+      let output = new Map();
+      output.set('buttonClicked', buttonId);
+      this.output.emit(output)
     }
   }
 
