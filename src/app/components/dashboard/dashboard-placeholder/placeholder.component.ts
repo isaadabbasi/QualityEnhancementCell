@@ -1,4 +1,7 @@
+import { Observable } from 'rxjs/Rx';
 import { Component } from '@angular/core';
+
+import { ModalComponent } from './../../../modal/modal.component';
 
 @Component({
     styles:[`
@@ -25,6 +28,8 @@ import { Component } from '@angular/core';
     `
 })  
 export class PlaceHolderComponent {
+    
+    
     constructor() { }
     
 }

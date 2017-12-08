@@ -1,11 +1,13 @@
   import { SURVEY_LIST, 
           Departments, 
           TEACHER_DETAILS_BY_DEPARTMENT, 
-          TEACHER_DETAILS_BY_NAME
+          TEACHER_DETAILS_BY_NAME,
+          DOWNLOAD_EXCEL
           } from './../../../shared/global-vars';
-  import { Component, ViewChild, Output, EventEmitter, OnInit } from '@angular/core';
+  import { Component, ViewChild, Output, EventEmitter, OnInit, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
   import { SharedService } from "./../../../shared/shared.service";
   import { map } from "lodash";
+import { ModalComponent } from '../../../modal/modal.component';
   @Component({
       selector: 'surveys',
       templateUrl: './surveys.template.html',
@@ -17,6 +19,9 @@
       ]
   })
   export class SurveysComponent implements OnInit {
+
+    @ViewChild('modal', {read: ViewContainerRef}) container: ViewContainerRef;
+
     modalPurpose: string;
     openModal: boolean;
     surveyReferencesList: {}[];
@@ -29,6 +34,8 @@
     surveysArray;
     deparmentsList = Departments;
     optimize;
+    surveyDetails: Map<string, any> = new Map();
+
     onOptimize(teacher){
       this.showSurvey(teacher, this.optimize);
     }
@@ -48,7 +55,8 @@
       let end = Date.now();
       this.timeToFetch = end - start;
     }
-    constructor(private sharedService: SharedService){
+    constructor(private sharedService: SharedService,
+                private _cfr: ComponentFactoryResolver){
     }
     getNextList(entity: string, value: string){
       let URL = entity === 'teachers' && value != "0"? 
@@ -56,6 +64,7 @@
         :
         '';
       if(value != "0"){
+        this.surveyDetails.set('dept', value);
         this.showTeachersList = true;
         this.sharedService.getCall(URL)
           .subscribe(
@@ -74,7 +83,7 @@
       this.SurveyId.emit(id);  
     }
     showSurvey(teacherName: string, optimize){
-      
+      this.surveyDetails.set('teacher', teacherName);
       let selectedTeacher: Object = {};
       let singleSurveys = [];
       // console.time()
@@ -107,6 +116,61 @@
       this.showLoader = hidden;
     }
     downloadCSV($event){
+      let modalOptions = {
+        metaData: {
+          chaining: false,
+          labels: false,
+          setOnTop: true
+        },
+        header: 'Generate Excel',
+        body: [{
+                type: 'text',
+                label: 'Enter Batch',
+                placeholder: 'Enter Batch',
+                id: 'batch'
+            },{
+                type: 'text',
+                label: 'Enter Subject',
+                placeholder: 'Enter Subject',
+                id: 'subject'
+            }
+        ],
+        footer: [{
+                type: 'button',
+                label: 'Submit',
+                id: 'submit',
+                icon: 'fa fa-check'
+            },{
+                type: 'button',
+                label: 'Cancel',
+                id: 'cancel',
+                icon: 'fa fa-times'
+            }
+        ]
+      };
+      this.container.clear();
+      // check and resolve the component
+      let comp = this._cfr.resolveComponentFactory(ModalComponent);
+      // Create component inside container
+      let modalComponent = this.container.createComponent(comp);
+      // see explanations
+      modalComponent.instance["_ref"] = modalComponent;
+      modalComponent.instance.options = modalOptions;
+      
+      
+      modalComponent.instance.output
+        .subscribe( output => {
+            if(output.get('status') != 'cancel'){
+                let batch = !!output.get("batch") ? `&batch=${output.get("batch")}` : '',
+                  subject = !!output.get("subject") ? `&subject=${output.get("subject")}`: '',
+                  URL     = `${DOWNLOAD_EXCEL}?teacher=${this.surveyDetails.get("teacher")}&dept=${this.surveyDetails.get("dept")}${batch}${subject}`;  
+                  console.log(URL);
+                window.open(URL, '__blank');
+            }
+
+      });
+
+      
       this.openModal = true;
       this.modalPurpose = 'survey';
     }
