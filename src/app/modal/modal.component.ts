@@ -19,7 +19,7 @@ export class ModalComponent implements OnInit {
   @Output('output') output: EventEmitter<Map<string, any>> = new EventEmitter();
   @ViewChild('modal', {read: ElementRef}) modal: ElementRef;
   @HostBinding('class.set-on-top') onTop: boolean = true;
-
+  outputMaps: Map<string, any> = new Map();                              //Bindined with template
   _ref: any;
 
   constructor(private vcRef: ViewContainerRef) { }
@@ -30,12 +30,8 @@ export class ModalComponent implements OnInit {
 
   buttonClicked(buttonId){
     this._ref.destroy();
-    console.log(buttonId);
-    if(buttonId === 'cancel'){
-      let output = new Map();
-      output.set('buttonClicked', buttonId);
-      this.output.emit(output)
-    }
+    console.log(buttonId);    
+    this.outputMaps.set('status', buttonId);
+    this.output.emit(this.outputMaps);
   }
-
 }

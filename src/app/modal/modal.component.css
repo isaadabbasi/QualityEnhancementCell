@@ -1,9 +1,8 @@
 :host(.set-on-top){
-    position: absolute;
     margin: 0 auto;
     left: 0;
     right: 0;
-    z-index: 100000;
+    z-index: 10000000!important;
 }
 app-modal{
     display: block;
