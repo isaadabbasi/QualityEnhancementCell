@@ -1,3 +1,4 @@
+<div #modal></div>
 <loader *ngIf="showLoader"></loader>
 <div class="row inline-headers">
 	<div class="col-xs-3">			
@@ -64,4 +65,5 @@
 		Fetched {{ length }} results in about {{ timeToFetch }} ms
 	</div>	
 </div>
-<dashoard-modal *ngIf="openModal && modalPurpose == 'survey'" (modalStatus)="modalState($event)" [modalPurpose]="'survey'" [surveyDetails]="{teacher: teacher.value, dept: department.value}"></dashoard-modal>
+
+<!-- <dashoard-modal *ngIf="openModal && modalPurpose == 'survey'" (modalStatus)="modalState($event)" [modalPurpose]="'survey'" [surveyDetails]="{teacher: teacher.value, dept: department.value}"></dashoard-modal> -->
