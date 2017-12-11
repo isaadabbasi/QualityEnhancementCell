@@ -3,15 +3,29 @@
     <img class="survey-form-image img-responsive" src="./assets/images/duet_logo.png">
     <h1 class="text-center app-modal-title">{{ options.header }}</h1>
     <form class="form-signin">
-      <div class="form-group" *ngFor="let option of options.body; let index = index">
+      <div *ngFor="let option of options.body; let index = index">
         <label *ngIf="options.metaData.labels" for="{{ option.id }}">{{ option.label }} </label>
-        <input *ngIf="option.type == 'text'" class="form-control" 
+        <div class="form-group">        
+        <input *ngIf="option.type == 'text'" 
+               class="form-control" 
                type="{{ option.type }}"
                id="{{ option.id }}"
                name="{{ option.id }}"
                (focusout)="outputMaps.set(option.id, $event.target.value)"
                placeholder="{{ option.placeholder }}">
+        <select
+          *ngIf="option.type == 'select'"
+          [multiple]="option.multiple"
+          class="form-control" 
+          [name]="option.id" 
+          [id]="option.id"
+          [size]="option.size">
+          <option *ngFor="let dept of option.options">{{ dept.name }}</option>
+        </select>
+
       </div>
+      </div>
+      
       <hr>
       <span class="form-group" *ngFor="let el of options.footer">
         <button 
