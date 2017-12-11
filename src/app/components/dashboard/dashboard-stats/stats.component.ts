@@ -1,6 +1,6 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+
 import { OnInit } from '@angular/core';
 import { map, each } from "lodash";
 import { Subscription } from 'rxjs/Subscription';
@@ -8,14 +8,20 @@ import { Subscription } from 'rxjs/Subscription';
 import { SURVEY_LIST, 
          Departments, 
          TEACHER_DETAILS_BY_DEPARTMENT, 
-         BASE_URL} from './../../../shared/global-vars';
+         BASE_URL,
+         DOWNLOAD_EXCEL } from './../../../shared/global-vars';
 import { SharedService } from './../../../shared/shared.service';
+import { ModalComponent } from '../../../modal/modal.component';
+
 @Component({
     selector: 'stats',
     templateUrl: './stats.template.html',
     styleUrls: ['./stats.css']
 })
 export class StatsComponent implements OnInit{
+  @ViewChild('modal', {read: ViewContainerRef}) container: ViewContainerRef;
+  
+  surveyDetails: Map<string, any> = new Map();
   finalSurveysArray: Array<any> = [];
   surveyReferencesList: {}[];
   showLoader: boolean;
@@ -51,7 +57,9 @@ export class StatsComponent implements OnInit{
     err => console.error(err)
   }
   constructor(private route: ActivatedRoute,
-              private sharedService: SharedService){                
+              private sharedService: SharedService,
+              private _cfr: ComponentFactoryResolver
+            ){                
   }
   onOptimize(teacher){
     this.showSurvey(teacher, this.optimize);
@@ -62,6 +70,7 @@ export class StatsComponent implements OnInit{
       :
       '';
     if(value != "0"){
+      this.surveyDetails.set('dept', value);
       this.showTeachersList = true;
       this.sharedService.getCall(URL)
         .subscribe(
@@ -80,6 +89,7 @@ export class StatsComponent implements OnInit{
     this.SurveyId.emit(id);  
   }
   showSurvey(teacherName: string, optimize?: boolean, surveyId?: string){
+    this.surveyDetails.set('teacher', teacherName);
     let selectedTeacher: any= {},
         singleSurveys = [],
         start = Date.now();
@@ -170,6 +180,58 @@ export class StatsComponent implements OnInit{
     this.showLoader = hidden;
   }
   downloadCSV(){
-    window.open(`${BASE_URL}/excel/${this.SurveyId}`, '__blank');
+    let modalOptions = {
+      metaData: {
+        chaining: false,
+        labels: false,
+        setOnTop: true
+      },
+      header: 'Generate Excel',
+      body: [{
+              type: 'text',
+              label: 'Enter Batch',
+              placeholder: 'Enter Batch',
+              id: 'batch'
+          },{
+              type: 'text',
+              label: 'Enter Subject',
+              placeholder: 'Enter Subject',
+              id: 'subject'
+          }
+      ],
+      footer: [{
+              type: 'button',
+              label: 'Submit',
+              id: 'submit',
+              icon: 'fa fa-check'
+          },{
+              type: 'button',
+              label: 'Cancel',
+              id: 'cancel',
+              icon: 'fa fa-times'
+          }
+      ]
+    };
+    this.container.clear();
+    // check and resolve the component
+    let comp = this._cfr.resolveComponentFactory(ModalComponent);
+    // Create component inside container
+    let modalComponent = this.container.createComponent(comp);
+    // see explanations
+    modalComponent.instance["_ref"] = modalComponent;
+    modalComponent.instance.options = modalOptions;
+    
+    
+    modalComponent.instance.output
+      .subscribe( output => {
+          if(output.get('status') != 'cancel'){
+              let batch = !!output.get("batch") ? `&batch=${output.get("batch")}` : '',
+                subject = !!output.get("subject") ? `&subject=${output.get("subject")}`: '',
+                URL     = `${DOWNLOAD_EXCEL}?teacher=${this.surveyDetails.get("teacher")}&dept=${this.surveyDetails.get("dept")}${batch}${subject}`;  
+                console.log(URL);
+              window.open(URL, '__blank');
+          }
+
+    });
   }
 }
