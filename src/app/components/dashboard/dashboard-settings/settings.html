@@ -49,7 +49,7 @@
                 <td class="text-center">{{ teacher.fullname }}</td>
                 <td class="text-center"><span *ngFor="let dept of teacher.departments, let i=index">{{ i + 1 }}. {{ dept }} </span></td>
                 <!-- <td class="text-center bg-success text-success">{{ teacher.fullname }}</td> -->
-                <td class="text-center bg-danger"><a style="cursor: pointer" role="link" (click)="openConfirmation('delete', teacher._id)" class="text-danger">Delete</a></td>
+                <td class="text-center bg-danger"><a style="cursor: pointer" role="link" (click)="delete(teacher._id)" class="text-danger">Delete</a></td>
             </tr>
         </tbody>
         </table>

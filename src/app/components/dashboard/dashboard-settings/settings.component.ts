@@ -2,6 +2,8 @@ import { TEACHER_DETAILS_URL, Departments as DepartmentsList, TEACHER_BASE_URL }
 import { SharedService } from './../../../shared/shared.service';
 import { Component, ComponentFactoryResolver, ViewContainerRef, ViewChild } from '@angular/core';
 import { ModalComponent } from '../../../modal/modal.component';
+import { Subscribable } from 'rxjs/Observable';
+import 'rxjs/add/operator/switchMap'
 @Component({
     selector: 'settings',
     templateUrl: './settings.html'
@@ -40,6 +42,54 @@ export class SettingsComponent {
     openModal;
     idToDelete;
     purpose;
+    delete(teacherId){
+        
+        console.info(teacherId)
+        let modalOptions = {
+            metaData: {
+                labels: false,
+                setOnTop: true,
+                type: 'confirm'  
+            },
+            header: 'Delete Teacher',
+            body:{
+                html:{
+                    h1: [
+                        'Are you sure?'
+                    ],
+                    p: [
+                        'This will delete the teacher and all related details.',
+                        'You can not undo this action.'
+                    ],
+                }
+            },
+            footer: [{
+                type: 'button',
+                label: 'Yes, I am sure.',
+                id: 'submit',
+                icon: 'fa fa-check'
+            },{
+                type: 'button',
+                label: 'Cancel',
+                id: 'cancel',
+                icon: 'fa fa-times'
+            }]
+        }
+        this.modalFactory(this.container, this._cfr, modalOptions)
+            .subscribe(
+                output => {
+                    if(output.get('status') != 'cancel')
+                    this.sharedService.deleteCall(`${TEACHER_BASE_URL}/${teacherId}`)
+                        .switchMap(() => this.sharedService.getCall(TEACHER_DETAILS_URL))
+                        .subscribe(
+                            res => {
+                                this.allTeachers = res["body"]
+
+                            }
+                    )
+                }
+            )
+    }
     openConfirmation(action, id){
         this.openModal = true;
         this.purpose = action;
@@ -95,18 +145,9 @@ export class SettingsComponent {
                 }
             ]
           };
-          this.container.clear();
-          // check and resolve the component
-          let comp = this._cfr.resolveComponentFactory(ModalComponent);
-          // Create component inside container
-          let modalComponent = this.container.createComponent(comp);
-          
-          modalComponent.instance["_ref"] = modalComponent;
-          modalComponent.instance.options = modalOptions;
-          
-          
-          modalComponent.instance.output
-            .subscribe( output => {
+          this.modalFactory(this.container, this._cfr, modalOptions)
+            .subscribe(
+                output => {
                 if(output.get('status') != 'cancel'){
                     let teacher = {
                         fullname: output.get('fullname'),
@@ -117,12 +158,35 @@ export class SettingsComponent {
                     this.sendTeacherDetails(`${TEACHER_BASE_URL}/add`, teacher)
                 }
           });
-    }
+    
+        }
+    
     sendTeacherDetails(URL, teacher){
         this.sharedService.postCall(URL, teacher)
+            .switchMap(() => this.sharedService.getCall(TEACHER_DETAILS_URL))
             .subscribe(
-                console.log
+                res => this.allTeachers = res["body"]
             ),
             console.error
+    }
+
+    modalFactory(container: ViewContainerRef, _cfr: ComponentFactoryResolver, modalOptions: Object): Subscribable<Map<string, any>>{
+        container.clear();
+        // check and resolve the component
+        let comp = _cfr.resolveComponentFactory(ModalComponent);
+        // Create component inside container
+        let modalComponent = container.createComponent(comp);
+        
+        modalComponent.instance["_ref"] = modalComponent;
+        modalComponent.instance.options = modalOptions;
+        
+        
+        modalComponent.instance.output
+          .subscribe( output => {
+              if(output.get('status') != 'cancel'){
+                
+              }
+        });
+        return modalComponent.instance.output
     }
 }
