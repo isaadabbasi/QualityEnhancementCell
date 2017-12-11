@@ -153,7 +153,7 @@ import { ModalComponent } from '../../../modal/modal.component';
       let comp = this._cfr.resolveComponentFactory(ModalComponent);
       // Create component inside container
       let modalComponent = this.container.createComponent(comp);
-      // see explanations
+      
       modalComponent.instance["_ref"] = modalComponent;
       modalComponent.instance.options = modalOptions;
       
