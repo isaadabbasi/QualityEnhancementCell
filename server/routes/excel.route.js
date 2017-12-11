@@ -66,8 +66,8 @@ function printByQuery(req, res){
     console.log(query);
     // query.teacher && (params.teacehr)
     query.teacher && (params.teacher = query.teacher);
-    query.batch && (params.studentBatch = query.batch);
-    query.dept && (params.studentDept = query.dept);
+    query.batch && (params.batch = query.batch);
+    query.dept && (params.dept = query.dept);
     query.subject && (params.course = query.subject);
 
     if(! Object.keys(params).length ){

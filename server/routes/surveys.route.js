@@ -23,12 +23,13 @@ const
     },
 
     getSurveyByParams = (req, res) => {
+        // console.log(req.body);
         let 
             query = req.query,
             params = {};
 
-        if(query.department)
-            params.department = query.department;
+        if(query.dept)
+            params.department = query.dept;
         if(query.fullname)
             params.teacher = query.fullname;
         
@@ -50,6 +51,7 @@ const
     getSurveyByListCb = (req, res, next)=>{
         let {list: _list, optimize} = req.body;
         console.log('list: ', _list)
+        console.log('req.body: ', req.body);
         // if the list is provided in array wrapped in string,
         if(typeof req.body.list === 'string'){ // method to reconvert to simple array
             let list = req.body.list;
@@ -82,19 +84,17 @@ const
         console.log('request body', req.body);
         let {
             course = null, teacher = null, evaluation = null,
-            survey = null, batch: studentBatch = null, 
-            studentId = null, dept: studentDept = null
+            survey = null, batch = null, 
+            studentId = null, dept = null
         } = req.body,
         surveyModel = {
             evaluation, course, teacher, survey, 
-            studentBatch, studentDept, studentId
+            batch, dept, studentId
         };
         
-        // console.log(surveyModel);
         surveyJoint.saveSurvey(surveyModel)
             .then(result => {
                 let body = result.body;
-                // console.log(body)
                 ~body.evaluation.indexOf('teacher') ?
                     teacherJoint.addSurveyReference(body)
                         .then( prores =>{

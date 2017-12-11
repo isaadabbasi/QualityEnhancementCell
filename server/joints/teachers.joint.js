@@ -1,4 +1,6 @@
-const Teachers = require('../database/models/teachers.model');
+const 
+    Teachers = require('../database/models/teachers.model'),
+    SurveyJoint = require('../joints/survey.joint');
 
 class TeacherJoint {
     constructor(){
@@ -72,12 +74,22 @@ class TeacherJoint {
     
     remove(_id){
         return new Promise((resolve, reject) => {
-            Teachers.remove({_id}, err=> {
-                if(err)
-                    throw new Error('Unable to delete teacher');
 
-                resolve({status: 200, body: 'Teacher deleted'});
-            })
+            Teachers.findById(_id, (err, teacher)=> {
+                let surveys = teacher.surveys.map(survey => survey._reference);
+                SurveyJoint.removeSurveyList(surveys)
+                    .then(()=>{
+                        Teachers.remove({_id}, err=> {
+                            if(err)
+                                throw new Error('Unable to delete teacher');
+                            resolve({status: 200, body: 'Teacher deleted'});
+                        })
+                    })
+                    .catch(err=>{
+                        reject({status: 500, body: err.msg})    
+                    })
+            });
+ 
         });
     }
 
