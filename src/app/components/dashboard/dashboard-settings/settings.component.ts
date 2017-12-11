@@ -32,7 +32,7 @@ export class SettingsComponent {
         this.sharedService.getCall(TEACHER_DETAILS_URL)
         .subscribe(
             next => {
-                this.allTeachers = next["body"];
+                this.allTeachers = next;
             }
         ),
         err => console.error(err),
@@ -89,7 +89,7 @@ export class SettingsComponent {
                         .switchMap(() => this.sharedService.getCall(TEACHER_DETAILS_URL))
                         .subscribe(
                             res => {
-                                this.allTeachers = res["body"]
+                                this.allTeachers = res
 
                             }
                     )
@@ -112,7 +112,7 @@ export class SettingsComponent {
         let modalOptions = {
             metaData: {
               chaining: false,
-              labels: true,
+              labels: false,
               setOnTop: true
             },
             header: 'Add new teacher',
@@ -171,7 +171,7 @@ export class SettingsComponent {
         this.sharedService.postCall(URL, teacher)
             .switchMap(() => this.sharedService.getCall(TEACHER_DETAILS_URL))
             .subscribe(
-                res => this.allTeachers = res["body"]
+                res => this.allTeachers = res
             ),
             console.error
     }

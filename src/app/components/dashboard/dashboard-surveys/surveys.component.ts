@@ -70,7 +70,7 @@ import { ModalComponent } from '../../../modal/modal.component';
           .subscribe(
             next => {
               this.showTeachersList = true;
-              this.teachersList = next["body"];
+              this.teachersList = next;
             },
             err => console.error(err)
           )
