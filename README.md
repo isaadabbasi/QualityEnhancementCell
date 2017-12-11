@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # QualityEnhancementCell
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.2.3.
@@ -26,3 +27,7 @@ Before running the tests make sure you are serving the app via `ng serve`.
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+=======
+# angular-modal
+An angular 2 and beyond modal built using bootstrap 3
+>>>>>>> 063346b4165a8abc52e59ee1069d279966c01abc
