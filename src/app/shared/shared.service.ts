@@ -2,8 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { FirebaseListObservable } from 'angularfire2';
 import { Injectable } from "@angular/core";
 import { Http } from "@angular/http";
-import { map } from 'rxjs/operator/map';
-// import { map } from "rxjs/operators";
 import 'rxjs/add/operator/map'
 
 
@@ -16,7 +14,7 @@ export class SharedService{
     getCall(url: string, options?){
         
         return this.http.get(url, options)
-            .map(response => {response.json()});
+            .map(response => response.json());
     }
 
     postCall(url: string, body: any, options?){
