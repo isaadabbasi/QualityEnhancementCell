@@ -7,8 +7,8 @@ export class ModalComponentFactory {
     constructor(private _cfr: ComponentFactoryResolver, ) {
         
     }
-
-    modalFactory(container: ViewContainerRef, 
+    
+    generateModal(container: ViewContainerRef, 
                 modalOptions: Object): Subscribable<Map<string, any>>{
         container.clear();
         // check and resolve the component
