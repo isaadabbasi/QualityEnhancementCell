@@ -4,30 +4,22 @@ const
     router = express.Router(),
     AdminJoint = require('../joints/admin.joint'),
     Student = require('../database/models/student.model'),
+    { generateHash } = require('../utils/common.utils'),
     bcrypt = require('bcrypt'),
-    saltRounds = 10, 
-    { createReadStream } = require('fs'),
-    // XLSX = require('xlsx'),
-    generateHash = (password)=>{
-        console.log(`password about to encrypt: ${password}`);
-        return new Promise((resolve, reject)=>{
-            let genHashCb = (err, hash)=>{
-                if(err)
-                    reject(err)
-                
-                if(!err && hash)
-                    resolve(hash)
-
-            };
-            
-            bcrypt.hash(password, saltRounds, genHashCb)
-        })
-    },
-
     loginCallback = (req, res, next)=> {
-        let 
-            password = req.body.password,
-            recordFindCb = (err, record)=>{
+
+        if(req.body.email) {
+            res.redirect(307, '/admins/login');
+            return;
+        }
+
+        const {
+            rollnumber = null,
+            password = null
+        } = req.body;
+
+
+        let recordFindCb = (err, record)=>{
                 if(err)
                     res.status(501).send("Error occured on login attempt");
                 if(!record)
@@ -44,39 +36,16 @@ const
                     if(!err && !success)
                         res.status(401).send("Invalid Password");
                 }
-
                 if(record)
                     bcrypt.compare(password, record.password, compareCb)
-            }, 
-            searchQuery = {},
+
+            },
             
             responseParams= {
-                __v: false,
-                created: false,
-                fullname: false
+                _id: true, department: true, password: true
             };
 
-        req.body.rollnumber ? 
-            searchQuery['rollnumber'] = req.body.rollnumber 
-            :
-            searchQuery['email'] = req.body.email;
-        
-        console.log(`Search Query: `, searchQuery);
-        searchQuery.hasOwnProperty('rollnumber') ?
-            Student.findOne(searchQuery, responseParams, recordFindCb)
-            :
-            AdminJoint.findByEmail(searchQuery.email, responseParams)
-                .then(admin => {
-                    if(admin.body && '_id' in admin.body){
-                        admin.body.password = null;
-                         res.status(200).send(admin.body);
-                    } else 
-                        res.status(401).send('No Match Found');
-                })
-                .catch(err=> {
-                    res.status(500).send(err.body)
-                    // console.log('PROMISE REJECTED AT FINDING BY EMAIL');
-                })
+            Student.findOne({rollnumber}, responseParams, recordFindCb)
     },
 
     registrationCallback = (req, res, next)=> {
@@ -111,16 +80,8 @@ const
                 }).catch(err=>{
                     throw new Error(err)
                 })
-    },
-    excel = (req, res) => {
-        console.log('req.body: ', req.body);
-        
-        res.attachment('csv.xls');
-        res.status(200).send(csv);
     }
 
-
-router.post('/excel', excel)
 router.post('/login', loginCallback);
 router.post('/register', registrationCallback);
 
