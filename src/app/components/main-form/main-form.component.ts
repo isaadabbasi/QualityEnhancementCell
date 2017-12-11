@@ -1,10 +1,13 @@
-import { TeacherEvaluationForm, courseEvaluationForm } from './../../shared/forms/teacher-evaluation-form';
-import { Component, OnInit } from '@angular/core';
+
+import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { debounceTime } from 'rxjs/operators';
 
 import { sortBy } from "lodash";
 
+import { TeacherEvaluationForm, courseEvaluationForm } from './../../shared/forms/teacher-evaluation-form';
+import { ModalComponent } from './../../modal/modal.component';
+import { ModalComponentFactory } from './../../modal/modal.service';
 import { QuestionComponent } from './quest.component';
 import { CourseEvalForm } from "./course-eval-form.component";
 import { SharedService } from '../../shared/shared.service';
@@ -35,10 +38,15 @@ interface FinalSurveyModel {
 
 
 export class MainFormComponent implements OnInit{
+    @ViewChild('modal', {read: ViewContainerRef}) container: ViewContainerRef;    
+
     finalSurveyDetails: FinalSurveyModel; //DOM Binding
     purpose: string;
     openModal: any;
-    constructor(private _sharedService: SharedService, private router: Router) { }
+    constructor(private _sharedService: SharedService, 
+                private router: Router,
+                private modalCF: ModalComponentFactory
+            ) { }
     surveyComplete = false;
     selectedTeacher: string = '';
     selectedDepartment: string = '';
@@ -57,6 +65,7 @@ export class MainFormComponent implements OnInit{
                 
     }
     getSurveys(){
+        console.log(GET_SURVEY + this.surveyMetaData.evaluation)
         this._sharedService.getCall(GET_SURVEY + this.surveyMetaData.evaluation)
             .subscribe(
                 next => {
@@ -103,8 +112,47 @@ export class MainFormComponent implements OnInit{
             lastQID = lastSection[lastSection.length - 1]["qid"];
             console.log(surveyDetails);
         if(surveyDetails.survey.length >= lastQID){
-            this.purpose = 'confirm';
-            this.finalSurveyDetails = surveyDetails;
+            let modalOptions = {
+                metaData: {
+                    chaining: false,
+                    labels: false,
+                    setOnTop: true,
+                    type: 'confirm'
+                  },
+                header: 'Submit form',
+                body: {
+                    html:{
+                        h1: [
+                            'Are you sure?'
+                        ],
+                        p: [
+                            'This will delete the teacher and all related details.',
+                            'You can not undo this action.'
+                        ],
+                    }
+                },
+                footer: [{
+                    type: 'button',
+                    label: 'Yes, I am sure.',
+                    id: 'submit',
+                    icon: 'fa fa-check'
+                },{
+                    type: 'button',
+                    label: 'Cancel',
+                    id: 'cancel',
+                    icon: 'fa fa-times'
+                }]
+            }
+            this.modalCF.generateModal(this.container, modalOptions)
+            .subscribe(
+                res => {
+                    if(res.get('status') == 'submit')
+                        this._sharedService.postCall(ADD_SURVEY_URL, surveyDetails)
+                            .subscribe( res => this.router.navigate(['/']) );
+                }
+            )
+            
+            
             this.confirmAndSend(this.purpose, true, surveyDetails)
             this.surveyComplete = true;
             // subscribe also takes and object as param, 

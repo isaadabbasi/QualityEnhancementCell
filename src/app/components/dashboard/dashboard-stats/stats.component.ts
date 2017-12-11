@@ -77,7 +77,7 @@ export class StatsComponent implements OnInit{
         .subscribe(
           res => {
             this.showTeachersList = true;
-            this.teachersList = res["body"];
+            this.teachersList = res;
           },
           err => console.error(err)
         )
@@ -119,12 +119,13 @@ export class StatsComponent implements OnInit{
       this.sharedService.postCall(SURVEY_LIST, {list: this.surveyReferencesList, optimize: this.optimize})
         .subscribe(     
           result => {
+            console.log(result)
             if(result.status == 200){
               let res = JSON.parse(result["_body"]).reverse(),
                 {length} = res;
             
               if(length > 5)
-                res = res.slice(length-5, length);
+                res = res.slice(length-5, length);  
 
             this.finalSurveysArray = res;
             }

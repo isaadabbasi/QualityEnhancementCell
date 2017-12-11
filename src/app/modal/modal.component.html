@@ -9,16 +9,30 @@
     </div>
     
     <form *ngIf="options.metaData.type != 'confirm'" class="form-signin">
-      <div *ngFor="let option of options.body; let index = index">
-        <label *ngIf="options.metaData.labels" for="{{ option.id }}">{{ option.label }} </label>
+      <div [ngClass]="{'radio': option.type == 'radio'}" 
+                      *ngFor="let option of options.body; let index = index">          
+        <label *ngIf="option.type == 'radio'" class="radio-inline text-center" for="{{ option.id }}">
+          <input 
+          type="{{ option.type }}"
+          id="{{ option.id }}"
+          name="{{ option.name }}"
+          [value]="option.value"
+          (focusout)="outputMaps.set(option.name, $event.target.id || $event.target.value)"
+          >
+          <strong>{{ option.label }}</strong>
+        </label>
+            
+              
         <div class="form-group">        
+          <label *ngIf="options.metaData.labels" for="{{ option.id }}">{{ option.label }}</label>
           <input *ngIf="option.type == 'text'" 
                 class="form-control" 
                 type="{{ option.type }}"
                 id="{{ option.id }}"
                 name="{{ option.id }}"
                 (focusout)="outputMaps.set(option.id, $event.target.value)"
-                placeholder="{{ option.placeholder }}">
+                placeholder="{{ option.placeholder }}">          
+          
           <select
             *ngIf="option.type == 'select'"
             [multiple]="option.multiple"
@@ -28,7 +42,6 @@
             [size]="option.size">
             <option *ngFor="let dept of option.options">{{ dept.name }}</option>
           </select>
-
         </div>
       </div>
 

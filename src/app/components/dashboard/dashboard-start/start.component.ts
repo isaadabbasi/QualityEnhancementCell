@@ -1,7 +1,8 @@
+import { ModalComponentFactory } from './../../../modal/modal.service';
 import { Router } from '@angular/router';
 import { TEACHER_DETAILS_URL, Departments } from './../../../shared/global-vars';
 import { SharedService } from './../../../shared/shared.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { StudentModel } from "./../../../shared/models";
 import { TeacherModel } from "./../../../shared/models";
 
@@ -10,6 +11,8 @@ import { TeacherModel } from "./../../../shared/models";
     styleUrls:[ '../../login/login.component.css' ]
 })
 export class StartSurveyComponent implements OnInit {
+    @ViewChild('modal', {read: ViewContainerRef}) container: ViewContainerRef;    
+
     year: number;
     month: String;
     teachers: boolean;
@@ -28,7 +31,9 @@ export class StartSurveyComponent implements OnInit {
     @ViewChild('dept') deptReference;  
     months:Array<String> = ["January", "February", "March", "April", "May", "June","July","August", "September", "October", "November", "December"];
     constructor(private sharedService: SharedService,
-                private router: Router) { 
+                private router: Router,
+                private modalCF: ModalComponentFactory
+            ) { 
         this.year = new Date().getFullYear();
         this.month = this.months[new Date().getMonth()];
         
@@ -61,15 +66,56 @@ export class StartSurveyComponent implements OnInit {
         }
     }
     validate(){
-        return !!this.surveyMetaData.course && 
-               !!this.surveyMetaData.teacher;
+        return !!this.surveyMetaData.teacher && !!this.surveyMetaData.course;
+               
     }
     openModal = false;
     startSession(){
         if(this.validate()){
-            localStorage.setItem('surveyMetaData', JSON.stringify(this.surveyMetaData));
+            
+            let modalOptions = {
+                metaData: {
+                    chaining: false,
+                    labels: false,
+                    setOnTop: true
+                  },
+                  header: 'Select Evaluation Type',
+                  body: [{
+                    type: 'radio',
+                    label: 'Teacher Evaluation',
+                    id: 'teacher',
+                    value: 'teacher',
+                    name: 'evaluation'
+                  },{
+                    type: 'radio',
+                    label: 'Course Evaluation',
+                    id: 'course',
+                    value: 'course',
+                    name: 'evaluation'
+                  }],
+                  footer: [{
+                    type: 'button',
+                    label: 'Start Survey',
+                    id: 'submit',
+                    icon: 'fa fa-check'
+                },{
+                    type: 'button',
+                    label: 'Cancel',
+                    id: 'cancel',
+                    icon: 'fa fa-times'
+                }]
+            }   
+            this.modalCF.generateModal(this.container, modalOptions)
+                .subscribe(
+                    res => {
+                        this.surveyMetaData.evaluation = res.get('evaluation')
+                        localStorage.setItem('surveyMetaData', JSON.stringify(this.surveyMetaData));
+                        console.log(this.surveyMetaData);
+                        this.router.navigate(['/survey'])
+                    }
+                    
+                )
         }
-        this.openModal = true;
     } 
     ngOnInit() {
         localStorage.removeItem('surveyMetaData');
