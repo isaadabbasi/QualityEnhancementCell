@@ -44,7 +44,7 @@ class TeacherJoint {
         })
     }
 
-    deepSearch(params){
+    deepSearch(params = {}){
         return new Promise((resolve, reject)=>{
             let cb = (err, result) => {
                 if(err)
@@ -57,7 +57,6 @@ class TeacherJoint {
                         reject({status: 404, body: "Unable to find result for desired data"});
             }
             Teachers.find(params, cb)
-                
         })
     }
     
