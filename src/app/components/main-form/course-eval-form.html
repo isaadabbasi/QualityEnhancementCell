@@ -17,7 +17,7 @@
                 <br>
                 <div class="text-center" *ngIf="quest.type == 'ss'" style="margin:-10px auto"> 
                     <div class="radio-inline" *ngFor="let opt of quest.options" (change)="optionSelected(quest.qid, opt.value, opt.message, quest.question)">
-                        <input type="radio" name="{{ quest.qid }}" value="{{opt.value}}">{{ opt.message }} &nbsp;
+                        <label><input type="radio" name="{{ quest.qid }}" value="{{opt.value}}">{{ opt.message }} &nbsp;</label>
                     </div>
                 </div>
                 <div class="text-center" *ngIf="quest.type == 'text'" style="margin:-10px auto"> 
