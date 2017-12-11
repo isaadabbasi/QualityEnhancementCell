@@ -5,6 +5,7 @@ const
   bodyParser = require('body-parser'),
   
   // Get our API routes
+  admin = require('./server/routes/admin.route'),
   routes_users = require('./server/routes/users.route'),
   routes_survey = require('./server/routes/surveys.route'),
   routes_teachers = require('./server/routes/teacher.route'),
@@ -29,6 +30,7 @@ app.use('/users', routes_users);
 app.use('/surveys', routes_survey);
 app.use('/teachers', routes_teachers);
 app.use('/excel', excel);
+app.use('/admins', admin);
 
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
