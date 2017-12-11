@@ -72,11 +72,12 @@ export class StatsComponent implements OnInit{
     if(value != "0"){
       this.surveyDetails.set('dept', value);
       this.showTeachersList = true;
+      console.info(URL);
       this.sharedService.getCall(URL)
         .subscribe(
-          next => {
+          res => {
             this.showTeachersList = true;
-            this.teachersList = next["body"];
+            this.teachersList = res["body"];
           },
           err => console.error(err)
         )
@@ -111,7 +112,7 @@ export class StatsComponent implements OnInit{
       this.loaderState(true);
       selectedTeacher = (this.teachersList.filter(teacher => teacher["fullname"] === teacherName))[0];
       this.surveysArray = selectedTeacher.surveys;
-      
+      console.info(selectedTeacher)
       // Should be used to avoid overhead.
       this.surveyReferencesList = map(this.surveysArray, '_reference').slice(5, 10);
       
@@ -180,58 +181,6 @@ export class StatsComponent implements OnInit{
     this.showLoader = hidden;
   }
   downloadCSV(){
-    let modalOptions = {
-      metaData: {
-        chaining: false,
-        labels: false,
-        setOnTop: true
-      },
-      header: 'Generate Excel',
-      body: [{
-              type: 'text',
-              label: 'Enter Batch',
-              placeholder: 'Enter Batch',
-              id: 'batch'
-          },{
-              type: 'text',
-              label: 'Enter Subject',
-              placeholder: 'Enter Subject',
-              id: 'subject'
-          }
-      ],
-      footer: [{
-              type: 'button',
-              label: 'Submit',
-              id: 'submit',
-              icon: 'fa fa-check'
-          },{
-              type: 'button',
-              label: 'Cancel',
-              id: 'cancel',
-              icon: 'fa fa-times'
-          }
-      ]
-    };
-    this.container.clear();
-    // check and resolve the component
-    let comp = this._cfr.resolveComponentFactory(ModalComponent);
-    // Create component inside container
-    let modalComponent = this.container.createComponent(comp);
-    // see explanations
-    modalComponent.instance["_ref"] = modalComponent;
-    modalComponent.instance.options = modalOptions;
-    
-    
-    modalComponent.instance.output
-      .subscribe( output => {
-          if(output.get('status') != 'cancel'){
-              let batch = !!output.get("batch") ? `&batch=${output.get("batch")}` : '',
-                subject = !!output.get("subject") ? `&subject=${output.get("subject")}`: '',
-                URL     = `${DOWNLOAD_EXCEL}?teacher=${this.surveyDetails.get("teacher")}&dept=${this.surveyDetails.get("dept")}${batch}${subject}`;  
-                console.log(URL);
-              window.open(URL, '__blank');
-          }
-
-    });
+    window.open(`${BASE_URL}/excel/${this.SurveyId}`, '__blank');
   }
 }
