@@ -62,6 +62,7 @@ class SurveyJoint {
     }
 
     getSurveyList(_list){
+        console.log('_list: ', _list);
         return new Promise((resolve, reject)=>{
             let 
                 list = _list,
@@ -76,6 +77,21 @@ class SurveyJoint {
                 }
 
             Surveys.find({_id: {$in: list}}, findCb);
+        });
+    }
+
+    removeSurveyList(_list){
+        return new Promise((resolve, reject)=>{
+            let 
+                list = _list,
+                removeCb = err => {
+                    err ? 
+                        reject({err: 500, body: "Error at deleting surveys"})
+                        :
+                        resolve({err: 200, body: "Deleted"});
+                }
+
+            Surveys.remove({_id: {$in: list}}, removeCb);
         });
     }
 

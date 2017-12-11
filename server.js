@@ -5,7 +5,6 @@ const
   bodyParser = require('body-parser'),
   
   // Get our API routes
-  api = require('./server/routes/api'),
   routes_users = require('./server/routes/users.route'),
   routes_survey = require('./server/routes/surveys.route'),
   routes_teachers = require('./server/routes/teacher.route'),
@@ -26,7 +25,6 @@ app.use(express.static(path.join(__dirname, 'dist')));
 // Set our api routes
 // app.use(['/api', '/users',    '/surveys',     '/teachers'],
         // [ api, routes_users, routes_survey, routes_teachers])
-// app.use('/api', api);  
 app.use('/users', routes_users);
 app.use('/surveys', routes_survey);
 app.use('/teachers', routes_teachers);

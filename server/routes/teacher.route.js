@@ -28,24 +28,22 @@ const
     },
 
     getDetailsHandlder = (req, res, next)=>{
+        const 
+            query = req.query,
+            params = {};
         console.log('req query: ', req.query);
-        let 
-            searchQuery = {};
-                        
-            if('department' in req.query)
-                searchQuery['departments'] = req.query.department;
-            if('fullname' in req.query)
-                searchQuery['fullname'] = req.query.fullname;
-            
-            teacherJoint.deepSearch(searchQuery)
-                .then(result =>{
-                    console.log(result)
-                    res.status(200).send(result)
-                })
-                .catch(err=>{
-                    // console.log(err)
-                    res.status(404).send(err.body)
-                })
+        query.department && (params.departments = query.department);
+        query.fullname && (params.fullname = query.fullname);
+
+        teacherJoint.deepSearch(params)
+            .then(result =>{
+                let { status = 0, body = null } = result;
+                res.status(status).send(body)
+            })
+            .catch(err=>{
+                console.log(err)
+                res.status(404).send(err.body)
+            })
     },
 
     wrappedRouteHandler = (operation)=>{

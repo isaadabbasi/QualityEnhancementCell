@@ -12,8 +12,8 @@ const
     surveySchema = new Schema({
         created: { type: Schema.Types.Date, default: new Date().getTime() },
         studentId: {type: String, maxlength: 4, true: true},
-        studentBatch: {type: String, true: true},
-        studentDept: {type: String, trim: true },
+        batch: {type: String, true: true},
+        dept: {type: String, trim: true },
         course: { type: String, maxlength: 30, trim: true },
         teacher: { type: String, maxlength: 30, trim: true },
         evaluation: { type: String, maxlength: 30, trim: true },
