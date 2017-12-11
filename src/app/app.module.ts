@@ -3,9 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-// import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { ChartModule } from "angular2-highcharts";
-// import { ChartsModule } from 'ng2-charts';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 
 import { routing } from './main.router'
@@ -25,7 +24,7 @@ import { SharedService } from './shared/shared.service';
 import { AuthGuard, SessionGuard } from './auth-guard.service';
 import { StatsComponent } from "./components/dashboard/dashboard-stats/stats.component";
 import { LoaderComponent } from './components/loader/loader';
-import { DashboardModalComponent } from './components/dashboard/dashboard-modal/dashboard-modal';
+
 import { SettingsComponent } from './components/dashboard/dashboard-settings/settings.component';
 import { CourseEvalForm } from './components/main-form/course-eval-form.component';
 import { DashboardSurveyComponent } from './components/dashboard/dashboard-survey/dashboard-survey.component';
@@ -60,7 +59,6 @@ export function highchartsFactory() {
     DashboardSurveyComponent,
     CourseEvalForm,
     SettingsComponent,
-    DashboardModalComponent,
     LoaderComponent,
     AlertComponent,
     ModalComponent

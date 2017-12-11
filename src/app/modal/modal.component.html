@@ -2,17 +2,38 @@
   <div id="login-container" class="account-wall">
     <img class="survey-form-image img-responsive" src="./assets/images/duet_logo.png">
     <h1 class="text-center app-modal-title">{{ options.header }}</h1>
-    <form class="form-signin">
-      <div class="form-group" *ngFor="let option of options.body; let index = index">
+    
+    <div class="text-center" *ngIf="options.metaData.type == 'confirm'">
+      <h1 class="text-center" *ngFor="let heading of options.body.html?.h1">{{ heading }}</h1>
+      <p *ngFor="let para of options.body.html?.p">{{ para }}</p>
+    </div>
+    
+    <form *ngIf="options.metaData.type != 'confirm'" class="form-signin">
+      <div *ngFor="let option of options.body; let index = index">
         <label *ngIf="options.metaData.labels" for="{{ option.id }}">{{ option.label }} </label>
-        <input *ngIf="option.type == 'text'" class="form-control" 
-               type="{{ option.type }}"
-               id="{{ option.id }}"
-               name="{{ option.id }}"
-               (focusout)="outputMaps.set(option.id, $event.target.value)"
-               placeholder="{{ option.placeholder }}">
+        <div class="form-group">        
+          <input *ngIf="option.type == 'text'" 
+                class="form-control" 
+                type="{{ option.type }}"
+                id="{{ option.id }}"
+                name="{{ option.id }}"
+                (focusout)="outputMaps.set(option.id, $event.target.value)"
+                placeholder="{{ option.placeholder }}">
+          <select
+            *ngIf="option.type == 'select'"
+            [multiple]="option.multiple"
+            class="form-control" 
+            [name]="option.id" 
+            [id]="option.id"
+            [size]="option.size">
+            <option *ngFor="let dept of option.options">{{ dept.name }}</option>
+          </select>
+
+        </div>
       </div>
-      <hr>
+
+    </form>
+    <form class="form-signin">
       <span class="form-group" *ngFor="let el of options.footer">
         <button 
           id="{{ el.id }}"

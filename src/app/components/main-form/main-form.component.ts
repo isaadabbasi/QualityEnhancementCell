@@ -60,7 +60,7 @@ export class MainFormComponent implements OnInit{
         this._sharedService.getCall(GET_SURVEY + this.surveyMetaData.evaluation)
             .subscribe(
                 next => {
-                    this.questions = next.sections;
+                    this.questions = next["sections"];
                 },
                 console.error
             )
