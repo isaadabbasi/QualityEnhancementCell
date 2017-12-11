@@ -1,6 +1,6 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+
 import { OnInit } from '@angular/core';
 import { map, each } from "lodash";
 import { Subscription } from 'rxjs/Subscription';
@@ -8,14 +8,20 @@ import { Subscription } from 'rxjs/Subscription';
 import { SURVEY_LIST, 
          Departments, 
          TEACHER_DETAILS_BY_DEPARTMENT, 
-         BASE_URL} from './../../../shared/global-vars';
+         BASE_URL,
+         DOWNLOAD_EXCEL } from './../../../shared/global-vars';
 import { SharedService } from './../../../shared/shared.service';
+import { ModalComponent } from '../../../modal/modal.component';
+
 @Component({
     selector: 'stats',
     templateUrl: './stats.template.html',
     styleUrls: ['./stats.css']
 })
 export class StatsComponent implements OnInit{
+  @ViewChild('modal', {read: ViewContainerRef}) container: ViewContainerRef;
+  
+  surveyDetails: Map<string, any> = new Map();
   finalSurveysArray: Array<any> = [];
   surveyReferencesList: {}[];
   showLoader: boolean;
@@ -51,7 +57,9 @@ export class StatsComponent implements OnInit{
     err => console.error(err)
   }
   constructor(private route: ActivatedRoute,
-              private sharedService: SharedService){                
+              private sharedService: SharedService,
+              private _cfr: ComponentFactoryResolver
+            ){                
   }
   onOptimize(teacher){
     this.showSurvey(teacher, this.optimize);
@@ -62,12 +70,14 @@ export class StatsComponent implements OnInit{
       :
       '';
     if(value != "0"){
+      this.surveyDetails.set('dept', value);
       this.showTeachersList = true;
+      console.info(URL);
       this.sharedService.getCall(URL)
         .subscribe(
-          next => {
+          res => {
             this.showTeachersList = true;
-            this.teachersList = next["body"];
+            this.teachersList = res["body"];
           },
           err => console.error(err)
         )
@@ -80,6 +90,7 @@ export class StatsComponent implements OnInit{
     this.SurveyId.emit(id);  
   }
   showSurvey(teacherName: string, optimize?: boolean, surveyId?: string){
+    this.surveyDetails.set('teacher', teacherName);
     let selectedTeacher: any= {},
         singleSurveys = [],
         start = Date.now();
@@ -101,7 +112,7 @@ export class StatsComponent implements OnInit{
       this.loaderState(true);
       selectedTeacher = (this.teachersList.filter(teacher => teacher["fullname"] === teacherName))[0];
       this.surveysArray = selectedTeacher.surveys;
-      
+      console.info(selectedTeacher)
       // Should be used to avoid overhead.
       this.surveyReferencesList = map(this.surveysArray, '_reference').slice(5, 10);
       
