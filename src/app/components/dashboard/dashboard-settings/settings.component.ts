@@ -1,12 +1,18 @@
-import { TEACHER_DETAILS_URL, Departments as DepartmentsList, TEACHER_BASE_URL } from './../../../shared/global-vars';
-import { SharedService } from './../../../shared/shared.service';
-import { Component, ComponentFactoryResolver, ViewContainerRef, ViewChild } from '@angular/core';
-import { ModalComponent } from '../../../modal/modal.component';
+import { Component, ViewContainerRef, ViewChild } from '@angular/core';
 import { Subscribable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap'
+
+import { TEACHER_DETAILS_URL, Departments as DepartmentsList, TEACHER_BASE_URL } from './../../../shared/global-vars';
+
+import { SharedService } from './../../../shared/shared.service';
+
+import { ModalComponent } from '../../../modal/modal.component';
+import { ModalComponentFactory } from './../../../modal/modal.service';
+
 @Component({
     selector: 'settings',
-    templateUrl: './settings.html'
+    templateUrl: './settings.html',
+
 })
 export class SettingsComponent {
 
@@ -15,7 +21,7 @@ export class SettingsComponent {
 
     allTeachers: Array<Object>;
     constructor(private sharedService: SharedService,
-                private _cfr: ComponentFactoryResolver
+                private modalCF: ModalComponentFactory
     ) {
         
     }
@@ -26,7 +32,7 @@ export class SettingsComponent {
         this.sharedService.getCall(TEACHER_DETAILS_URL)
         .subscribe(
             next => {
-                this.allTeachers = next["body"];
+                this.allTeachers = next;
             }
         ),
         err => console.error(err),
@@ -75,7 +81,7 @@ export class SettingsComponent {
                 icon: 'fa fa-times'
             }]
         }
-        this.modalFactory(this.container, this._cfr, modalOptions)
+        this.modalCF.generateModal(this.container, modalOptions)
             .subscribe(
                 output => {
                     if(output.get('status') != 'cancel')
@@ -83,7 +89,7 @@ export class SettingsComponent {
                         .switchMap(() => this.sharedService.getCall(TEACHER_DETAILS_URL))
                         .subscribe(
                             res => {
-                                this.allTeachers = res["body"]
+                                this.allTeachers = res
 
                             }
                     )
@@ -145,7 +151,7 @@ export class SettingsComponent {
                 }
             ]
           };
-          this.modalFactory(this.container, this._cfr, modalOptions)
+          this.modalCF.generateModal(this.container, modalOptions)
             .subscribe(
                 output => {
                 if(output.get('status') != 'cancel'){
@@ -165,28 +171,8 @@ export class SettingsComponent {
         this.sharedService.postCall(URL, teacher)
             .switchMap(() => this.sharedService.getCall(TEACHER_DETAILS_URL))
             .subscribe(
-                res => this.allTeachers = res["body"]
+                res => this.allTeachers = res
             ),
             console.error
-    }
-
-    modalFactory(container: ViewContainerRef, _cfr: ComponentFactoryResolver, modalOptions: Object): Subscribable<Map<string, any>>{
-        container.clear();
-        // check and resolve the component
-        let comp = _cfr.resolveComponentFactory(ModalComponent);
-        // Create component inside container
-        let modalComponent = container.createComponent(comp);
-        
-        modalComponent.instance["_ref"] = modalComponent;
-        modalComponent.instance.options = modalOptions;
-        
-        
-        modalComponent.instance.output
-          .subscribe( output => {
-              if(output.get('status') != 'cancel'){
-                
-              }
-        });
-        return modalComponent.instance.output
     }
 }

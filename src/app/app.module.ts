@@ -30,7 +30,7 @@ import { CourseEvalForm } from './components/main-form/course-eval-form.componen
 import { DashboardSurveyComponent } from './components/dashboard/dashboard-survey/dashboard-survey.component';
 import { SurveysComponent } from './components/dashboard/dashboard-surveys/surveys.component';
 import { AlertComponent } from "./components/alert-message/alert-message";
-import { ModalComponent } from './modal/modal.component';
+import { ModalModule } from './modal/modal.module';
 declare var require: any;
 
 export function highchartsFactory() {
@@ -61,7 +61,7 @@ export function highchartsFactory() {
     SettingsComponent,
     LoaderComponent,
     AlertComponent,
-    ModalComponent
+    // ModalComponent
   ],
   imports: [
     BrowserModule,
@@ -70,11 +70,12 @@ export function highchartsFactory() {
     HttpModule,
     RouterModule,
     ChartModule,
+    ModalModule.forRoot(),
     routing
     
   ],
   entryComponents:[
-    ModalComponent
+    // ModalComponent
   ],
   providers: [
     AuthGuard, 
