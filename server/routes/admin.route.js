@@ -34,7 +34,8 @@ const
             .catch(console.log);
     },
     login = (req, res) => {
-        const { email = null, password = null } = req.body;   
+        const { email = null, password = null } = req.body;
+        let record = {};
 
         if(!email || !password) {
             res.status(500).send("Please provide email and password");
@@ -47,12 +48,18 @@ const
                     res.status(404).send("Invalid Email");
                     return;
                 } 
-                    return bcryptCompare(password, body.password);
-                })
-                .then( compared => {
-                    compared ? res.status(200).send("Access Granted") : res.status(401).send("Invalid Password")
-                })
-            .catch(console.log)
+                record = {
+                    _id: body._id,
+                    email: body.email,
+                    root: body.root
+                }
+
+                return bcryptCompare(password, body.password);
+            })
+            .then( compared => {
+                compared ? res.status(200).send(record) : res.status(401).send("Invalid Password")
+            })
+        .catch(console.log)
 
     }
 

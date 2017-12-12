@@ -95,7 +95,7 @@ class SurveyJoint {
         });
     }
 
-    multiThreadsExecution(surveysArgs){
+    optimizeParallel(surveysArgs){
         
         function mergeSurveys(surveys){
             let 
@@ -126,6 +126,7 @@ class SurveyJoint {
                         combined.push(survey);
                 }
             }
+    
             function mergeSurvey(_stored, {survey: curr}){
                 // console.log('stored dated: ', _stored.dated)
                 // TODO; what to choose for length;
