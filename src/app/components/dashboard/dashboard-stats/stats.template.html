@@ -15,17 +15,30 @@
       <option *ngFor="let dept of deparmentsList" [value]="dept.value"> {{ dept.name }} </option>      
     </select>
   </div>
-  </div>
+</div>
+<div class="row">
   <div class="col-xs-3 pull-right">
-    <label for="optimize" class="pull-right">Optimized</label>
-    <input type="checkbox" id="optimize" [disabled]="teacher.value != 0 ? disabled : ''" [(ngModel)]="optimize" (change)="onOptimize(teacher.value)" name="optimize" class="pull-left">
+      <label for="optimize" class="pull-right">Optimized</label>
+      <input type="checkbox" id="optimize" [disabled]="teacher.value != 0 ? disabled : ''" [(ngModel)]="optimize" (change)="onOptimize(teacher.value)" name="optimize" class="pull-left">
+    </div>
+</div>
+  
+  <div *ngIf="null && !!options" class="row">
+      <div class="col-xs-6 pull-left">
+          <i class="fa fa-chevron-left" aria-hidden="true"></i>      
+      </div>
+      <div class="col-xs-6 pull-right">
+          <i class="pull-right fa fa-chevron-right" aria-hidden="true"></i>      
+      </div>
   </div>
-<div class="row" style="margin-top:40px;">
-  <div class="col-xs-8 col-xs-offset-2">
+<div class="row" style="margin-top:30px;">
+  
+  <div class="col-xs-6 col-xs-offset-2">
     <div style="display: block;">
-        <chart [options]="options"></chart>
+      <chart [options]="options"></chart>
     </div>
   </div>
+  <div *ngIf="!!options" class="col-xs-4 col-xs-offset-4 text-center">Graph generated in {{ timeToFetch }} seconds</div>
 </div>
 <br>
 <div *ngIf="singleSurvey" class="row">

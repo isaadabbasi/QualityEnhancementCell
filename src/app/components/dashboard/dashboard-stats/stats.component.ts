@@ -9,7 +9,9 @@ import { SURVEY_LIST,
          Departments, 
          TEACHER_DETAILS_BY_DEPARTMENT, 
          BASE_URL,
-         DOWNLOAD_EXCEL } from './../../../shared/global-vars';
+         DOWNLOAD_EXCEL, 
+         GET_SURVEY} from './../../../shared/global-vars';
+import { AutoUnsubscribe } from "./../../../decorators/AutoUnsubscribe";         
 import { SharedService } from './../../../shared/shared.service';
 import { ModalComponent } from '../../../modal/modal.component';
 
@@ -18,35 +20,38 @@ import { ModalComponent } from '../../../modal/modal.component';
     templateUrl: './stats.template.html',
     styleUrls: ['./stats.css']
 })
+@AutoUnsubscribe()
 export class StatsComponent implements OnInit{
   @ViewChild('modal', {read: ViewContainerRef}) container: ViewContainerRef;
   
-  surveyDetails: Map<string, any> = new Map();
-  finalSurveysArray: Array<any> = [];
-  surveyReferencesList: {}[];
-  showLoader: boolean;
-  timeToFetch: number;
-  length: any;
-  surveysArray: any;
-  SurveyId: any;
-  teachersList: any;
-  showTeachersList: boolean;
-  deparmentsList = Departments;
-  showDetails: boolean = false;
-  optimize: boolean = false;
-  sub: Subscription;
-  singleSurvey: boolean = false;
-    // lineChart
+  surveyDetails:    Map<string, any> = new Map();
   
+  timeToFetch:      number;
   
+  SurveyId:         any;
+  teachersList:     any;
+  
+  deparmentsList:   Array<Object> =  Departments;
+  
+  sub:              Subscription;
+  
+  showLoader:       boolean = false;
+  showTeachersList: boolean = false;
+  showDetails:      boolean = false;
+  optimize:         boolean = true;
+  singleSurvey:     boolean = false;
+  
+  options:          Object;
   // events
   public chartClicked(e:any):void {
     this.showDetails = true;    
   }
 
   public chartHovered(e:any):void {
+    console.log(e);
+    
   }
-  options: Object;
+  
   ngOnInit(){
     this.sub = this.route.paramMap
     .subscribe(
@@ -62,6 +67,8 @@ export class StatsComponent implements OnInit{
             ){                
   }
   onOptimize(teacher){
+    console.log(this.optimize);
+    
     this.showSurvey(teacher, this.optimize);
   }
   getNextList(entity: string, value: string){
@@ -84,69 +91,66 @@ export class StatsComponent implements OnInit{
       }else{
         this.showTeachersList = false;
       }
-    }
+  }
       
   viewSurvey(id){
     this.SurveyId.emit(id);  
   }
   showSurvey(teacherName: string, optimize?: boolean, surveyId?: string){
+    console.log(optimize);
+    
     this.surveyDetails.set('teacher', teacherName);
-    let selectedTeacher: any= {},
-        singleSurveys = [],
-        start = Date.now();
+    let start = Date.now(),
+        finalSurveysArray: Array<any> = [];
     
     if(!!surveyId){
       this.singleSurvey = true;
       this.sharedService.getCall(`${SURVEY_LIST}/id/${surveyId}`)
         .subscribe(
           res => {
-            this.finalSurveysArray.push(res);
+            finalSurveysArray.push(res);
           }, console.error,
           () => {
-            plotGraph(this.finalSurveysArray);
+            this.options = plotGraph(finalSurveysArray);
           }
         )
     }
     if(teacherName !== '0'){
       this.singleSurvey = false;
       this.loaderState(true);
-      selectedTeacher = (this.teachersList.filter(teacher => teacher["fullname"] === teacherName))[0];
-      this.surveysArray = selectedTeacher.surveys;
-      console.info(selectedTeacher)
-      // Should be used to avoid overhead.
-      this.surveyReferencesList = map(this.surveysArray, '_reference').slice(5, 10);
       
-      this.sharedService.postCall(SURVEY_LIST, {list: this.surveyReferencesList, optimize: this.optimize})
+      let 
+        {surveys} = (this.teachersList.filter(teacher => teacher["fullname"] === teacherName))[0],
+        surveyReferencesList = map(surveys, '_reference')
+      console.log(this.optimize);
+      
+      this.sharedService.postCall(SURVEY_LIST, {list: surveyReferencesList, optimize: this.optimize})
+        .map(res => res.json().reverse())
         .subscribe(     
           result => {
             console.log(result)
-            if(result.status == 200){
-              let res = JSON.parse(result["_body"]).reverse(),
-                {length} = res;
-            
-              if(length > 5)
-                res = res.slice(length-5, length);  
+            let 
+                {length} = result;
 
-            this.finalSurveysArray = res;
-            }
+            finalSurveysArray = length > 5 ? 
+              result.slice(length-5, length):
+              result;
           },
           err => {console.error(err); setTimeout(this.loaderState(false), 2500)},
           () => {
-            plotGraph(this.finalSurveysArray);
+            this.options = plotGraph(finalSurveysArray);
             setTimeout(this.loaderState(false), 2500);
-        }
-      );
-      
-      
-      
+        });
     }
     let end = Date.now();
     this.timeToFetch = end - start;
 
-    let plotGraph = (surveyArray, type?: string) => {
+    let plotGraph = (surveyArray, type?: string):Object => {
       let series = [],
       index = 1,
-      categories = null;
+      categories = null,
+      questions = null,
+      options = {};
       each(surveyArray, surveys => {
         let value = surveys.survey
         .filter(v => typeof v.value === 'number')
@@ -155,6 +159,10 @@ export class StatsComponent implements OnInit{
         categories = surveys.survey
           .filter(v => typeof v.id === 'number')
           .map(v=> `Q${v.id}`);
+        questions = surveys.survey
+          .filter(v => typeof v.id === 'number')
+          .map(v => v.question);
+        console.log(value, questions)
         series.push({
           "name": 'Survey No.' + index,
           "data": value,
@@ -162,7 +170,8 @@ export class StatsComponent implements OnInit{
         });
         index += 1;
       });
-      this.options = {
+      console.log(categories)
+      return options = {
         
         title: { text: surveyArray[0].teacher },
         chart: {
@@ -175,6 +184,16 @@ export class StatsComponent implements OnInit{
           crosshair: true
       }],
         series: series,
+        tooltip: {
+          animation: true,
+          backGroundColor: "rgb(245,245,245)",
+          shared: true,
+          useHTML: true,
+          headerFormat: "<strong>{point.key}: </strong>",
+          pointFormatter: function(){
+            return '<span style="color: {series.color}">{series.color}' + questions[this.series.data.indexOf( this )] + "</span><br>" + this.series.yAxis.max;
+          }
+        }
       }
     }
   }
