@@ -109,7 +109,4 @@ router
 router.delete('/:root?/:actor?', deleteAdmin)
 router.post('/login', login); 
 
-// ' [CREATE ADMIN] POST: /admins/<object_id>, payload { email, password } '
-// ' [GET ADMIN LIST] GET: /admins/<object_id> '
-
 module.exports = router;
