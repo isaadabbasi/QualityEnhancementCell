@@ -18,6 +18,33 @@ export class SettingsComponent {
 
     @ViewChild('modal', {read: ViewContainerRef}) container: ViewContainerRef;
     
+    topMenu = [
+        'admin',
+        'teacher',
+        'survey',
+        'student'
+    ]
+
+    options = {
+        metaData: {
+            tableClass: 'table table-hover table-condensed table-responsive'
+        },
+        thead: {
+            display: true,
+            tr:[{
+                th: [{
+                    class: 'text-center',
+                    text: 'Name'
+                },{
+                    class: 'text-center',
+                    text: 'Department'
+                },{
+                    class: 'text-center',
+                    text: 'Operations'
+                }]
+            }]
+        }
+    }
 
     allTeachers: Array<Object>;
     constructor(private sharedService: SharedService,
@@ -39,15 +66,7 @@ export class SettingsComponent {
         () => console.error(this.allTeachers)
         
     }
-    topMenu = [
-        'Admin',
-        'Teacher',
-        'Survey',
-        'Student'
-    ]
-    openModal;
-    idToDelete;
-    purpose;
+    
     delete(teacherId){
         
         console.info(teacherId)
@@ -96,16 +115,10 @@ export class SettingsComponent {
                 }
             )
     }
-    openConfirmation(action, id){
-        this.openModal = true;
-        this.purpose = action;
-        this.idToDelete = id;
-    }
+    
     modalState(value) {
-        this.openModal = value;
         if(!value){
             this.getTeachers();
-            // setTimeout()
         }
     }
     addTeacher(){
