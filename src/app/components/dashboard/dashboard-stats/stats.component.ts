@@ -26,31 +26,23 @@ export class StatsComponent implements OnInit{
   
   surveyDetails:    Map<string, any> = new Map();
   
-  timeToFetch:      number;
-  
   SurveyId:         any;
   teachersList:     any;
+  
+  timeToFetch:      number;
   
   deparmentsList:   Array<Object> =  Departments;
   
   sub:              Subscription;
   
-  showLoader:       boolean = false;
-  showTeachersList: boolean = false;
-  showDetails:      boolean = false;
   optimize:         boolean = true;
+  showLoader:       boolean = false;
+  showDetails:      boolean = false;
   singleSurvey:     boolean = false;
+  showTeachersList: boolean = false;
   
   options:          Object;
-  // events
-  public chartClicked(e:any):void {
-    this.showDetails = true;    
-  }
 
-  public chartHovered(e:any):void {
-    console.log(e);
-    
-  }
   
   ngOnInit(){
     this.sub = this.route.paramMap
@@ -67,7 +59,6 @@ export class StatsComponent implements OnInit{
             ){                
   }
   onOptimize(teacher){
-    console.log(this.optimize);
     
     this.showSurvey(teacher, this.optimize);
   }
@@ -97,7 +88,6 @@ export class StatsComponent implements OnInit{
     this.SurveyId.emit(id);  
   }
   showSurvey(teacherName: string, optimize?: boolean, surveyId?: string){
-    console.log(optimize);
     
     this.surveyDetails.set('teacher', teacherName);
     let start = Date.now(),
@@ -122,13 +112,11 @@ export class StatsComponent implements OnInit{
       let 
         {surveys} = (this.teachersList.filter(teacher => teacher["fullname"] === teacherName))[0],
         surveyReferencesList = map(surveys, '_reference')
-      console.log(this.optimize);
       
       this.sharedService.postCall(SURVEY_LIST, {list: surveyReferencesList, optimize: this.optimize})
         .map(res => res.json().reverse())
         .subscribe(     
           result => {
-            console.log(result)
             let 
                 {length} = result;
 
@@ -146,53 +134,71 @@ export class StatsComponent implements OnInit{
     this.timeToFetch = end - start;
 
     let plotGraph = (surveyArray, type?: string):Object => {
-      let series = [],
-      index = 1,
-      categories = null,
-      questions = null,
-      options = {};
-      each(surveyArray, surveys => {
-        let value = surveys.survey
-        .filter(v => typeof v.value === 'number')
-        .map( v => v.value);
+      let 
+        series    = [],
+        index         = 1,
+        categories    = null,
+        questions     = null,
+        selection     = null,
+        date: string  = null,
+        options     = {};
 
-        categories = surveys.survey
-          .filter(v => typeof v.id === 'number')
-          .map(v=> `Q${v.id}`);
-        questions = surveys.survey
-          .filter(v => typeof v.id === 'number')
-          .map(v => v.question);
-        console.log(value, questions)
+      each(surveyArray, surveys => {
+        let 
+          numericDataFromSurvey = surveys.survey 
+            .filter(v => typeof v.value === 'number'),  
+                      
+          value     = numericDataFromSurvey.map( v => v.value);
+
+        date        = new Date(surveys.created).toLocaleDateString();
+        categories  = numericDataFromSurvey.map(v => `Q${v.id}`);
+        questions   = numericDataFromSurvey.map(v => v.question);
+        selection   = numericDataFromSurvey.map(v => v.selection);
+
         series.push({
-          "name": 'Survey No.' + index,
+          "name": date,
           "data": value,
           "allowPointSelect": true
         });
         index += 1;
       });
-      console.log(categories)
       return options = {
         
         title: { text: surveyArray[0].teacher },
         chart: {
           type: type || 'spline',
-          width: 600,
-          height: 350
+          width: window.screen.availWidth * .50,
+          height: window.screen.availHeight * .45 
         },
         xAxis: [{
           categories: categories,
           crosshair: true
-      }],
+        }],
+        yAxis: [{
+          title: { text: 'Value'},
+          lineWidth: 1
+        }],
         series: series,
         tooltip: {
           animation: true,
           backGroundColor: "rgb(245,245,245)",
           shared: true,
           useHTML: true,
-          headerFormat: "<strong>{point.key}: </strong>",
+          headerFormat: "<strong>{point.key}: </strong><table>",
           pointFormatter: function(){
-            return '<span style="color: {series.color}">{series.color}' + questions[this.series.data.indexOf( this )] + "</span><br>" + this.series.yAxis.max;
-          }
+            return( 
+                  '<span>' + 
+                      questions[this.series.data.indexOf( this )] + 
+                  '</span>' + 
+                  '<div style="color: "' + this.color + '><strong>Value: </strong>' +
+                    this.options.y +
+                  '</div>' + 
+                  '<div><strong>Selection: </strong>' +
+                    selection[this.series.data.indexOf( this )] +
+                  '</div>'
+                );
+          },
+          footerFormat: ""
         }
       }
     }
