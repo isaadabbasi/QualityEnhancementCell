@@ -155,6 +155,10 @@ export class StatsComponent implements OnInit{
         questions   = numericDataFromSurvey.map(v => v.question);
         selection   = numericDataFromSurvey.map(v => v.selection);
 
+
+        // { id: categories, question: questions, selection } = numericDataFromSurvey.map(({id, question, selection}) => ({id, question, selection}))
+        // let x = numericDataFromSurvey.map(v => ({id: v.id, question: v.question, selection: v.selection}))
+        console.log(numericDataFromSurvey)
         series.push({
           "name": date,
           "data": value,
