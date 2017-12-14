@@ -1,0 +1,16 @@
+<!-- {{ options | json }} -->
+<table class="table table-hover table-condensed table-responsive">
+  <thead *ngIf="options.thead?.display">
+    <tr *ngFor="let row of options.thead.tr">
+        <th *ngFor="let cols of row.th" [class]="cols.class">{{ cols.text }}</th> 
+    </tr>
+  </thead>
+  <tbody *ngIf="options.tbody?.display">
+      <tr *ngFor="let row of options.tbody.tr">
+            <td *ngFor="let cols of row.td" [class]="cols.class">
+                <a *ngIf="!!cols.operation else text" style="cursor: pointer" role="link" (click)="delete(teacher._id)" [class]="cols.opsClass">{{ cols.text }}</a>
+                <ng-template #text>{{ cols.text }}</ng-template>
+            </td>
+      </tr>
+  </tbody>
+</table>

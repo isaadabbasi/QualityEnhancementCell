@@ -1,10 +1,13 @@
 import { Component, ViewContainerRef, ViewChild } from '@angular/core';
 import { Subscribable } from 'rxjs/Observable';
-import 'rxjs/add/operator/switchMap'
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/every';
+import { each, map } from 'lodash';
 
 import { TEACHER_DETAILS_URL, Departments as DepartmentsList, TEACHER_BASE_URL } from './../../../shared/global-vars';
 
 import { SharedService } from './../../../shared/shared.service';
+import { AutoUnsubscribe } from '../../../decorators/AutoUnsubscribe';
 
 import { ModalComponent } from '../../../modal/modal.component';
 import { ModalComponentFactory } from './../../../modal/modal.service';
@@ -14,10 +17,55 @@ import { ModalComponentFactory } from './../../../modal/modal.service';
     templateUrl: './settings.html',
 
 })
+@AutoUnsubscribe()
 export class SettingsComponent {
 
     @ViewChild('modal', {read: ViewContainerRef}) container: ViewContainerRef;
     
+    topMenu = [
+        'admin',
+        'teacher',
+        'survey',
+        'student'
+    ]
+
+    options = {
+        metaData: {
+            tableClass: 'table table-hover table-condensed table-responsive'
+        },
+        thead: {
+            display: true,
+            tr:[{
+                th: [{
+                    class: 'text-center',
+                    text: 'Name'
+                },{
+                    class: 'text-center',
+                    text: 'Department'
+                },{
+                    class: 'text-center',
+                    text: 'Operations'
+                }]
+            }]
+        },
+        tbody:{
+            display: true,
+            tr:[{
+                td: [{
+                    class: 'text-center',
+                    text: 'Name'
+                },{
+                    class: 'text-center',
+                    text: 'Department'
+                },{
+                    class: 'text-center bg-danger',
+                    text: 'Operations',
+                    operation: true,
+                    opsClass: 'text-danger'
+                }]
+            }]
+        }
+    }
 
     allTeachers: Array<Object>;
     constructor(private sharedService: SharedService,
@@ -29,25 +77,30 @@ export class SettingsComponent {
         
     }
     getTeachers(){
+        let 
+            teachers:Array<Object> = [];
+
         this.sharedService.getCall(TEACHER_DETAILS_URL)
         .subscribe(
             next => {
-                this.allTeachers = next;
+                console.log(next)
+                 
+                    
+                
+                each(next, teacher =>{
+                    let {fullname, departments, subjects, operation='delete'} = teacher;
+                    teachers.push({fullname, departments, subjects, operation})
+                })
+                console.log(teachers)
             }
         ),
         err => console.error(err),
-        () => console.error(this.allTeachers)
+        () => {
+            
+        }
         
     }
-    topMenu = [
-        'Admin',
-        'Teacher',
-        'Survey',
-        'Student'
-    ]
-    openModal;
-    idToDelete;
-    purpose;
+    
     delete(teacherId){
         
         console.info(teacherId)
@@ -96,16 +149,10 @@ export class SettingsComponent {
                 }
             )
     }
-    openConfirmation(action, id){
-        this.openModal = true;
-        this.purpose = action;
-        this.idToDelete = id;
-    }
+    
     modalState(value) {
-        this.openModal = value;
         if(!value){
             this.getTeachers();
-            // setTimeout()
         }
     }
     addTeacher(){

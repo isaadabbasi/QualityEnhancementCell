@@ -9,7 +9,9 @@ import { SURVEY_LIST,
          Departments, 
          TEACHER_DETAILS_BY_DEPARTMENT, 
          BASE_URL,
-         DOWNLOAD_EXCEL } from './../../../shared/global-vars';
+         DOWNLOAD_EXCEL, 
+         GET_SURVEY} from './../../../shared/global-vars';
+import { AutoUnsubscribe } from "./../../../decorators/AutoUnsubscribe";         
 import { SharedService } from './../../../shared/shared.service';
 import { ModalComponent } from '../../../modal/modal.component';
 
@@ -18,35 +20,30 @@ import { ModalComponent } from '../../../modal/modal.component';
     templateUrl: './stats.template.html',
     styleUrls: ['./stats.css']
 })
+@AutoUnsubscribe()
 export class StatsComponent implements OnInit{
   @ViewChild('modal', {read: ViewContainerRef}) container: ViewContainerRef;
   
-  surveyDetails: Map<string, any> = new Map();
-  finalSurveysArray: Array<any> = [];
-  surveyReferencesList: {}[];
-  showLoader: boolean;
-  timeToFetch: number;
-  length: any;
-  surveysArray: any;
-  SurveyId: any;
-  teachersList: any;
-  showTeachersList: boolean;
-  deparmentsList = Departments;
-  showDetails: boolean = false;
-  optimize: boolean = false;
-  sub: Subscription;
-  singleSurvey: boolean = false;
-    // lineChart
+  surveyDetails:    Map<string, any> = new Map();
   
+  SurveyId:         any;
+  teachersList:     any;
   
-  // events
-  public chartClicked(e:any):void {
-    this.showDetails = true;    
-  }
+  timeToFetch:      number;
+  
+  deparmentsList:   Array<Object> =  Departments;
+  
+  sub:              Subscription;
+  
+  optimize:         boolean = true;
+  showLoader:       boolean = false;
+  showDetails:      boolean = false;
+  singleSurvey:     boolean = false;
+  showTeachersList: boolean = false;
+  
+  options:          Object;
 
-  public chartHovered(e:any):void {
-  }
-  options: Object;
+  
   ngOnInit(){
     this.sub = this.route.paramMap
     .subscribe(
@@ -62,6 +59,7 @@ export class StatsComponent implements OnInit{
             ){                
   }
   onOptimize(teacher){
+    
     this.showSurvey(teacher, this.optimize);
   }
   getNextList(entity: string, value: string){
@@ -84,97 +82,128 @@ export class StatsComponent implements OnInit{
       }else{
         this.showTeachersList = false;
       }
-    }
+  }
       
   viewSurvey(id){
     this.SurveyId.emit(id);  
   }
   showSurvey(teacherName: string, optimize?: boolean, surveyId?: string){
+    
     this.surveyDetails.set('teacher', teacherName);
-    let selectedTeacher: any= {},
-        singleSurveys = [],
-        start = Date.now();
+    let start = Date.now(),
+        finalSurveysArray: Array<any> = [];
     
     if(!!surveyId){
       this.singleSurvey = true;
       this.sharedService.getCall(`${SURVEY_LIST}/id/${surveyId}`)
         .subscribe(
           res => {
-            this.finalSurveysArray.push(res);
+            finalSurveysArray.push(res);
           }, console.error,
           () => {
-            plotGraph(this.finalSurveysArray);
+            this.options = plotGraph(finalSurveysArray);
           }
         )
     }
     if(teacherName !== '0'){
       this.singleSurvey = false;
       this.loaderState(true);
-      selectedTeacher = (this.teachersList.filter(teacher => teacher["fullname"] === teacherName))[0];
-      this.surveysArray = selectedTeacher.surveys;
-      console.info(selectedTeacher)
-      // Should be used to avoid overhead.
-      this.surveyReferencesList = map(this.surveysArray, '_reference').slice(5, 10);
       
-      this.sharedService.postCall(SURVEY_LIST, {list: this.surveyReferencesList, optimize: this.optimize})
+      let 
+        {surveys} = (this.teachersList.filter(teacher => teacher["fullname"] === teacherName))[0],
+        surveyReferencesList = map(surveys, '_reference')
+      
+      this.sharedService.postCall(SURVEY_LIST, {list: surveyReferencesList, optimize: this.optimize})
+        .map(res => res.json().reverse())
         .subscribe(     
           result => {
-            console.log(result)
-            if(result.status == 200){
-              let res = JSON.parse(result["_body"]).reverse(),
-                {length} = res;
-            
-              if(length > 5)
-                res = res.slice(length-5, length);  
+            let 
+                {length} = result;
 
-            this.finalSurveysArray = res;
-            }
+            finalSurveysArray = length > 5 ? 
+              result.slice(length-5, length):
+              result;
           },
           err => {console.error(err); setTimeout(this.loaderState(false), 2500)},
           () => {
-            plotGraph(this.finalSurveysArray);
+            this.options = plotGraph(finalSurveysArray);
             setTimeout(this.loaderState(false), 2500);
-        }
-      );
-      
-      
-      
+        });
     }
     let end = Date.now();
     this.timeToFetch = end - start;
 
-    let plotGraph = (surveyArray, type?: string) => {
-      let series = [],
-      index = 1,
-      categories = null;
-      each(surveyArray, surveys => {
-        let value = surveys.survey
-        .filter(v => typeof v.value === 'number')
-        .map( v => v.value);
+    let plotGraph = (surveyArray, type?: string):Object => {
+      let 
+        series    = [],
+        index         = 1,
+        categories    = null,
+        questions     = null,
+        selection     = null,
+        date: string  = null,
+        options     = {};
 
-        categories = surveys.survey
-          .filter(v => typeof v.id === 'number')
-          .map(v=> `Q${v.id}`);
+      each(surveyArray, surveys => {
+        let 
+          numericDataFromSurvey = surveys.survey 
+            .filter(v => typeof v.value === 'number'),  
+                      
+          value     = numericDataFromSurvey.map( v => v.value);
+
+        date        = new Date(surveys.created).toLocaleDateString();
+        categories  = numericDataFromSurvey.map(v => `Q${v.id}`);
+        questions   = numericDataFromSurvey.map(v => v.question);
+        selection   = numericDataFromSurvey.map(v => v.selection);
+
+
+        // { id: categories, question: questions, selection } = numericDataFromSurvey.map(({id, question, selection}) => ({id, question, selection}))
+        // let x = numericDataFromSurvey.map(v => ({id: v.id, question: v.question, selection: v.selection}))
+        console.log(numericDataFromSurvey)
         series.push({
-          "name": 'Survey No.' + index,
+          "name": date,
           "data": value,
           "allowPointSelect": true
         });
         index += 1;
       });
-      this.options = {
+      return options = {
         
         title: { text: surveyArray[0].teacher },
         chart: {
           type: type || 'spline',
-          width: 600,
-          height: 350
+          width: window.screen.availWidth * .50,
+          height: window.screen.availHeight * .45 
         },
         xAxis: [{
           categories: categories,
           crosshair: true
-      }],
+        }],
+        yAxis: [{
+          title: { text: 'Value'},
+          lineWidth: 1
+        }],
         series: series,
+        tooltip: {
+          animation: true,
+          backGroundColor: "rgb(245,245,245)",
+          shared: true,
+          useHTML: true,
+          headerFormat: "<strong>{point.key}: </strong><table>",
+          pointFormatter: function(){
+            return( 
+                  '<span>' + 
+                      questions[this.series.data.indexOf( this )] + 
+                  '</span>' + 
+                  '<div style="color: "' + this.color + '><strong>Value: </strong>' +
+                    this.options.y +
+                  '</div>' + 
+                  '<div><strong>Selection: </strong>' +
+                    selection[this.series.data.indexOf( this )] +
+                  '</div>'
+                );
+          },
+          footerFormat: ""
+        }
       }
     }
   }
