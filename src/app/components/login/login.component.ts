@@ -25,7 +25,6 @@ export class LoginComponent implements OnInit{
     constructor(public router: Router,
                 private sharedService: SharedService){}
     ngOnInit(){
-        // this.users = JSON.parse(localStorage.getItem('users'));
     }
     validateCredentials(){
         return this.userCredentials.rollnumber && this.userCredentials.password;
@@ -48,7 +47,11 @@ export class LoginComponent implements OnInit{
                 }, err => {
                     console.error(err);
                     this.loginError = true;
-                    this.loginErrorMessage = err['_body'];
+                    this.loginErrorMessage = err.status === 401?
+                        'Invalid email or password': 
+                        err.status == 0?
+                            "We can not reach our servers yet. Please contact the IT official.":
+                            err['_body'];
                     setTimeout(()=>{
                         this.loginError = false
                         document.getElementById('login-container').classList.remove('wobble');
