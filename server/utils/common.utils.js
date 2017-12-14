@@ -1,6 +1,7 @@
 const 
     bcrypt = require('bcrypt'),
     saltRounds = 10, 
+    mongooseTypes = require('mongoose').Types,
     { createReadStream } = require('fs');
 
 class CommonUtils {
@@ -22,8 +23,13 @@ class CommonUtils {
             bcrypt.hash(password, saltRounds, genHashCb)
         })
     }
+
     bcryptCompare(provided, stored){
         return bcrypt.compare(provided, stored)
+    }
+
+    isObjectId(id){
+        return mongooseTypes.ObjectId.isValid(id);
     }
 }
 

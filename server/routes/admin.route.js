@@ -2,14 +2,20 @@ const
     express = require('express'),
     router = express.Router(),
     AdminJoint = require('../joints/admin.joint'),
-    { generateHash, bcryptCompare } = require('../utils/common.utils')
+    { generateHash, bcryptCompare, isObjectId } = require('../utils/common.utils')
+    
     addAdmin = (req, res, next) => {
         console.log('add called')
-        const {
+        const [{
             email = null,
             password = null
-        } = req.body;   
+        }, {root = 0}] = [req.body, req.params];
 
+        console.log(req.params);
+        if (!isObjectId(root)) {
+            res.sendStatus(401); return;
+        }
+        
         if(!email || !password) {
             res.status(500).send("You must provide email and password");
             return;
@@ -33,8 +39,10 @@ const
                 })
             .catch(console.log);
     },
+
     login = (req, res) => {
         const { email = null, password = null } = req.body;
+        
         let record = {};
 
         if(!email || !password) {
@@ -60,10 +68,45 @@ const
                 compared ? res.status(200).send(record) : res.status(401).send("Invalid Password")
             })
         .catch(console.log)
+    },
 
+    getAdmins = (req, res, next) => {
+        let { root = 0 } = req.params;
+        
+        if (!root || !isObjectId(root)) {
+            res.sendStatus(401);
+            return;
+        }
+                
+        AdminJoint.find()
+            .then(({status, body})=> {
+                res.status(status).send(body)
+            })
+            .catch(({status, body})=>{
+                res.status(status).send(body)
+            });
+    },
+    deleteAdmin = (req, res) => {
+        let { root = 0, actor = 0 } = req.params;
+        
+        if (!root || !actor || !isObjectId(root) || !isObjectId(root)) {
+            res.sendStatus(401);
+            return;
+        }
+
+        AdminJoint.isAdmin(root)
+            .then(({ root: is_root = false })=> is_root ? AdminJoint.remove(actor) : null)
+            .then(done => {
+                res.sendStatus(!done ? 401 : 200);
+            })
     }
 
-router.post('/add', addAdmin)
-router.post('/login', login)
+router
+    .route('/:root?')
+    .get(getAdmins)
+    .post(addAdmin)
+
+router.delete('/:root?/:actor?', deleteAdmin)
+router.post('/login', login); 
 
 module.exports = router;

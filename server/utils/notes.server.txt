@@ -79,3 +79,8 @@ ROUTE REQUIREMENTS.
     {
         "teacher": "CCNA"
     }
+
+**********************ADMIN ROUTES***************
+// ' [CREATE ADMIN] POST: /admins/<root_object_id>, payload { email: string, password: password }'
+// ' [GET ADMIN LIST] GET: /admins/<object_id> '
+// ' [DELETE ADMIN] DELETE: /admins/<root_object_id>/<action_object_id>'

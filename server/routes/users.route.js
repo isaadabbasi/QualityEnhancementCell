@@ -42,7 +42,7 @@ const
             },
             
             responseParams= {
-                _id: true, department: true, password: true
+                __v: false, fullname: false, created: false
             };
 
             Student.findOne({rollnumber}, responseParams, recordFindCb)
