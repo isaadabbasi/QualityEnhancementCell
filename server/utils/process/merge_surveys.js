@@ -4,23 +4,22 @@ var
     fs = require('fs'),
     filedSurveys = fs.readFileSync(`${__dirname}/record`, 'utf8'),
     surveys = JSON.parse(filedSurveys),
-    totalSurveys = surveys.length;
-    // console.log( typeof surveys )
-    // console.log(surveys);
+    totalSurveys = surveys.length,
+    optimizeType =  process.argv[2];
+    // console.log('optimize type: ', optimizeType);
+    
     for(let survey of surveys) {
-        let date = new Date(survey.created),
-            target = `${date.getMonth()},${date.getDate()},${date.getYear()}`,
-            // target = `${date.getDate()}`,
+        let date = new Date(survey.created).toLocaleDateString(),
             matchFound = false;
-        survey.dated = target;
-        
-        // console.log(survey.dated);
+            // console.log(date);
+        survey.date = date;
         
         if(!combined.length){
             combined.push(survey);
         } else {
             for(let i=0; i<combined.length; i++){
-                if(combined[i].dated === survey.dated){
+
+                if( combined[i][optimizeType] === survey[optimizeType] ){
                     matchFound = true;
                     let merged = mergeSurvey(combined[i], survey);
                     combined[i] = merged;
@@ -43,6 +42,7 @@ var
         _stored.survey = stored;
         return _stored;
     }
-    // console.log(combined)
+    // console.log('surveys :', combined);
+    // console.log('amount of surveys :', combined.length);
     let result = JSON.stringify(combined);
     process.stdout.write(result);
