@@ -2,10 +2,9 @@ const
     express = require('express'),
     router = express.Router(),
     AdminJoint = require('../joints/admin.joint'),
-    { generateHash, bcryptCompare, isObjectId } = require('../utils/common.utils')
+    { generateHash, bcryptCompare, isObjectId } = require('../utils/common.utils'),
     
     addAdmin = (req, res, next) => {
-        console.log('add called')
         const [{
             email = null,
             password = null
@@ -14,6 +13,7 @@ const
         console.log(req.params);
         if (!isObjectId(root)) {
             res.sendStatus(401); return;
+            return;
         }
         
         if(!email || !password) {
@@ -42,7 +42,6 @@ const
 
     login = (req, res) => {
         const { email = null, password = null } = req.body;
-        
         let record = {};
 
         if(!email || !password) {
@@ -86,6 +85,7 @@ const
                 res.status(status).send(body)
             });
     },
+    
     deleteAdmin = (req, res) => {
         let { root = 0, actor = 0 } = req.params;
         
@@ -104,9 +104,9 @@ const
 router
     .route('/:root?')
     .get(getAdmins)
-    .post(addAdmin)
 
 router.delete('/:root?/:actor?', deleteAdmin)
 router.post('/login', login); 
+router.post('/add/:root?', addAdmin);
 
 module.exports = router;
