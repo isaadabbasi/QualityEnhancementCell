@@ -1,16 +1,16 @@
-{{ options | json }}
+<!-- {{ options | json }} -->
 <table class="table table-hover table-condensed table-responsive">
   <thead *ngIf="options.thead?.display">
     <tr *ngFor="let row of options.thead.tr">
-        <th *ngFor="let cols of row.th" class="text-center">{{ cols.text }}</th> 
+        <th *ngFor="let cols of row.th" [class]="cols.class">{{ cols.text }}</th> 
     </tr>
   </thead>
-  <tbody>
-      <tr *ngFor="let teacher of allTeachers">
-          <td class="text-center">{{ teacher.fullname }}</td>
-          <td class="text-center"><span *ngFor="let dept of teacher.departments, let i=index">{{ i + 1 }}. {{ dept }} </span></td>
-          <!-- <td class="text-center bg-success text-success">{{ teacher.fullname }}</td> -->
-          <td class="text-center bg-danger"><a style="cursor: pointer" role="link" (click)="delete(teacher._id)" class="text-danger">Delete</a></td>
+  <tbody *ngIf="options.tbody?.display">
+      <tr *ngFor="let row of options.tbody.tr">
+            <td *ngFor="let cols of row.td" [class]="cols.class">
+                <a *ngIf="!!cols.operation else text" style="cursor: pointer" role="link" (click)="delete(teacher._id)" [class]="cols.opsClass">{{ cols.text }}</a>
+                <ng-template #text>{{ cols.text }}</ng-template>
+            </td>
       </tr>
   </tbody>
 </table>
