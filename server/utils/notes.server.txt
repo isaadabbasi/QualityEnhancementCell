@@ -81,6 +81,26 @@ ROUTE REQUIREMENTS.
     }
 
 **********************ADMIN ROUTES***************
-// ' [CREATE ADMIN] POST: /admins/<root_object_id>, payload { email: string, password: password }'
+// ' [CREATE ADMIN] POST: /admins/add/<root_object_id>, payload { email: string, password: password }'
 // ' [GET ADMIN LIST] GET: /admins/<object_id> '
-// ' [DELETE ADMIN] DELETE: /admins/<root_object_id>/<action_object_id>'
+// ' [DELETE ADMIN] DELETE: /admins/<root_object_id>/<action_object_id>';
+
+
+//TODOS
+//----SERVER
+optimize by batch not by date //DONE 
+excel sheet not generated on valid data //DONE
+preferences db and routes [Need more details on preferences];
+
+//--- CLIENT
+registration redirect
+password placeholder clear
+oncancel submit course evaluation
+submitting form on partial selection
+form start requesting on cancel;
+no optimize values for table-view data in view surveys
+remove survey, students tab from setting 
+add preferences tab
+optimize survey view out of bound
+introduce view previous surveys controller input
+add (bar or pie) chart on top of survey view => for reference, check fb;
