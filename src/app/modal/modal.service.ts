@@ -1,3 +1,4 @@
+import { modalOptionsModel } from './modal.interface';
 import { Subscribable } from 'rxjs/Observable';
 import { Injectable, ViewContainerRef, ComponentFactoryResolver } from "@angular/core";
 import { ModalComponent } from './modal.component';
@@ -9,7 +10,7 @@ export class ModalComponentFactory {
     }
     
     generateModal(container: ViewContainerRef, 
-                modalOptions: Object): Subscribable<Map<string, any>>{
+                  modalOptions: modalOptionsModel): Subscribable<Map<string, any>>{
         container.clear();
         // check and resolve the component
         let comp = this._cfr.resolveComponentFactory(ModalComponent);

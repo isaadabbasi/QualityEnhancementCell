@@ -11,15 +11,16 @@ import { SharedService } from './../../../shared/shared.service';
     styleUrls: [`./dashboard-survey.css`]
 })
 export class DashboardSurveyComponent implements OnInit, OnDestroy{
-    survey: any;
-    surveyId: string;
-    date: any;
-    evaluationType: any;
-    subject: any;
-    selectedTeacher: any;
-    questions: any;
-    surveyResult: any;
-    sub: Subscription;
+    survey:             any;
+    date:               any;
+    evaluationType:     any;
+    subject:            any;
+    selectedTeacher:    any;
+    questions:          any;
+    surveyResult:       any;
+    selectedDepartment: string;
+    surveyId:           string;
+    sub:                Subscription;
     surveyResultId;
     constructor(private route: ActivatedRoute,
                 private sharedService: SharedService) {
@@ -39,11 +40,13 @@ export class DashboardSurveyComponent implements OnInit, OnDestroy{
         this.sharedService.getCall(`${SURVEY_LIST}/id/${id}`)
             .subscribe(
                 result => {
-                    this.surveyResult = result;
-                    this.selectedTeacher = this.surveyResult["teacher"]
-                    this.subject = this.surveyResult["course"];
-                    this.evaluationType = this.surveyResult["evaluation"];
-                    this.date = this.surveyResult["created"];
+                    console.log(result);
+                    this.surveyResult       = result;
+                    this.selectedDepartment = this.surveyResult["dept"]
+                    this.selectedTeacher    = this.surveyResult["teacher"]
+                    this.subject            = this.surveyResult["course"];
+                    this.evaluationType     = this.surveyResult["evaluation"];
+                    this.date               = this.surveyResult["created"];
                     this.getForm(this.evaluationType);
                     this.survey = this.surveyResult["survey"];
                 }

@@ -120,7 +120,7 @@ export class MainFormComponent implements OnInit{
                     type: 'confirm'
                   },
                 header: 'Submit form',
-                body: {
+                body: [{
                     html:{
                         h1: [
                             'Are you sure?'
@@ -130,7 +130,7 @@ export class MainFormComponent implements OnInit{
                             'You can not undo this action.'
                         ],
                     }
-                },
+                }],
                 footer: [{
                     type: 'button',
                     label: 'Yes, I am sure.',

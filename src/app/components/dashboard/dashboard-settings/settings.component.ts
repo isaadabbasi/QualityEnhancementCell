@@ -1,3 +1,4 @@
+import { modalOptionsModel } from './../../../modal/modal.interface';
 import { Component, ViewContainerRef, ViewChild } from '@angular/core';
 import { Subscribable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
@@ -104,7 +105,7 @@ export class SettingsComponent {
     delete(teacherId){
         
         console.info(teacherId)
-        let modalOptions = {
+        let modalOptions: modalOptionsModel = {
             metaData: {
                 labels: false,
                 setOnTop: true,
