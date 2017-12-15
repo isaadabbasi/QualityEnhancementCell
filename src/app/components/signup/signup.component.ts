@@ -13,47 +13,51 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 
 export class SignupComponent implements OnInit{
-    signupErrorMessage: any;
-    signupError: boolean;
-    departments = Departments;   
-    signUpContainer = document.getElementById('signup-container');
-    userCredentials: StudentModel = {
-        fullname: '',
-        department: '',
-        rollnumber: '',
-        password: ''
-    }
+
+    showMessage:            boolean         = false;
+    signupErrorMessage:     string          = '';
+    signupError:            boolean         = false;
+    departments:            Array<Object>   = Departments;   
+    signUpContainer:        HTMLElement     = document.getElementById('signup-container');
+    userCredentials:        StudentModel    = { fullname: '', department: '', rollnumber: '', password: '' }
+    
     constructor(public router: Router,
                 private sharedService: SharedService){}
+    
     ngOnInit(){
     }
+
     loging(value){
         this.userCredentials.department = value;
     }
+    
     validateCredentials(){
-        return this.userCredentials.fullname && this.userCredentials.department != "0"
-            && this.userCredentials.rollnumber && this.userCredentials.password;
+        return this.userCredentials.fullname    && this.userCredentials.department != "0"
+            && this.userCredentials.rollnumber  && this.userCredentials.password;
     }
     
     signUp(){
         if(this.validateCredentials){
             this.sharedService.postCall(SIGNUP_URL, this.userCredentials)
+                .map(res => res.json())
                 .subscribe(res => {
-                    if(res.status == 200) {
+                    console.log(res);
+                    this.showMessage = true;
+                    setTimeout(()=>{
+                        this.showMessage    = false;
                         this.router.navigate(['/login']);
+                    }, 3000);
+                    if(res.status == 201) {
                     }
                 }, err => {
-                    console.error(this.signUpContainer);
-                    
-                    this.signupError = true;
+                    let signUpContainer: HTMLElement    = document.getElementById('signup-container');
+                    this.signupError        = true;
                     this.signupErrorMessage = err['_body'];
                     setTimeout(()=>{
-                        this.signupError = false;
-                        this.signUpContainer.classList.remove('wobble');
+                        this.signupError    = false;
+                        signUpContainer.classList.remove('wobble');
                     }, 5000);
-                    setTimeout(()=>{
-                        this.signUpContainer.classList.add('wobble');
-                    }, 100);
+                    setTimeout(() => signUpContainer.classList.add('wobble') , 100);
                 })
         } 
     }
