@@ -30,6 +30,7 @@ class SurveyJoint {
     }
 
     getAllSurveys(params){
+        params.evaluation = 'teacher';
         return new Promise((resolve, reject)=>{
             let cb = (err, surveys) =>{
                 if(err)
@@ -95,7 +96,7 @@ class SurveyJoint {
         });
     }
 
-    multiThreadsExecution(surveysArgs){
+    optimizeParallel(surveysArgs){
         
         function mergeSurveys(surveys){
             let 
@@ -126,6 +127,7 @@ class SurveyJoint {
                         combined.push(survey);
                 }
             }
+    
             function mergeSurvey(_stored, {survey: curr}){
                 // console.log('stored dated: ', _stored.dated)
                 // TODO; what to choose for length;
@@ -149,35 +151,35 @@ class SurveyJoint {
                 [surveysArgs]);
     }
 
-    optimize(surveys){
-            let 
-                dirPath = `${__dirname}/../utils/process/`,
-                filePath = `${dirPath}merge_surveys.js`,
-                surveysJson = JSON.stringify(surveys),
-                file_sys = {
-                    flags: 'rw',
-                    encoding: 'utf8',
-                    mode: 0o660
-                };
+    optimize(surveys, optimizeType = 'batch'){
+        let 
+            dirPath = `${__dirname}/../utils/process/`,
+            filePath = `${dirPath}merge_surveys.js`,
+            surveysJson = JSON.stringify(surveys),
+            file_sys = {
+                flags: 'rw',
+                encoding: 'utf8',
+                mode: 0o660
+            };
 
-                return new Promise( (resolve, reject) => {
-                fs.writeFile(`${dirPath}/record`, surveysJson, file_sys, (err, done)=>{
-                    if(err){
-                        reject({status: 400, body: "Unable to optimize survey"});
+        return new Promise( (resolve, reject) => {
+            fs.writeFile(`${dirPath}/record`, surveysJson, file_sys, (err, done)=>{
+                if(err){
+                    reject({status: 400, body: "Unable to optimize survey"});
+                }
+                execFile('node',[filePath, optimizeType == 'batch' ? 'batch' : 'date'], (eerr, data)=> {
+                    if(eerr)
+                        console.log(eerr)
+                    try {
+                        let result = JSON.parse(data);
+                        // console.log('typeof surveys', typeof result);
+                        resolve({status: 200, body: result})
+                    } catch (e) {
+                        reject({status: 400, body: "Unable to parse data"});
                     }
-                    execFile('node',[filePath], (eerr, data)=> {
-                        if(eerr)
-                            console.log(eerr)
-                        try {
-                            let result = JSON.parse(data);
-                            // console.log('typeof surveys', typeof result);
-                            resolve({status: 200, body: result})
-                        } catch (e) {
-                            reject({status: 400, body: "Unable to parse data"});
-                        }
-                    });
-                }) 
-            })               
+                });
+            }) 
+        })               
     }
 }
 

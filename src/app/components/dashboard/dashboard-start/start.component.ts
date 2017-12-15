@@ -42,10 +42,9 @@ export class StartSurveyComponent implements OnInit {
     getDepartmentTeacherList(department){
         this.sharedService.getCall(`${TEACHER_DETAILS_URL}?department=${department}`)
             .subscribe( res => {
-                if(res["status"] == 200) {
-                    this.teachersList = res["body"];
+                console.log(res)
+                    this.teachersList = res;
                     this.teachers = false;
-                }
             }, err => {
                 console.error(err);
             });

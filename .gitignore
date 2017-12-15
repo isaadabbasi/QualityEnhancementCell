@@ -44,3 +44,6 @@ Thumbs.db
 
 #Record Files
 /server/utils/process/record
+server/utils/process/record
+Scrapbook-1.mongo
+

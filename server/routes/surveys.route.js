@@ -132,18 +132,18 @@ const
             .pipe(res);
     },
         
-    testCb = (req, res) => {
+    optimizeParallel = (req, res) => {
         let testMethod = surveyJoint.test;
         surveyJoint.getAllSurveys({})
             .then(surveys => {
-                surveyJoint.multiThreadsExecution(surveys.body)
+                surveyJoint.optimizeParallel(surveys.body)
                     .then(finalizedSurveys => {
                         res.status(200).send(finalizedSurveys.value);
                     })            
             })
     },
 
-    testsync = (req, res) => {
+    optimize = (req, res) => {
         surveyJoint.getAllSurveys({})
         .then(surveys => {
             surveyJoint.optimize(surveys.body)
@@ -167,6 +167,6 @@ router.route('/')
 router.post('/add', addSurveyCb);
 router.get('/id/:_id', getSurveyByIdCb);
 router.get('/form/:name', getTeacherEvaluationForm);
-router.get('/test', testCb);
-router.get('/testopt', testsync);
+router.get('/optimizep', optimizeParallel);
+router.get('/testopt', optimize);
 module.exports = router;
