@@ -16,7 +16,6 @@ export class SignupComponent implements OnInit{
     signupErrorMessage: any;
     signupError: boolean;
     departments = Departments;   
-    signUpContainer = document.getElementById('signup-container');
     userCredentials: StudentModel = {
         fullname: '',
         department: '',
@@ -38,22 +37,18 @@ export class SignupComponent implements OnInit{
     signUp(){
         if(this.validateCredentials){
             this.sharedService.postCall(SIGNUP_URL, this.userCredentials)
+                .map(res => res.json())
                 .subscribe(res => {
-                    if(res.status == 200) {
-                        this.router.navigate(['/login']);
-                    }
+                    this.router.navigate(['/login']);
                 }, err => {
-                    console.error(this.signUpContainer);
-                    
-                    this.signupError = true;
+                    let signUpContainer: HTMLElement    = document.getElementById('signup-container');
+                    this.signupError        = true;
                     this.signupErrorMessage = err['_body'];
                     setTimeout(()=>{
-                        this.signupError = false;
-                        this.signUpContainer.classList.remove('wobble');
+                        this.signupError    = false;
+                        signUpContainer.classList.remove('wobble');
                     }, 5000);
-                    setTimeout(()=>{
-                        this.signUpContainer.classList.add('wobble');
-                    }, 100);
+                    setTimeout(() => signUpContainer.classList.add('wobble') , 100);
                 })
         } 
     }

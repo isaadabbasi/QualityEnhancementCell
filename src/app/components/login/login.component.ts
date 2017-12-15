@@ -39,10 +39,11 @@ export class LoginComponent implements OnInit{
             }         
             this.sharedService.postCall(SIGNIN_URL, this.userCredentials)
                 .subscribe(res => {
-                    if(res.status == 200){
-                        localStorage.setItem('activeUser', (res['_body']))
+                    if(res.status === 200){
+                        localStorage.setItem('activeUser', res["_body"])
                         this.router.navigate(['/dashboard']);     
                     }
+                    
                     
                 }, err => {
                     console.error(err);
