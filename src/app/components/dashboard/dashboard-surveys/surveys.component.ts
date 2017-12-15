@@ -8,7 +8,7 @@ import { SURVEY_LIST,
         DOWNLOAD_EXCEL
 } from './../../../shared/global-vars';
 import { SharedService } from "./../../../shared/shared.service";
-import { teacherListItem, DeparmentsListItemModel } from './../../../shared/models';
+import { TeacherListItem, DeparmentsListItemModel } from './../../../shared/models';
 
 import { ModalComponent } from '../../../modal/modal.component';
 @Component({
@@ -30,7 +30,7 @@ import { ModalComponent } from '../../../modal/modal.component';
     surveyReferencesList  : {}[];
     length                : any;
     showLoader            : boolean;
-    teachersList          : Array<teacherListItem>;
+    teachersList          : Array<TeacherListItem>;
     timeToFetch           : number | string                 = null;
     showTeachersList      : boolean                         = false;
     deparmentsList        : Array<DeparmentsListItemModel>  = Departments;

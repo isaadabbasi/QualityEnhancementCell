@@ -1,3 +1,4 @@
+
 //APIs
 /*
  * naming of global variables does have conventions.
@@ -8,9 +9,9 @@
     * if global variable is Observable or Stream post-append $.
 **/
 
-import { LoginComponent } from './../components/login/login.component';
-import { Routes } from '@angular/router';
 
+import { LoginComponent } from './../components/login/login.component';
+import { DeparmentsListItemModel } from './models';
 
 export const BASE_URL             : string = `http://localhost:3000`  //Will be updated on deployment
 
@@ -28,7 +29,7 @@ export const
  TEACHER_DETAILS_BY_NAME          : string = `${TEACHER_DETAILS_URL}?fullname=`; 
 export const DOWNLOAD_EXCEL       : string = `${BASE_URL}/excel`
 
-export const Departments          : Array<Object> = [
+export const Departments          : Array<DeparmentsListItemModel> = [
   {value: '0', name: 'Please Select'},
   {value: 'AP', name: 'Architecture and Planning'},
   {value: 'CH', name: 'Chemical Engineering'},
