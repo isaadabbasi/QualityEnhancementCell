@@ -17,7 +17,7 @@ import { MainFormComponent } from './components/main-form/main-form.component';
 import { NavBarComponent } from './components/nav-bar/navbar.component';
 import { PlaceHolderComponent } from './components/dashboard/dashboard-placeholder/placeholder.component';
 import { QuestionComponent } from './components/main-form//quest.component';
-import { RankingComponent } from './components/dashboard/dashboard-ranking/ranking.component'
+import { RankingModule } from './components/dashboard/dashboard-ranking/ranking.module'
 import { StartSurveyComponent } from './components/dashboard/dashboard-start/start.component'
 import { SignupComponent } from './components/signup/signup.component';
 import { SharedService } from './shared/shared.service';
@@ -52,7 +52,6 @@ export function highchartsFactory() {
     NavBarComponent,
     PlaceHolderComponent,
     QuestionComponent,
-    RankingComponent,
     StartSurveyComponent,
     SignupComponent,
     StatsComponent,
@@ -69,6 +68,7 @@ export function highchartsFactory() {
     BrowserModule,
     BrowserModule,
     FormsModule,
+    RankingModule,
     HttpModule,
     RouterModule,
     ChartModule,
