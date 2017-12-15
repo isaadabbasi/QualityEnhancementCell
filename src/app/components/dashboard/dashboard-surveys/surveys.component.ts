@@ -1,14 +1,17 @@
-  import { SURVEY_LIST, 
-          Departments, 
-          TEACHER_DETAILS_BY_DEPARTMENT, 
-          TEACHER_DETAILS_BY_NAME,
-          DOWNLOAD_EXCEL
-          } from './../../../shared/global-vars';
-  import { Component, ViewChild, Output, EventEmitter, OnInit, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
-  import { SharedService } from "./../../../shared/shared.service";
-  import { map } from "lodash";
+import { Component, ViewChild, Output, EventEmitter, OnInit, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import { map } from "lodash";
+
+import { SURVEY_LIST, 
+        Departments, 
+        TEACHER_DETAILS_BY_DEPARTMENT, 
+        TEACHER_DETAILS_BY_NAME,
+        DOWNLOAD_EXCEL
+} from './../../../shared/global-vars';
+import { SharedService } from "./../../../shared/shared.service";
+import { TeacherListItem, DeparmentsListItemModel } from './../../../shared/models';
+
 import { ModalComponent } from '../../../modal/modal.component';
-  @Component({
+@Component({
       selector: 'surveys',
       templateUrl: './surveys.template.html',
       styleUrls: [
@@ -22,19 +25,20 @@ import { ModalComponent } from '../../../modal/modal.component';
 
     @ViewChild('modal', {read: ViewContainerRef}) container: ViewContainerRef;
 
-    modalPurpose: string;
-    openModal: boolean;
-    surveyReferencesList: {}[];
-    length: any;
-    timeToFetch = null;
-    showLoader: boolean;
-    teachersList: Array<Object>;
-    showTeachersList: boolean = false;
-    @Output('surveyId') SurveyId: EventEmitter<number> = new EventEmitter<number>();
-    surveysArray;
-    deparmentsList = Departments;
+    modalPurpose          : string;
+    openModal             : boolean;
+    surveyReferencesList  : {}[];
+    length                : any;
+    showLoader            : boolean;
+    teachersList          : Array<TeacherListItem>;
+    timeToFetch           : number | string                 = null;
+    showTeachersList      : boolean                         = false;
+    deparmentsList        : Array<DeparmentsListItemModel>  = Departments;
+    surveyDetails         : Map<string, any>                = new Map();
+    @Output('surveyId') 
+      SurveyId            : EventEmitter<number>  = new EventEmitter<number>();
     optimize;
-    surveyDetails: Map<string, any> = new Map();
+    surveysArray;
 
     onOptimize(teacher){
       this.showSurvey(teacher, this.optimize);
@@ -44,6 +48,7 @@ import { ModalComponent } from '../../../modal/modal.component';
       this.sharedService.getCall(SURVEY_LIST)
       .subscribe(
         next => {
+          console.log(this.surveysArray)
           this.surveysArray = next;
           this.length = this.surveysArray.length;
         },
@@ -69,6 +74,7 @@ import { ModalComponent } from '../../../modal/modal.component';
         this.sharedService.getCall(URL)
           .subscribe(
             next => {
+              console.log(next)
               this.showTeachersList = true;
               this.teachersList = next;
             },
