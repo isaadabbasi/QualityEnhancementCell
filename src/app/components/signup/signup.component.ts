@@ -13,25 +13,27 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 
 export class SignupComponent implements OnInit{
-    signupErrorMessage: any;
-    signupError: boolean;
-    departments = Departments;   
-    userCredentials: StudentModel = {
-        fullname: '',
-        department: '',
-        rollnumber: '',
-        password: ''
-    }
+
+    showMessage:            boolean         = false;
+    signupErrorMessage:     string          = '';
+    signupError:            boolean         = false;
+    departments:            Array<Object>   = Departments;   
+    signUpContainer:        HTMLElement     = document.getElementById('signup-container');
+    userCredentials:        StudentModel    = { fullname: '', department: '', rollnumber: '', password: '' }
+    
     constructor(public router: Router,
                 private sharedService: SharedService){}
+    
     ngOnInit(){
     }
+
     loging(value){
         this.userCredentials.department = value;
     }
+    
     validateCredentials(){
-        return this.userCredentials.fullname && this.userCredentials.department != "0"
-            && this.userCredentials.rollnumber && this.userCredentials.password;
+        return this.userCredentials.fullname    && this.userCredentials.department != "0"
+            && this.userCredentials.rollnumber  && this.userCredentials.password;
     }
     
     signUp(){
@@ -39,7 +41,14 @@ export class SignupComponent implements OnInit{
             this.sharedService.postCall(SIGNUP_URL, this.userCredentials)
                 .map(res => res.json())
                 .subscribe(res => {
-                    this.router.navigate(['/login']);
+                    console.log(res);
+                    this.showMessage = true;
+                    setTimeout(()=>{
+                        this.showMessage    = false;
+                        this.router.navigate(['/login']);
+                    }, 3000);
+                    if(res.status == 201) {
+                    }
                 }, err => {
                     let signUpContainer: HTMLElement    = document.getElementById('signup-container');
                     this.signupError        = true;

@@ -107,6 +107,7 @@ export class StartSurveyComponent implements OnInit {
             this.modalCF.generateModal(this.container, modalOptions)
                 .subscribe(
                     res => {
+                        console.log(res)
                         this.surveyMetaData.evaluation = res.get('evaluation')
                         localStorage.setItem('surveyMetaData', JSON.stringify(this.surveyMetaData));
                         console.log(this.surveyMetaData);

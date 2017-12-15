@@ -23,11 +23,11 @@ import { Component, Input } from '@angular/core';
 })
 export class AlertComponent {
     @Input('alert-type')
-        alertType: string = null;
+        alertType:  string = null;
     @Input('message') 
-        message: string = null;
+        message:    string = null;
     @Input('top')
-        top: string = null;
+        top:        string = null;
     constructor() {
         
     }

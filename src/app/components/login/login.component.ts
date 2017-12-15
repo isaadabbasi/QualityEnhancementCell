@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { SIGNIN_URL } from "./../../shared/global-vars";
 import { SharedService } from './../../shared/shared.service';
+import { UserCredentialsModel } from '../../shared/models';
 
 @Component({
     templateUrl: './login.template.html',
@@ -14,22 +15,23 @@ import { SharedService } from './../../shared/shared.service';
 
 export class LoginComponent implements OnInit{
 
-    users: Array<Object> = [];
-    userCredentials: {rollnumber: string, password:string, email: string} = {
-        rollnumber: '',
-        password: '',
-        email: ''
-    };
-    loginError: boolean = false;
-    loginErrorMessage: string;
+    userCredentials:    UserCredentialsModel    = { rollnumber: '', password: '', email: '' }
+    users:              Array<Object>           = [];
+    loginError:         boolean                 = false;
+    loginErrorMessage:  string                  = '';
+    
     constructor(public router: Router,
                 private sharedService: SharedService){}
     ngOnInit(){
+        this.users = JSON.parse(localStorage.getItem('users'));
     }
     validateCredentials(){
-        return this.userCredentials.rollnumber && this.userCredentials.password;
+        return this.userCredentials.rollnumber 
+            && this.userCredentials.password;
     }
     signIn(){
+        
+
         if(this.userCredentials.rollnumber && this.userCredentials.password){
             if(this.userCredentials.rollnumber.indexOf('@') !== -1){
                 this.userCredentials['email'] = this.userCredentials.rollnumber;
@@ -47,22 +49,18 @@ export class LoginComponent implements OnInit{
                     
                 }, err => {
                     console.error(err);
+                    let loginContainer: HTMLElement = document.getElementById('login-container');
                     this.loginError = true;
                     this.loginErrorMessage = err.status === 401?
                         'Invalid email or password': 
                         err.status == 0?
                             "We can not reach our servers yet. Please contact the IT official.":
                             err['_body'];
+                    setTimeout(()=>loginContainer.classList.add('wobble'), 100);
                     setTimeout(()=>{
                         this.loginError = false
-                        document.getElementById('login-container').classList.remove('wobble');
-                    },5000)
-                    setTimeout(()=>{
-                        document.getElementById('login-container').classList.add('wobble');
-                        this.userCredentials.rollnumber = '';
-                        this.userCredentials.password = ''; 
-                    },100)
-                    
+                        loginContainer.classList.remove('wobble');
+                    }, 5000 );
                 })
         }
     }   
