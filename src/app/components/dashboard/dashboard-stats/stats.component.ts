@@ -1,3 +1,4 @@
+import { DeparmentsListItemModel } from './../../../shared/models';
 import { Component, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
@@ -31,7 +32,7 @@ export class StatsComponent implements OnInit{
   
   timeToFetch:      number;
   
-  deparmentsList:   Array<Object> =  Departments;
+  deparmentsList:   Array<DeparmentsListItemModel> =  Departments;
   
   sub:              Subscription;
   

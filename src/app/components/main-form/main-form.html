@@ -22,10 +22,10 @@
     <div class="scrollbar" id="scrollbar" style="height: 70vh; overflow-y: scroll;">
         <div>
             <course-eval-form *ngFor="let section of questions, let i=index"
-                [canComment]="section.canComment"
+                [canComment]="section['canComment']"
                 [index]="i"
-                [heading]="section.name"
-                [question]="section.queries"
+                [heading]="section['name']"
+                [question]="section['queries']"
                 (quizReplied)="optionSelected($event)"
                 (commentsReplied)="optionSelected($event)"                
             ></course-eval-form>

@@ -1,3 +1,4 @@
+import { modalOptionsModel } from './../../../modal/modal.interface';
 import { Component, ViewChild, Output, EventEmitter, OnInit, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { map } from "lodash";
 
@@ -122,7 +123,7 @@ import { ModalComponent } from '../../../modal/modal.component';
       this.showLoader = hidden;
     }
     downloadCSV($event){
-      let modalOptions = {
+      let modalOptions: modalOptionsModel = {
         metaData: {
           chaining: false,
           labels: false,

@@ -1,5 +1,5 @@
 import { SIGNUP_URL, Departments } from './../../shared/global-vars';
-import { StudentModel } from './../../shared/models';
+import { StudentModel, DeparmentsListItemModel } from './../../shared/models';
 import { Router } from '@angular/router';
 import { SharedService } from './../../shared/shared.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -17,7 +17,8 @@ export class SignupComponent implements OnInit{
     showMessage:            boolean         = false;
     signupErrorMessage:     string          = '';
     signupError:            boolean         = false;
-    departments:            Array<Object>   = Departments;   
+    departments:            
+           Array<DeparmentsListItemModel>   = Departments;   
     signUpContainer:        HTMLElement     = document.getElementById('signup-container');
     userCredentials:        StudentModel    = { fullname: '', department: '', rollnumber: '', password: '' }
     

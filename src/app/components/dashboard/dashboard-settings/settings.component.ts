@@ -68,7 +68,13 @@ export class SettingsComponent {
         }
     }
 
-    allTeachers: Array<Object>;
+    allTeachers: Array<{
+        _id         : string, 
+        fullname    : string, 
+        operation   : string,
+        subjects    : Array<string>, 
+        departments : Array<string>
+    }>;
     constructor(private sharedService: SharedService,
                 private modalCF: ModalComponentFactory
     ) {
@@ -79,7 +85,13 @@ export class SettingsComponent {
     }
     getTeachers(){
         let 
-            teachers:Array<Object> = [];
+            teachers:Array<{
+                _id         : string, 
+                fullname    : string, 
+                operation   : string,
+                subjects    : Array<string>, 
+                departments : Array<string>
+            }> = [];
 
         this.sharedService.getCall(TEACHER_DETAILS_URL)
         .subscribe(
@@ -89,10 +101,11 @@ export class SettingsComponent {
                     
                 
                 each(next, teacher =>{
-                    let {fullname, departments, subjects, operation='delete'} = teacher;
-                    teachers.push({fullname, departments, subjects, operation})
+                    let {_id, fullname, departments, subjects, operation='delete'} = teacher;
+                    teachers.push({_id, fullname, departments, subjects, operation})
                 })
                 console.log(teachers)
+                this.allTeachers = teachers;
             }
         ),
         err => console.error(err),
@@ -144,7 +157,7 @@ export class SettingsComponent {
                         .subscribe(
                             res => {
                                 this.allTeachers = res
-
+                                console.log(this.allTeachers)
                             }
                     )
                 }
