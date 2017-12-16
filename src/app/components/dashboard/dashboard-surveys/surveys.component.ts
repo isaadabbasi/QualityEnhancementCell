@@ -37,7 +37,7 @@ import { ModalComponent } from '../../../modal/modal.component';
     surveyDetails         : Map<string, any>                = new Map();
     @Output('surveyId') 
       SurveyId            : EventEmitter<number>  = new EventEmitter<number>();
-    optimize;
+    optimize              :boolean;
     surveysArray;
 
     onOptimize(teacher){
@@ -48,7 +48,6 @@ import { ModalComponent } from '../../../modal/modal.component';
       this.sharedService.getCall(SURVEY_LIST)
       .subscribe(
         next => {
-          console.log(this.surveysArray)
           this.surveysArray = next;
           this.length = this.surveysArray.length;
         },
@@ -74,7 +73,6 @@ import { ModalComponent } from '../../../modal/modal.component';
         this.sharedService.getCall(URL)
           .subscribe(
             next => {
-              console.log(next)
               this.showTeachersList = true;
               this.teachersList = next;
             },
@@ -170,7 +168,6 @@ import { ModalComponent } from '../../../modal/modal.component';
                 let batch = !!output.get("batch") ? `&batch=${output.get("batch")}` : '',
                   subject = !!output.get("subject") ? `&subject=${output.get("subject")}`: '',
                   URL     = `${DOWNLOAD_EXCEL}?teacher=${this.surveyDetails.get("teacher")}&dept=${this.surveyDetails.get("dept")}${batch}${subject}`;  
-                  console.log(URL);
                 window.open(URL, '__blank');
             }
 
