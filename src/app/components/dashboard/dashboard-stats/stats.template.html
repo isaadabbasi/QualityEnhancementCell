@@ -21,16 +21,21 @@
       <label for="optimize" class="pull-right">Optimized</label>
       <input type="checkbox" id="optimize" [disabled]="teacher.value != 0 ? disabled : ''" [(ngModel)]="optimize" (change)="onOptimize(teacher.value)" name="optimize" class="pull-left">
     </div>
+    <div class="col-xs-3 pull-right">
+      <input 
+        type="number" 
+        min="5" 
+        step="5" 
+        id="previousSurvey" 
+        [(ngModel)]="optimize" 
+        (change)="surveyNumber($event.target.value)" 
+        name="optimize" 
+        class="form-control pull-left"
+        [disabled]="teacher.value || optimze != 0 ? disabled : ''"
+        placeholder="Number of survey to show">
+    </div>
 </div>
-  
-  <div *ngIf="null && !!options" class="row">
-      <div class="col-xs-6 pull-left">
-          <i class="fa fa-chevron-left" aria-hidden="true"></i>      
-      </div>
-      <div class="col-xs-6 pull-right">
-          <i class="pull-right fa fa-chevron-right" aria-hidden="true"></i>      
-      </div>
-  </div>
+
 <div class="row" style="margin-top:30px;">
   
   <div class="col-xs-6 col-xs-offset-2">
