@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { debounceTime } from 'rxjs/operators';
 
-import { sortBy } from "lodash";
+import { sortBy, each } from "lodash";
 
 import { TeacherEvaluationForm, courseEvaluationForm } from './../../shared/forms/teacher-evaluation-form';
 import { ModalComponent } from './../../modal/modal.component';
@@ -70,6 +70,7 @@ export class MainFormComponent implements OnInit{
             .subscribe(
                 next => {
                     this.questions = next["sections"];
+                    console.log(this.questions)                    
                 },
                 console.error
             )
@@ -111,7 +112,13 @@ export class MainFormComponent implements OnInit{
             lastSection = this.questions[this.questions.length - 1]["queries"],
             lastQID = lastSection[lastSection.length - 1]["qid"];
             console.log(surveyDetails);
-        if(surveyDetails.survey.length >= lastQID){
+            let commentsCounter = 0;
+            each(this.questions, section => {
+                commentsCounter += +section["canComment"];
+            })
+            console.log(lastQID + commentsCounter);
+        if(surveyDetails.survey.length == lastQID + commentsCounter){
+            console.log(surveyDetails.survey.length, lastQID)
             let modalOptions = {
                 metaData: {
                     chaining: false,

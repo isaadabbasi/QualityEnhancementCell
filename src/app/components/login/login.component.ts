@@ -43,7 +43,8 @@ export class LoginComponent implements OnInit{
                 .subscribe(res => {
                     if(res.status === 200){
                         localStorage.setItem('activeUser', res["_body"])
-                        this.router.navigate(['/dashboard']);     
+                        this.router.navigate(['/dashboard']);
+                        clearFields();     
                     }
                     
                     
@@ -57,11 +58,19 @@ export class LoginComponent implements OnInit{
                             "We can not reach our servers yet. Please contact the IT official.":
                             err['_body'];
                     setTimeout(()=>loginContainer.classList.add('wobble'), 100);
+                    clearFields();
                     setTimeout(()=>{
                         this.loginError = false
                         loginContainer.classList.remove('wobble');
                     }, 5000 );
                 })
+        }
+        let clearFields = () => {
+            this.userCredentials = {
+                rollnumber: '',
+                password: '',
+                email: ''
+            }
         }
     }   
 }

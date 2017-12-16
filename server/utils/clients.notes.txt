@@ -25,3 +25,16 @@
     subjects: Array<string>
 
 https://semantic-ui.com/modules/dropdown.html -> Multiple Search Selection for adding teacher on admin panel
+
+//--- CLIENT
+Done: registration redirect
+Done: password placeholder clear
+Done: oncancel submit course evaluation
+Done: submitting form on partial selection
+Done: form start requesting on cancel;
+no optimize values for table-view data in view surveys
+Done: remove survey, students tab from setting 
+add preferences tab
+Done: optimize survey view out of bound
+introduce view previous surveys controller input
+add (bar or pie) chart on top of survey view => for reference, check fb;

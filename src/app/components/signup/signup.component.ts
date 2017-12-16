@@ -42,10 +42,9 @@ export class SignupComponent implements OnInit{
             this.sharedService.postCall(SIGNUP_URL, this.userCredentials)
                 .map(res => res.json())
                 .subscribe(res => {
-                    console.log(res);
-                    this.showMessage = true;
+                    console.log(res);                    
+                    clearFields();
                     setTimeout(()=>{
-                        this.showMessage    = false;
                         this.router.navigate(['/login']);
                     }, 3000);
                     if(res.status == 201) {
@@ -58,8 +57,15 @@ export class SignupComponent implements OnInit{
                         this.signupError    = false;
                         signUpContainer.classList.remove('wobble');
                     }, 5000);
-                    setTimeout(() => signUpContainer.classList.add('wobble') , 100);
+                    setTimeout(() => {
+                        signUpContainer.classList.add('wobble');
+                    }, 100);
+                    clearFields();
                 })
+                let clearFields = () => {
+                    this.userCredentials = { fullname: '', rollnumber: '', department: '' };
+                }
+
         } 
     }
 }

@@ -108,10 +108,13 @@ export class StartSurveyComponent implements OnInit {
                 .subscribe(
                     res => {
                         console.log(res)
-                        this.surveyMetaData.evaluation = res.get('evaluation')
-                        localStorage.setItem('surveyMetaData', JSON.stringify(this.surveyMetaData));
+                        if(res.get("status") !== 'cancel'){
+                            this.surveyMetaData.evaluation = res.get('evaluation')
+                            localStorage.setItem('surveyMetaData', JSON.stringify(this.surveyMetaData));
+                            this.router.navigate(['/survey'])
+
+                        }
                         console.log(this.surveyMetaData);
-                        this.router.navigate(['/survey'])
                     }
                     
                 )
