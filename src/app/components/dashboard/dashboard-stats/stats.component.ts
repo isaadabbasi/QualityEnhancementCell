@@ -114,12 +114,12 @@ export class StatsComponent implements OnInit{
         surveyReferencesList = map(surveys, '_reference')
       
       this.sharedService.postCall(SURVEY_LIST, {list: surveyReferencesList, optimize: this.optimize})
-        .map(res => res.json().reverse())
+        .map(res => res.json())
         .subscribe(     
           result => {
             let 
                 {length} = result;
-
+                
             finalSurveysArray = length > 5 ? 
               result.slice(length-5, length):
               result;
@@ -139,21 +139,23 @@ export class StatsComponent implements OnInit{
         index         = 1,
         categories    = null,
         questions     = null,
-        selection     = null,
         date: string  = null,
-        options     = {};
-
+        options       = {},
+        selection     = ["Strongly Disagree", "Disagree", "Uncertain", "Agree", "Strongly Agree"];
+      
       each(surveyArray, surveys => {
+        
         let 
           numericDataFromSurvey = surveys.survey 
             .filter(v => typeof v.value === 'number'),  
                       
           value     = numericDataFromSurvey.map( v => v.value);
-
+          
         date        = new Date(surveys.created).toLocaleDateString();
         categories  = numericDataFromSurvey.map(v => `Q${v.id}`);
         questions   = numericDataFromSurvey.map(v => v.question);
-        selection   = numericDataFromSurvey.map(v => v.selection);
+        console.log(questions);
+        
 
 
         // { id: categories, question: questions, selection } = numericDataFromSurvey.map(({id, question, selection}) => ({id, question, selection}))
@@ -166,13 +168,15 @@ export class StatsComponent implements OnInit{
         });
         index += 1;
       });
+      console.log(surveyArray)
+      questions = surveyArray[0].survey.map(v => v.question)
       return options = {
         
         title: { text: surveyArray[0].teacher },
         chart: {
           type: type || 'spline',
-          width: window.screen.availWidth * .50,
-          height: window.screen.availHeight * .45 
+          width: 675,
+          height: 350
         },
         xAxis: [{
           categories: categories,
@@ -188,27 +192,40 @@ export class StatsComponent implements OnInit{
           backGroundColor: "rgb(245,245,245)",
           shared: true,
           useHTML: true,
-          headerFormat: "<strong>{point.key}: </strong><table>",
-          pointFormatter: function(){
-            return( 
-                  '<span>' + 
-                      questions[this.series.data.indexOf( this )] + 
-                  '</span>' + 
-                  '<div style="color: "' + this.color + '><strong>Value: </strong>' +
-                    this.options.y +
-                  '</div>' + 
-                  '<div><strong>Selection: </strong>' +
-                    selection[this.series.data.indexOf( this )] +
-                  '</div>'
-                );
-          },
-          footerFormat: ""
+            formatter: function(){
+              console.log(this,selection);
+              let 
+                qid = this.x.slice(1, this.x.length),
+                question = 
+                  questions[qid] ? 
+                    "<strong>"+ this.x +": </strong>" +
+                    '<span>' + 
+                      questions[qid] + 
+                    '</span>'
+                    : '',
+                info = []
+                each(this.points, point => {
+                  info.push(
+                    '<div><strong>Value: </strong><span style="color:' + point.color + '">' +
+                      point.y +'</span>' +
+                    '</div>' + 
+                    '<div><strong>Selection: </strong><span style="color:' + point.color + '">' +
+                      selection[Math.round(point.y - 1)] + '</span>' +
+                    '</div>'
+                  )
+                });
+
+              return question + info.join('');
+            }
         }
       }
     }
   }
   loaderState(hidden: boolean){
     this.showLoader = hidden;
+  }
+  surveyNumber(value){
+    console.log(value)
   }
   downloadCSV(){
     window.open(`${BASE_URL}/excel/${this.SurveyId}`, '__blank');
