@@ -7,11 +7,10 @@
             <span class="badge">{{index +1}}</span>
             <strong class="text-center">{{ sectionHeading }}</strong>
             <div class="pull-right">
-                <label class="label label-success" (click)="collapseQuest(_id)">-</label>    
+                <label class="label label-success">-</label>    
             </div>
         </div>
         <div class="panel-body">
-            {{ questions }}
             <div class="col-xs-12" *ngFor="let quest of question, let i=index">
                 <p class="text-center">{{ quest.qid }}. {{quest.question}}</p>
                 <br>

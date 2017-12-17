@@ -31,7 +31,7 @@ import { DashboardSurveyComponent } from './components/dashboard/dashboard-surve
 import { SurveysComponent } from './components/dashboard/dashboard-surveys/surveys.component';
 import { AlertComponent } from "./components/alert-message/alert-message";
 import { ModalModule } from './modal/modal.module';
-import { SettingsCrudTableComponent } from './settings-crud-table/settings-crud-table.component';
+
 declare var require: any;
 
 export function highchartsFactory() {
@@ -60,9 +60,7 @@ export function highchartsFactory() {
     CourseEvalForm,
     SettingsComponent,
     LoaderComponent,
-    AlertComponent,
-    SettingsCrudTableComponent,
-    // ModalComponent
+    AlertComponent
   ],
   imports: [
     BrowserModule,

@@ -88,7 +88,7 @@ import { ModalComponent } from '../../../modal/modal.component';
     viewSurvey(id){
       this.SurveyId.emit(id);  
     }
-    showSurvey(teacherName: string, optimize){
+    showSurvey(teacherName: string, optimize?:boolean){
       this.surveyDetails.set('teacher', teacherName);
       let selectedTeacher: Object = {};
       let singleSurveys = [];
@@ -108,8 +108,11 @@ import { ModalComponent } from '../../../modal/modal.component';
         this.sharedService.postCall(SURVEY_LIST, list)
           .subscribe(     
             result => {
+              // console.log(result);
               if(result.status == 200)
-                this.surveysArray = JSON.parse(result["_body"]).reverse()},
+                this.surveysArray = JSON.parse(result["_body"]).reverse()
+                console.log(this.surveysArray);
+              },
             err => {console.error(err); setTimeout(this.loaderState(false), 2500)},
             () => setTimeout(this.loaderState(false), 2500)
           );
@@ -121,7 +124,7 @@ import { ModalComponent } from '../../../modal/modal.component';
     loaderState(hidden: boolean){
       this.showLoader = hidden;
     }
-    downloadCSV($event){
+    downloadCSV(){
       let modalOptions = {
         metaData: {
           chaining: false,
@@ -175,12 +178,5 @@ import { ModalComponent } from '../../../modal/modal.component';
             }
 
       });
-
-      
-      this.openModal = true;
-      this.modalPurpose = 'survey';
-    }
-    modalState($event){
-      this.openModal = false;
     }
   }

@@ -1,5 +1,3 @@
-// import { createReadStream } from 'fs';
-// import { createWriteStream } from 'fs';
 const 
     Surveys = require('../database/models/survey.model')
     napajs = require('napajs'),
@@ -167,12 +165,11 @@ class SurveyJoint {
                 if(err){
                     reject({status: 400, body: "Unable to optimize survey"});
                 }
-                execFile('node',[filePath, optimizeType == 'batch' ? 'batch' : 'date'], (eerr, data)=> {
-                    if(eerr)
-                        console.log(eerr)
+                let child = execFile('node',[filePath, optimizeType == 'batch' ? 'batch' : 'date']);
+                child.stdout.on("data", data=> {
+                    console.log(data);
                     try {
                         let result = JSON.parse(data);
-                        // console.log('typeof surveys', typeof result);
                         resolve({status: 200, body: result})
                     } catch (e) {
                         reject({status: 400, body: "Unable to parse data"});

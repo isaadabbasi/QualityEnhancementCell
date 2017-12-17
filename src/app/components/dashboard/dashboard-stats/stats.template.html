@@ -5,7 +5,7 @@
 	</div>
   <div class="col-xs-3 form-group pull-right">
     <select [disabled]="!showTeachersList" #teacher name="teacher" class="form-control" (change)="showSurvey(teacher.value)">
-      <option value="" name="teachers" value="0" [selected]="teachers">Select Teacher</option>
+      <option value="" name="teachers" value="0" [selected]="!teachersList">Select Teacher</option>
       <option *ngFor="let teacher of teachersList" [ngValue]="teacher.fullname"> {{ teacher.fullname }} </option>      
     </select>
   </div>
@@ -19,7 +19,7 @@
 <div class="row">
   <div class="col-xs-3 pull-right">
       <label for="optimize" class="pull-right">Optimized</label>
-      <input type="checkbox" id="optimize" [disabled]="teacher.value != 0 ? disabled : ''" [(ngModel)]="optimize" (change)="onOptimize(teacher.value)" name="optimize" class="pull-left">
+      <input type="checkbox" id="optimize" [disabled]="teacher.value == 0" [(ngModel)]="optimize" (change)="onOptimize(teacher.value)" name="optimize" class="pull-left">
     </div>
 </div>
   

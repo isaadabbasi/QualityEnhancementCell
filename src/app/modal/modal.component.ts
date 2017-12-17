@@ -1,3 +1,4 @@
+import { modalOptionsModel } from './modal.interface';
 import { Component, 
          OnInit, 
          Input, 
@@ -14,7 +15,7 @@ import { Component,
   styleUrls: ['./modal.component.css']
 })
 export class ModalComponent implements OnInit {
-  @Input('options') options : Object = {};
+  @Input('options') options : modalOptionsModel;
   @Input('main-title') mainTitle: string = '';
   @Output('output') output: EventEmitter<Map<string, any>> = new EventEmitter();
   @ViewChild('modal', {read: ElementRef}) modal: ElementRef;

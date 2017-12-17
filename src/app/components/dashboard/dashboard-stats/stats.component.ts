@@ -31,7 +31,7 @@ export class StatsComponent implements OnInit{
   
   timeToFetch:      number;
   
-  deparmentsList:   Array<Object> =  Departments;
+  deparmentsList:   Array<Department> =  Departments;
   
   sub:              Subscription;
   
@@ -171,8 +171,8 @@ export class StatsComponent implements OnInit{
         title: { text: surveyArray[0].teacher },
         chart: {
           type: type || 'spline',
-          width: window.screen.availWidth * .50,
-          height: window.screen.availHeight * .45 
+          width: 600,
+          height: 350 
         },
         xAxis: [{
           categories: categories,
@@ -213,4 +213,9 @@ export class StatsComponent implements OnInit{
   downloadCSV(){
     window.open(`${BASE_URL}/excel/${this.SurveyId}`, '__blank');
   }
+}
+
+interface Department{
+  value: any | string,
+  name: string
 }
