@@ -1,4 +1,4 @@
-<div class="questionare-body col-xs-12 col-md-offset-1 col-md-10">
+<div *ngIf="!!surveyResult" class="questionare-body col-xs-12 col-md-offset-1 col-md-10">
     <div class="row main-form-header">
         <div class="" style="display: inline">
             <img class="teacher-image " src="./assets/images/duet_logo.png">
@@ -8,7 +8,7 @@
                 <li>Department: {{ selectedDepartment }}</li>
                 <li>Teacher: {{ selectedTeacher }}</li>
                 <li>Course: {{ subject? subject: '' }}</li>
-                <li>Evaluation: {{ evaluationType }}</li>
+                <li>Evaluation: {{ evaluationType | titlecase }}</li>
                 <li>Date: {{date | date}}</li>
             </ul>
         </div>
@@ -33,8 +33,14 @@
             </tbody>
         </table>
     </div>    
-    <div style="margin:0 4vw 0 2vw">
+    <div *ngIf="survey" style="margin:0 4vw 0 2vw">
         <button type="button" class="btn btn-primary pull-left" (click)="downloadCSV()"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp; Download to Excel</button>              
         <button class="btn btn-primary pull-right" [routerLink]="['/dashboard/stats', surveyId]">View Graph&nbsp;  <i class="fa fa-line-chart" aria-hidden="true"></i></button>   
     </div>
 </div>
+<alert-message
+    *ngIf="!surveyResult"
+    [top]="'20%'"
+    [alert-type]="'info'" 
+    [message]="'Please select survey first from View Survey Tab.'">
+</alert-message>

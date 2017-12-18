@@ -6,7 +6,7 @@
 	</div>
 	<div class="col-xs-3 form-group pull-right">
 		<select [disabled]="!showTeachersList" #teacher name="teacher" class="form-control" (change)="showSurvey(teacher.value)">
-			<option value="" name="teachers" value="0" [selected]="teachers">Select Teacher</option>
+			<option value="" name="teachers" value="0" [selected]="">Select Teacher</option>
 			<option *ngFor="let teacher of teachersList" [ngValue]="teacher.fullname"> {{ teacher.fullname }} </option>      
 		</select>
 	</div>
@@ -17,10 +17,10 @@
 	</div>
 </div>
 <div class="row">
-	{{teacher.value }}
 	<div class="col-xs-3 pull-right form-group">
-		<label for="optimize" class="pull-right">Optimized</label>
-		<input type="checkbox" id="optimize" [(ngModel)]="optimize" [disabled]="teacher.value != 0 ? disabled : ''" (change)="onOptimize(teacher.value)" name="optimize" class="pull-left">
+		<label for="optimize" class="">
+			<input type="checkbox" id="optimize" [(ngModel)]="optimize" [disabled]="!!(teacher.value === '0')" (change)="onOptimize(teacher.value)" name="optimize" class="pull-left">
+		Optimized</label>
 	</div>
 </div>
 <div id="table-wrapper">
@@ -41,10 +41,10 @@
 					<td>{{ i + 1 | number }}</td>
 					<td>{{ survey.teacher }}</td>
 					<td>{{ survey.course }}</td>
-					<td>{{ survey.evaluation }}</td>
+					<td>{{ survey.evaluation | titlecase }}</td>
 					<td>{{ survey.created | date }}</td>
 					<td>
-						<a [routerLink]="survey._id">
+						<a role="link" (click)="showSingleSurvey(survey)" [routerLink]="['/dashboard/survey']">
 							View Survey
 						</a>
 					</td>	
@@ -57,7 +57,7 @@
 			type="button" 
 			class="btn btn-primary pull-left" 
 			[disabled]="!(teacher.value != 0)" 
-			[ngClass]="{ 'disabled': teacher.value == '0'}" 
+			[ngClass]="{ 'disabled': teacher.value == '0' }" 
 			(click)="downloadCSV()">
 				<i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp; Download to Excel</button>              
 	</div>

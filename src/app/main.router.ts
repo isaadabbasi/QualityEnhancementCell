@@ -29,7 +29,7 @@ export const routes: Routes = [
         {path:'stats', component: StatsComponent },
         {path:'stats/:id', component: StatsComponent },
         {path: 'view-surveys', component: SurveysComponent },
-        {path: 'view-surveys/:id', component: DashboardSurveyComponent },
+        {path: 'survey', component: DashboardSurveyComponent },
         {path: 'settings', component: SettingsComponent },
         {path: '', component: PlaceHolderComponent }
 

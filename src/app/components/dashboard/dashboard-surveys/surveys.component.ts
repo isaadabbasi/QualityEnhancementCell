@@ -1,6 +1,6 @@
-import { modalOptionsModel } from './../../../modal/modal.interface';
 import { Component, ViewChild, Output, EventEmitter, OnInit, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
-import { map } from "lodash";
+import { map, reverse } from "lodash";
+import { Router } from "@angular/router";
 
 import { SURVEY_LIST, 
         Departments, 
@@ -10,16 +10,13 @@ import { SURVEY_LIST,
 } from './../../../shared/global-vars';
 import { SharedService } from "./../../../shared/shared.service";
 import { TeacherListItem, DeparmentsListItemModel } from './../../../shared/models';
-
+import { modalOptionsModel } from './../../../modal/modal.interface';
 import { ModalComponent } from '../../../modal/modal.component';
 @Component({
       selector: 'surveys',
       templateUrl: './surveys.template.html',
       styleUrls: [
         `./surveys.component.css`
-      ],
-      providers: [
-        SharedService
       ]
   })
   export class SurveysComponent implements OnInit {
@@ -47,21 +44,21 @@ import { ModalComponent } from '../../../modal/modal.component';
     ngOnInit(){
       let start = Date.now();              
       this.sharedService.getCall(SURVEY_LIST)
+      .map(res => reverse(res))
       .subscribe(
         next => {
           this.surveysArray = next;
           this.length = this.surveysArray.length;
+          // this.sharedService.sendSurvey(next);
         },
-        err => console.error(err),
-        () => {
-          this.surveysArray.reverse();  
-        }
+        console.error
       );
       let end = Date.now();
       this.timeToFetch = end - start;
     }
-    constructor(private sharedService: SharedService,
-                private _cfr: ComponentFactoryResolver){
+    constructor(private _router       : Router, 
+                private sharedService : SharedService,
+                private _cfr          : ComponentFactoryResolver){
     }
     getNextList(entity: string, value: string){
       let URL = entity === 'teachers' && value != "0"? 
@@ -87,11 +84,11 @@ import { ModalComponent } from '../../../modal/modal.component';
     viewSurvey(id){
       this.SurveyId.emit(id);  
     }
+
     showSurvey(teacherName: string, optimize){
       this.surveyDetails.set('teacher', teacherName);
       let selectedTeacher: Object = {};
       let singleSurveys = [];
-      // console.time()
       let start = Date.now()
       if(teacherName !== '0'){
         this.loaderState(true);
@@ -105,10 +102,12 @@ import { ModalComponent } from '../../../modal/modal.component';
         };
         list["optimize"] = optimize;
         this.sharedService.postCall(SURVEY_LIST, list)
+          .map(res => res.json().reverse())
           .subscribe(     
             result => {
-              if(result.status == 200)
-                this.surveysArray = JSON.parse(result["_body"]).reverse()},
+                this.surveysArray = (result)
+                // this.sharedService.sendSurvey(result);
+              },
             err => {console.error(err); setTimeout(this.loaderState(false), 2500)},
             () => setTimeout(this.loaderState(false), 2500)
           );
@@ -117,6 +116,7 @@ import { ModalComponent } from '../../../modal/modal.component';
       let end = Date.now();
       this.timeToFetch = end - start;
     }
+    
     loaderState(hidden: boolean){
       this.showLoader = hidden;
     }
@@ -173,12 +173,11 @@ import { ModalComponent } from '../../../modal/modal.component';
             }
 
       });
-
       
-      this.openModal = true;
-      this.modalPurpose = 'survey';
     }
-    modalState($event){
-      this.openModal = false;
+
+    showSingleSurvey(survey){
+      this.sharedService.sendSurvey(survey)
+      this._router.navigate(['/dashboard/survey'])
     }
   }
