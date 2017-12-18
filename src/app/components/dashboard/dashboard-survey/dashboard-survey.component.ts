@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { each } from 'lodash';
 
@@ -28,11 +28,15 @@ export class DashboardSurveyComponent implements OnInit{
 
     surveyId            : string;
     selectedDepartment  : string;
-    
+    optimize            : boolean;
+
     sub                 : Subscription;
+    
+    surveyDetails       : Map<string, any> = new Map();
+    
     surveyResultId;
 
-    constructor(private route: ActivatedRoute,
+    constructor(private _router: Router,
                 private sharedService: SharedService) {
         
     }
@@ -43,14 +47,15 @@ export class DashboardSurveyComponent implements OnInit{
         this.sharedService.currentMessage
         .subscribe(
             result => {
+                this.optimize = result["optimize"];
                 if(Object.keys(result).length){
-                    this.surveyResult       = result;
+                    this.surveyResult       = result["survey"];
                     this.selectedDepartment = this.surveyResult["dept"]
                     this.selectedTeacher    = this.surveyResult["teacher"]
                     this.subject            = this.surveyResult["course"];
                     this.evaluationType     = this.surveyResult["evaluation"];
                     this.date               = this.surveyResult["created"];
-                        
+                    // this.surveyDetails.get('surveyId', this.surveyResult["_id"])
                     this.survey = this.surveyResult["survey"];
 
                 }
@@ -66,6 +71,12 @@ export class DashboardSurveyComponent implements OnInit{
             );
     }
     downloadCSV(){
-        window.open(`${DOWNLOAD_EXCEL}/${this.surveyId}`, '__blank');        
+        window.open(`${DOWNLOAD_EXCEL}/${this.surveyResult["_id"]}`, '__blank');        
+    }
+    openSurveyChart(survey){
+        let optimize = this.optimize;
+        this.sharedService.sendSurvey({survey, optimize});
+        this._router.navigate(['/dashboard/stats', 'single']);
+
     }
 }

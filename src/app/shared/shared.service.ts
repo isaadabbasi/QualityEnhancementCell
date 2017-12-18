@@ -30,6 +30,10 @@ export class SharedService{
         return this.http.delete(url, option)
     }
 
+    putCall(url: string, body: any, option?){
+        return this.http.put(url, body, option)
+    }
+
     isLoggedIn(){
         let activeUser = (JSON.parse(localStorage.getItem('activeUser')));
         if(activeUser && (activeUser.rollnumber || activeUser.department || activeUser.email)){

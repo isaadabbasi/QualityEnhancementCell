@@ -26,7 +26,7 @@ export const TEACHER_DETAILS_URL  : string = `${TEACHER_BASE_URL}/details`;
 export const DOWNLOAD_EXCEL       : string = `${BASE_URL}/excel`;
 export const ADMIN_BASE_URL       : string = `${BASE_URL}/admins`;
 export const ADD_ADMIN            : string = `${ADMIN_BASE_URL}/add`;    
-  
+export const PREFERENCES          : string = `${BASE_URL}/prefs`
 export const 
  TEACHER_DETAILS_BY_DEPARTMENT    : string = `${TEACHER_DETAILS_URL}?department=`;
 export const 

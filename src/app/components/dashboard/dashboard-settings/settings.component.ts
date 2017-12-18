@@ -9,7 +9,8 @@ import { TEACHER_DETAILS_URL,
          Departments as DepartmentsList, 
          TEACHER_BASE_URL, 
          ADMIN_BASE_URL, 
-         ADD_ADMIN} from './../../../shared/global-vars';
+         ADD_ADMIN,
+         PREFERENCES} from './../../../shared/global-vars';
     
 import { SharedService } from './../../../shared/shared.service';
 import { AutoUnsubscribe } from '../../../decorators/AutoUnsubscribe';
@@ -39,6 +40,7 @@ export class SettingsComponent {
         'student'
     ];
 
+    sessionDetails: Map<string, any> = new Map();
     allTeachers: Array<{
         _id         : string, 
         fullname    : string, 
@@ -347,7 +349,22 @@ export class SettingsComponent {
                     console.error
             }
     }
-    startSurvey(value){
-        console.log(value)   
+    sessionStatus(value){
+        this.sharedService.putCall(
+            `${PREFERENCES}/${this.sessionDetails.get('id')}`,
+            {session: value}
+        ).subscribe(
+            console.log
+        )
+    }
+    getSessionStatus(){
+        this.sharedService.getCall(PREFERENCES)
+        .subscribe(next => {
+            this.sessionDetails
+                .set('status', next.session)
+                .set('id', next["_id"]);
+        },
+            console.error
+        );
     }
 }

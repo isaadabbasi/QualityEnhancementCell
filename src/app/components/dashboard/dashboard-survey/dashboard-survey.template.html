@@ -34,8 +34,20 @@
         </table>
     </div>    
     <div *ngIf="survey" style="margin:0 4vw 0 2vw">
-        <button type="button" class="btn btn-primary pull-left" (click)="downloadCSV()"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp; Download to Excel</button>              
-        <button class="btn btn-primary pull-right" [routerLink]="['/dashboard/stats', surveyId]">View Graph&nbsp;  <i class="fa fa-line-chart" aria-hidden="true"></i></button>   
+        <button 
+            type="button" 
+            (click)="downloadCSV()"
+            *ngIf=!this.optimize
+            class="btn btn-primary pull-left" 
+        >
+            <i 
+                aria-hidden="true"
+                class="fa fa-file-excel-o" 
+            >
+            </i>
+            &nbsp; Download to Excel
+        </button>              
+        <button class="btn btn-primary pull-right" (click)="openSurveyChart(surveyResult)">View Graph&nbsp;  <i class="fa fa-line-chart" aria-hidden="true"></i></button>   
     </div>
 </div>
 <alert-message
