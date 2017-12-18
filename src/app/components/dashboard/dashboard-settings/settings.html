@@ -3,7 +3,7 @@
 <ul style="top:0!important;" class="nav nav-tabs nav-justified">
     <li class="active"><a (click)="getAdmins()" role="button" data-toggle="tab" href="#admin">Admin</a></li>
     <li><a (click)="getTeachers()" role="button" data-toggle="tab" href="#teacher">Teacher</a></li>
-    <li><a role="button" data-toggle="tab" href="#prefrences">Prefrences</a></li>
+    <li><a (click)="getSessionStatus()" role="button" data-toggle="tab" href="#prefrences">Prefrences</a></li>
 </ul>
 
 <div class="tab-content col-xs-8 col-xs-offset-2 text-center">
@@ -89,9 +89,10 @@
                 <!-- Rounded switch -->
                 <label class="switch">
                     <input
-                        name="startSurvey"
-                        (change)="startSurvey($event.target.checked)"
                         type="checkbox"
+                        name="startSurvey"
+                        (click)="sessionStatus($event.target.checked)"
+                        [checked]="!!sessionDetails.get('status')"
                      >
                     <span class="slider round"></span>
                 </label></div>
