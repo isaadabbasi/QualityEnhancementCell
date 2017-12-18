@@ -1,8 +1,8 @@
-import { modalOptionsModel } from './modal.interface';
+
 import { Subscribable } from 'rxjs/Observable';
 import { Injectable, ViewContainerRef, ComponentFactoryResolver } from "@angular/core";
 import { ModalComponent } from './modal.component';
-
+import { modalOptionsModel } from "./modal.interface";
 @Injectable()
 export class ModalComponentFactory {
     constructor(private _cfr: ComponentFactoryResolver ) {

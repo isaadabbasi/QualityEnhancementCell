@@ -16,7 +16,7 @@ import { LoginComponent } from './components/login/login.component'
 import { MainFormComponent } from './components/main-form/main-form.component';
 import { NavBarComponent } from './components/nav-bar/navbar.component';
 import { PlaceHolderComponent } from './components/dashboard/dashboard-placeholder/placeholder.component';
-import { RankingComponent } from './components/dashboard/dashboard-ranking/ranking.component'
+import { RankingModule } from './components/dashboard/dashboard-ranking/ranking.module'
 import { StartSurveyComponent } from './components/dashboard/dashboard-start/start.component'
 import { SignupComponent } from './components/signup/signup.component';
 import { SharedService } from './shared/shared.service';
@@ -30,7 +30,7 @@ import { DashboardSurveyComponent } from './components/dashboard/dashboard-surve
 import { SurveysComponent } from './components/dashboard/dashboard-surveys/surveys.component';
 import { AlertComponent } from "./components/alert-message/alert-message";
 import { ModalModule } from './modal/modal.module';
-import { SettingsCrudTableComponent } from './settings-crud-table/settings-crud-table.component';
+
 declare var require: any;
 
 export function highchartsFactory() {
@@ -50,7 +50,6 @@ export function highchartsFactory() {
     MainFormComponent,
     NavBarComponent,
     PlaceHolderComponent,
-    RankingComponent,
     StartSurveyComponent,
     SignupComponent,
     StatsComponent,
@@ -59,14 +58,13 @@ export function highchartsFactory() {
     CourseEvalForm,
     SettingsComponent,
     LoaderComponent,
-    AlertComponent,
-    SettingsCrudTableComponent,
-    // ModalComponent
+    AlertComponent
   ],
   imports: [
     BrowserModule,
     BrowserModule,
     FormsModule,
+    RankingModule,
     HttpModule,
     RouterModule,
     ChartModule,

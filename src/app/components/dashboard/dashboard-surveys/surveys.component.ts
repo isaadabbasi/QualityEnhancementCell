@@ -84,8 +84,7 @@ import { ModalComponent } from '../../../modal/modal.component';
     viewSurvey(id){
       this.SurveyId.emit(id);  
     }
-
-    showSurvey(teacherName: string, optimize){
+    showSurvey(teacherName: string, optimize?:boolean){
       this.surveyDetails.set('teacher', teacherName);
       let selectedTeacher: Object = {};
       let singleSurveys = [];
@@ -106,7 +105,6 @@ import { ModalComponent } from '../../../modal/modal.component';
           .subscribe(     
             result => {
                 this.surveysArray = (result)
-                // this.sharedService.sendSurvey(result);
               },
             err => {console.error(err); setTimeout(this.loaderState(false), 2500)},
             () => setTimeout(this.loaderState(false), 2500)

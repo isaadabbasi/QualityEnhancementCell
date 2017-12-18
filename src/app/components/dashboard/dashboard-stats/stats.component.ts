@@ -228,3 +228,8 @@ export class StatsComponent implements OnInit{
     window.open(`${BASE_URL}/excel/${this.surveyDetails.get('surveyId')}`, '__blank');
   }
 }
+
+interface Department{
+  value: any | string,
+  name: string
+}
