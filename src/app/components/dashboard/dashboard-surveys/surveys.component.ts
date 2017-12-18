@@ -118,7 +118,7 @@ import { ModalComponent } from '../../../modal/modal.component';
     loaderState(hidden: boolean){
       this.showLoader = hidden;
     }
-    downloadCSV($event){
+    downloadCSV(){
       let modalOptions: modalOptionsModel = {
         metaData: {
           chaining: false,
