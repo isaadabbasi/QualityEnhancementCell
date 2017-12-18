@@ -9,29 +9,28 @@ export class CourseEvalForm implements OnInit{
     constructor() {
         
     }
-    @Input('heading') sectionHeading = null 
-    @Input() question = null;
-    @Input() percentage = null;
-    @Input() _id = null;
-    @Input() index = null;
-    @Input() options = null;
-    @Input() canComment = true;
-    @Output() quizReplied = new EventEmitter();
-    @Output() commentsReplied = new EventEmitter();
-    // options: Array<String> = ['Strongly Disagree', 'Disagree', 'Uncertain', 'Agree', 'Strongly Agree'];
     
+    @Input('index') index                               = null;
+    @Input('optinos') options                           = null;
+    @Input('question') question                         = null;
+    @Input('canComment') canComment                     = true;
+    @Input('heading') sectionHeading                    = null; 
+    @Output('quizReplied') quizReplied                  = new EventEmitter();
+    @Output('commentsReplied') commentsReplied          = new EventEmitter();
+
     ngOnInit(){
-        this.options = this.question.options;
-        
+        this.options = this.question.options;        
     }
+
     optionSelected(id, value, selection, question){             
         this.quizReplied.emit({
             id, value, selection,question
-        })
+        });
     }
+    
     getTextValue(id, value,question){
         this.commentsReplied.emit({
             id, value, question
-        })
+        });
     }
 }

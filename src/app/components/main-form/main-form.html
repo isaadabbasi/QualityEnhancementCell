@@ -5,7 +5,6 @@
     [alert-type]="'danger'" 
     [message]="'You have not answered all question.'">
 </alert-message>
-<!-- <alert-message [alert-type]="danger" [message]="'Please answer all questions.'"></alert-message> -->
 <div *ngIf="!!questions" class="questionare-body col-xs-12 col-md-offset-1 col-md-10">
     <div class="row main-form-header">
         <div class="" style="display: inline">
@@ -13,9 +12,9 @@
         </div>
         <div class="pull-right">
             <ul class="teacher-details">
-                <li>{{selectedDepartment}}</li>
-                <li>{{selectedTeacher}}</li>
-                <li>{{subject? subject: ''}}</li>
+                <li>{{ selectedDepartment }}</li>
+                <li>{{ selectedTeacher }}</li>
+                <li>{{ subject? subject: '' }}</li>
             </ul>
         </div>
     </div>

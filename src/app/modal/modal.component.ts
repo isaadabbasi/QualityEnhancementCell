@@ -15,13 +15,17 @@ import { Component,
   styleUrls: ['./modal.component.css']
 })
 export class ModalComponent implements OnInit {
-  @Input('options') options : modalOptionsModel = null;
+  @Input('options') options     : modalOptionsModel = null;
   @Input('main-title') mainTitle: string = '';
-  @Output('output') output: EventEmitter<Map<string, any>> = new EventEmitter();
-  @ViewChild('modal', {read: ElementRef}) modal: ElementRef;
-  @HostBinding('class.set-on-top') onTop: boolean = true;
-  outputMaps: Map<string, any> = new Map();                              //Bindined with template
-  _ref: any;
+  
+  @Output('output') output      : EventEmitter<Map<string, any>> = new EventEmitter();
+  
+  @ViewChild('modal', {read: ElementRef}) 
+    modal                       : ElementRef;
+  @HostBinding('class.set-on-top') 
+    onTop                       : boolean = true;
+  outputMaps                    : Map<string, any> = new Map();                              //Bindined with template
+  _ref                          : any;
 
   constructor(private vcRef: ViewContainerRef) { }
 
@@ -31,8 +35,9 @@ export class ModalComponent implements OnInit {
 
   buttonClicked(buttonId){
     this._ref.destroy();
-    console.log(buttonId);    
+
     this.outputMaps.set('status', buttonId);
+
     this.output.emit(this.outputMaps);
   }
 }

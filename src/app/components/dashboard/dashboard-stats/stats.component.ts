@@ -1,8 +1,12 @@
 import { DeparmentsListItemModel } from './../../../shared/models';
-import { Component, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import { Component,
+         OnInit,
+         ViewChild, 
+         ViewContainerRef, 
+         ComponentFactoryResolver } from '@angular/core';
+
 import { ActivatedRoute } from '@angular/router';
 
-import { OnInit } from '@angular/core';
 import { map, each } from "lodash";
 import { Subscription } from 'rxjs/Subscription';
 
@@ -12,6 +16,7 @@ import { SURVEY_LIST,
          BASE_URL,
          DOWNLOAD_EXCEL, 
          GET_SURVEY} from './../../../shared/global-vars';
+
 import { AutoUnsubscribe } from "./../../../decorators/AutoUnsubscribe";         
 import { SharedService } from './../../../shared/shared.service';
 import { ModalComponent } from '../../../modal/modal.component';
@@ -23,51 +28,53 @@ import { ModalComponent } from '../../../modal/modal.component';
 })
 @AutoUnsubscribe()
 export class StatsComponent implements OnInit{
-  @ViewChild('modal', {read: ViewContainerRef}) container: ViewContainerRef;
-  
-  surveyDetails:    Map<string, any> = new Map();
-  
-  SurveyId:         any;
-  teachersList:     any;
-  
-  timeToFetch:      number;
-  
-  deparmentsList:   Array<DeparmentsListItemModel> =  Departments;
-  
-  sub:              Subscription;
-  
-  optimize:         boolean = true;
-  showLoader:       boolean = false;
-  showDetails:      boolean = false;
-  singleSurvey:     boolean = false;
-  showTeachersList: boolean = false;
-  
-  options:          Object;
 
+  @ViewChild('modal', {read: ViewContainerRef})
+    container       : ViewContainerRef;
+  
+  surveyDetails     : Map<string, any> = new Map();
+  
+  teachersList      : any;
+  
+  deparmentsList    : Array<DeparmentsListItemModel> =  Departments;
+  
+  sub               : Subscription;
+  
+  optimize          : boolean = false;
+  showLoader        : boolean = false;
+  showDetails       : boolean = false;
+  singleSurvey      : boolean = false;
+  showTeachersList  : boolean = false;
+  
+  options           : Object;
   
   ngOnInit(){
+    
     this.sub = this.route.paramMap
-    .subscribe(
-        params => {
-            this.SurveyId = params.get("id");
-            this.showSurvey('0', false, this.SurveyId);
-        }),
-    err => console.error(err)
+      .subscribe(
+        params => this.showSurvey(
+          '0', 
+          false, 
+          0, 
+          this.surveyDetails
+            .set('surveyId', params.get("id"))
+            .get('surveyId')
+          ),
+        console.error
+      )
   }
+
   constructor(private route: ActivatedRoute,
               private sharedService: SharedService,
               private _cfr: ComponentFactoryResolver
-            ){                
-  }
-  onOptimize(teacher){
-    
-    this.showSurvey(teacher, this.optimize);
-  }
+            ){ }
+
   getNextList(entity: string, value: string){
+
     let URL = entity === 'teachers' && value != "0"? 
-      TEACHER_DETAILS_BY_DEPARTMENT + value 
-      :
+      TEACHER_DETAILS_BY_DEPARTMENT + value :
       '';
+    
     if(value != "0"){
       this.surveyDetails.set('dept', value);
       this.showTeachersList = true;
@@ -86,23 +93,22 @@ export class StatsComponent implements OnInit{
   }
       
   viewSurvey(id){
-    this.SurveyId.emit(id);  
+    this.surveyDetails.get('surveyId').emit(id);  
   }
-  showSurvey(teacherName: string, optimize?: boolean, surveyId?: string){
-    
+  showSurvey(teacherName: string, optimize?: boolean, surveysLength?: number, surveyId?: string){
     this.surveyDetails.set('teacher', teacherName);
     let start = Date.now(),
         finalSurveysArray: Array<any> = [];
     
     if(!!surveyId){
-      this.singleSurvey = true;
+      this.singleSurvey               = true;
       this.sharedService.getCall(`${SURVEY_LIST}/id/${surveyId}`)
         .subscribe(
           res => {
             finalSurveysArray.push(res);
           }, console.error,
           () => {
-            this.options = plotGraph(finalSurveysArray);
+            this.options              = plotGraph(finalSurveysArray);
           }
         )
     }
@@ -115,14 +121,14 @@ export class StatsComponent implements OnInit{
         surveyReferencesList = map(surveys, '_reference')
       
       this.sharedService.postCall(SURVEY_LIST, {list: surveyReferencesList, optimize: this.optimize})
-        .map(res => res.json())
+        .map(res => res.json().reverse())
         .subscribe(     
           result => {
             let 
                 {length} = result;
-                
-            finalSurveysArray = length > 5 ? 
-              result.slice(length-5, length):
+            this.surveyDetails.set("maxSurveys", length);
+            finalSurveysArray = surveysLength <= length ?
+              result.slice(0, surveysLength):
               result;
           },
           err => {console.error(err); setTimeout(this.loaderState(false), 2500)},
@@ -132,11 +138,11 @@ export class StatsComponent implements OnInit{
         });
     }
     let end = Date.now();
-    this.timeToFetch = end - start;
+    this.surveyDetails.set('timeToFetch', end - start);
 
     let plotGraph = (surveyArray, type?: string):Object => {
       let 
-        series    = [],
+        series        = [],
         index         = 1,
         categories    = null,
         questions     = null,
@@ -155,13 +161,7 @@ export class StatsComponent implements OnInit{
         date        = new Date(surveys.created).toLocaleDateString();
         categories  = numericDataFromSurvey.map(v => `Q${v.id}`);
         questions   = numericDataFromSurvey.map(v => v.question);
-        console.log(questions);
         
-
-
-        // { id: categories, question: questions, selection } = numericDataFromSurvey.map(({id, question, selection}) => ({id, question, selection}))
-        // let x = numericDataFromSurvey.map(v => ({id: v.id, question: v.question, selection: v.selection}))
-        console.log(numericDataFromSurvey)
         series.push({
           "name": date,
           "data": value,
@@ -169,7 +169,7 @@ export class StatsComponent implements OnInit{
         });
         index += 1;
       });
-      console.log(surveyArray)
+      
       questions = surveyArray[0].survey.map(v => v.question)
       return options = {
         
@@ -194,7 +194,6 @@ export class StatsComponent implements OnInit{
           shared: true,
           useHTML: true,
             formatter: function(){
-              console.log(this,selection);
               let 
                 qid = this.x.slice(1, this.x.length),
                 question = 
@@ -225,10 +224,7 @@ export class StatsComponent implements OnInit{
   loaderState(hidden: boolean){
     this.showLoader = hidden;
   }
-  surveyNumber(value){
-    console.log(value)
-  }
   downloadCSV(){
-    window.open(`${BASE_URL}/excel/${this.SurveyId}`, '__blank');
+    window.open(`${BASE_URL}/excel/${this.surveyDetails.get('surveyId')}`, '__blank');
   }
 }

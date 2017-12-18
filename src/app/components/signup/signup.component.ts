@@ -14,13 +14,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 export class SignupComponent implements OnInit{
 
-    showMessage:            boolean         = false;
-    signupErrorMessage:     string          = '';
-    signupError:            boolean         = false;
-    departments:            
-           Array<DeparmentsListItemModel>   = Departments;   
-    signUpContainer:        HTMLElement     = document.getElementById('signup-container');
-    userCredentials:        StudentModel    = { fullname: '', department: '', rollnumber: '', password: '' }
+    showMessage             : boolean         = false;
+    signupErrorMessage      : string          = '';
+    signupError             : boolean         = false;
+    departments             : Array<DeparmentsListItemModel>   
+                                              = Departments;   
+    signUpContainer         : HTMLElement     = document.getElementById('signup-container');
+    userCredentials         : StudentModel    = { fullname: '', department: '', rollnumber: '', password: '' }
     
     constructor(public router: Router,
                 private sharedService: SharedService){}
@@ -42,7 +42,6 @@ export class SignupComponent implements OnInit{
             this.sharedService.postCall(SIGNUP_URL, this.userCredentials)
                 .map(res => res.json())
                 .subscribe(res => {
-                    console.log(res);                    
                     clearFields();
                     setTimeout(()=>{
                         this.router.navigate(['/login']);
@@ -65,7 +64,6 @@ export class SignupComponent implements OnInit{
                 let clearFields = () => {
                     this.userCredentials = { fullname: '', rollnumber: '', department: '' };
                 }
-
         } 
     }
 }

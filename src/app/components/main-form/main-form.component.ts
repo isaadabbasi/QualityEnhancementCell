@@ -1,15 +1,12 @@
 
 import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { debounceTime } from 'rxjs/operators';
 
-import { sortBy, each } from "lodash";
+import { each } from "lodash";
 
-import { TeacherEvaluationForm, courseEvaluationForm } from './../../shared/forms/teacher-evaluation-form';
+
 import { ModalComponent } from './../../modal/modal.component';
 import { ModalComponentFactory } from './../../modal/modal.service';
-import { QuestionComponent } from './quest.component';
-import { CourseEvalForm } from "./course-eval-form.component";
 import { SharedService } from '../../shared/shared.service';
 import { GET_SURVEY, ADD_SURVEY_URL, Departments } from '../../shared/global-vars';
 
@@ -38,87 +35,88 @@ interface FinalSurveyModel {
 
 
 export class MainFormComponent implements OnInit{
-    @ViewChild('modal', {read: ViewContainerRef}) container: ViewContainerRef;    
+    @ViewChild('modal', {read: ViewContainerRef}) 
+        container       : ViewContainerRef;    
 
-    finalSurveyDetails: FinalSurveyModel; //DOM Binding
-    purpose: string;
-    openModal: any;
+    finalSurveyDetails  : FinalSurveyModel; //DOM Binding
+    
+    selectedTeacher     : string = '';
+    selectedDepartment  : string = '';
+    subject             : string = null;
+    
+    questions           : Array<Object>         = null;
+    survey              : Array<SurveyModel>    = []; 
+    
+    showMessage         : boolean = false;
+    surveyComplete      : boolean = false;
+    surveyMetaData;
+
     constructor(private _sharedService: SharedService, 
                 private router: Router,
                 private modalCF: ModalComponentFactory
             ) { }
-    surveyComplete = false;
-    selectedTeacher: string = '';
-    selectedDepartment: string = '';
-    subject: string = null;
-    surveyMetaData;
-    questions: Array<Object> = null;
-    survey: Array<SurveyModel> = []; 
-    showMessage: boolean = false;
+    
+
     ngOnInit(){
-        this.surveyMetaData = JSON.parse(localStorage.getItem('surveyMetaData'));
-        this.selectedTeacher = this.surveyMetaData.teacher || this.surveyMetaData.target;
-        this.subject = this.surveyMetaData.course; 
+        this.surveyMetaData     = JSON.parse(localStorage.getItem('surveyMetaData'));
+        this.selectedTeacher    = this.surveyMetaData.teacher || this.surveyMetaData.target;
+        this.subject            = this.surveyMetaData.course; 
         this.selectedDepartment = JSON.parse(localStorage.getItem('activeUser'))["department"];
         this.selectedDepartment = (Departments.find(o => (o as any).value == this.selectedDepartment))["name"];                
-        this.getSurveys();
-                
+        
+        this.getSurveys();                
     }
     getSurveys(){
         console.log(GET_SURVEY + this.surveyMetaData.evaluation)
         this._sharedService.getCall(GET_SURVEY + this.surveyMetaData.evaluation)
             .subscribe(
-                next => {
-                    this.questions = next["sections"];
-                    console.log(this.questions)                    
-                },
+                next => this.questions = next["sections"],
                 console.error
             )
     }
     optionSelected(event: SurveyModel){
-        let indexOfEvent = this.survey.findIndex((surveyElement:any) => surveyElement.id == (event as any).id);
+        let indexOfEvent = 
+            this.survey
+                .findIndex((surveyElement: any) => surveyElement.id == (event as any).id);
+        
         if(indexOfEvent === -1){
             this.survey.push(event)
         }else{
             this.survey[indexOfEvent] = event;
         }
-        
     }
+
     checkSurveyStatus(){
         let surveyDetails = {
-            teacher: this.surveyMetaData.teacher,
-            course: this.surveyMetaData.course,
-            survey: this.survey
+            teacher : this.surveyMetaData.teacher,
+            course  : this.surveyMetaData.course,
+            survey  : this.survey
         }
-        if(surveyDetails.survey.length === this.questions.length){
-            return true
-        }
+        return !!(surveyDetails.survey.length === this.questions.length)
+        
     }
     getStudentRemarks(){  
-        console.log(this.survey)
-        console.log(sortBy(this.survey, [function(o) { 
-            return typeof o.id  == 'number' ? o.id: null 
-        }]))
-        let rollnumber = JSON.parse(localStorage.getItem('activeUser'))["rollnumber"].split('-'),
-            surveyDetails = {
-                batch: rollnumber[1],
-                dept: rollnumber[2], 
-                studentId: rollnumber[3],
-                evaluation: this.surveyMetaData.evaluation,    
-                course: this.surveyMetaData.course,    
-                teacher: this.surveyMetaData.teacher,
-                survey: this.survey
+
+        let rollnumber      = JSON.parse(localStorage.getItem('activeUser'))["rollnumber"].split('-'),
+            surveyDetails   = {
+                batch       : rollnumber[1],
+                dept        : rollnumber[2], 
+                studentId   : rollnumber[3],
+                evaluation  : this.surveyMetaData.evaluation,    
+                course      : this.surveyMetaData.course,    
+                teacher     : this.surveyMetaData.teacher,
+                survey      : this.survey
             },
-            lastSection = this.questions[this.questions.length - 1]["queries"],
-            lastQID = lastSection[lastSection.length - 1]["qid"];
-            console.log(surveyDetails);
-            let commentsCounter = 0;
+            lastSection     = this.questions[this.questions.length - 1]["queries"],
+            lastQID         = lastSection[lastSection.length - 1]["qid"],
+            commentsCounter = 0;
+
             each(this.questions, section => {
                 commentsCounter += +section["canComment"];
-            })
-            console.log(lastQID + commentsCounter);
+            });
+
         if(surveyDetails.survey.length == lastQID + commentsCounter){
-            console.log(surveyDetails.survey.length, lastQID)
+
             let modalOptions = {
                 metaData: {
                     chaining: false,
@@ -159,8 +157,6 @@ export class MainFormComponent implements OnInit{
                 }
             )
             
-            
-            this.confirmAndSend(this.purpose, true, surveyDetails)
             this.surveyComplete = true;
             // subscribe also takes and object as param, 
             // in which first key is successResponse, second is Error, third is onComplete Event
@@ -171,12 +167,5 @@ export class MainFormComponent implements OnInit{
                 this.showMessage = false;
             }, 1500);
         }
-    }
-    modalState(value: boolean){
-        this.openModal = value;
-    }
-    confirmAndSend(purpose, value, body){
-        this.openModal = value;
-           
     }
 }
