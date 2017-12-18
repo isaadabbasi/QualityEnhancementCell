@@ -3,9 +3,7 @@ mongoose = require('mongoose'),
 Schema = mongoose.Schema,
 
 PreferencesModel = new Schema({
-    season: { type: Boolean },
-    // root: { type: Boolean, default: false },
-    // password: { type: String },
+    session: { type: Boolean, default: false }
 }),
 model = mongoose.model('preferences', PreferencesModel);
 
