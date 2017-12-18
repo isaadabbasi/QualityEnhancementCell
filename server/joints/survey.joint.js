@@ -7,9 +7,7 @@ const
     NapaZone = napajs.zone.create('cores',{ workers: cores });
 
 class SurveyJoint {
-    constructor(){
-        console.log('Router-to-Survey Joint Made');
-    }
+    constructor(){}
 
     saveSurvey(surveyModel){
         console.log('surveyModel recieved: ', surveyModel);

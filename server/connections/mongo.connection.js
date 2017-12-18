@@ -14,8 +14,8 @@
             if(err)
                 throw new Error(err);
             
-            if(!err)
-                process.stdout.write('Database Connection Established \n');
+            // if(!err)
+                // process.stdout.write('Database Connection Established \n');
         };
     
     mongoose.connect(connection_url, options, connection_cb);

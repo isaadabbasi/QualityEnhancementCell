@@ -3,9 +3,7 @@ const
     SurveyJoint = require('../joints/survey.joint');
 
 class TeacherJoint {
-    constructor(){
-        console.log(`Router to Teachers joint made.`);
-    }
+    constructor(){}
 
     addTeacher(teacherModel) {
         return new Promise( (resolve, reject)=>{
