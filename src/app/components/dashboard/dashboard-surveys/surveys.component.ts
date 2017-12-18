@@ -12,14 +12,18 @@ import { SharedService } from "./../../../shared/shared.service";
 import { TeacherListItem, DeparmentsListItemModel } from './../../../shared/models';
 import { modalOptionsModel } from './../../../modal/modal.interface';
 import { ModalComponent } from '../../../modal/modal.component';
+import { AutoUnsubscribe } from '../../../decorators/AutoUnsubscribe';
+
 @Component({
-      selector: 'surveys',
-      templateUrl: './surveys.template.html',
-      styleUrls: [
-        `./surveys.component.css`
-      ]
-  })
-  export class SurveysComponent implements OnInit {
+    selector: 'surveys',
+    templateUrl: './surveys.template.html',
+    styleUrls: [
+      `./surveys.component.css`
+    ]
+})
+
+@AutoUnsubscribe()
+export class SurveysComponent implements OnInit {
 
     @ViewChild('modal', {read: ViewContainerRef}) container: ViewContainerRef;
 
@@ -35,7 +39,7 @@ import { ModalComponent } from '../../../modal/modal.component';
     surveyDetails         : Map<string, any>                = new Map();
     @Output('surveyId') 
       SurveyId            : EventEmitter<number>  = new EventEmitter<number>();
-    optimize              :boolean;
+    optimize              : boolean               = false;
     surveysArray;
 
     onOptimize(teacher){
@@ -175,7 +179,8 @@ import { ModalComponent } from '../../../modal/modal.component';
     }
 
     showSingleSurvey(survey){
-      this.sharedService.sendSurvey(survey)
-      this._router.navigate(['/dashboard/survey'])
+      let optimize = this.optimize;
+      this.sharedService.sendSurvey({survey, optimize});
+      this._router.navigate(['/dashboard/survey']);
     }
   }

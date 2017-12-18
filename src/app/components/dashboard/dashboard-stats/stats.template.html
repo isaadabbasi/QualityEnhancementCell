@@ -54,19 +54,19 @@
   >
     <label 
       for="optimize" 
-      class="pull-right"
+      class="pull-left"
     >
+      <input 
+        name        = "optimize" 
+        id          = "optimize" 
+        type        = "checkbox" 
+        [(ngModel)] = "optimize" 
+        class       = "pull-left"
+        (change)    = "showSurvey(teacher.value, $event.target.value)" 
+        [disabled]  = "!!(teacher.value === '0')" 
+      >
       Optimized
     </label>
-    <input 
-      name        = "optimize" 
-      id          = "optimize" 
-      type        = "checkbox" 
-      [(ngModel)] = "optimize" 
-      class       = "pull-left"
-      (change)    = "showSurvey(teacher.value, $event.target.value)" 
-      [disabled]  = "!!(teacher.value === '0')" 
-    >
   </div>
   <div 
     class="col-xs-3 pull-right"
@@ -119,6 +119,7 @@
   >
     <button 
       type="button" 
+      *ngIf="!optimize"
       (click)="downloadCSV()"
       class="btn btn-primary pull-left" 
       >
@@ -131,7 +132,7 @@
     </button>                    
     <button 
       class="btn btn-primary pull-right" 
-      [routerLink]="['/dashboard/view-surveys', surveyDetails.get('surveyId')]"
+      (click)="showSingleSurvey(this.surveyDetails.get('survey'))"
       >
       View Table&nbsp;  
       <i 
