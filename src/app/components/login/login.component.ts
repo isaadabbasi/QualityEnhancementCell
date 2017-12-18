@@ -41,6 +41,7 @@ export class LoginComponent implements OnInit{
             this.sharedService.postCall(SIGNIN_URL, this.userCredentials)
                 .subscribe(res => {
                     if(res.status === 200){
+                        console.log(res)
                         localStorage.setItem('activeUser', res["_body"])
                         this.router.navigate(['/dashboard']);
                         clearFields();     
@@ -54,10 +55,12 @@ export class LoginComponent implements OnInit{
                     this.loginError                 = true;
                     this.loginErrorMessage          = 
                         err.status === 401?
-                            'Invalid email or password': 
-                            err.status == 0?
-                                "We can not reach our servers yet. Please contact the IT official.":
-                                err['_body'];
+                            'Invalid email or password':
+                            err.status === 403? 
+                                'Surveys are turned off curently by QEC admins.': 
+                                err.status == 0?
+                                    "We can not reach our servers yet. Please contact the IT official.":
+                                    err['_body'];
                     
                     setTimeout(()=>loginContainer.classList.add('wobble'), 100);
                     clearFields();
