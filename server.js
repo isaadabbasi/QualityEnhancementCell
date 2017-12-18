@@ -10,7 +10,7 @@ const
   routes_survey = require('./server/routes/surveys.route'),
   routes_teachers = require('./server/routes/teacher.route'),
   excel = require('./server/routes/excel.route'),
-  preferences = require('./server/routes/preference.route')
+  {router: preferences} = require('./server/routes/preference.route')
   //import connection libs;
   establish_connection = require('./server/connections/mongo.connection'),
 

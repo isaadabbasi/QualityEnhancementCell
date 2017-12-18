@@ -18,7 +18,6 @@ class PreferencesJoint {
 }
 
 var Joint = new PreferencesJoint()
-module.exports.joint = Joint;
 
 
 
@@ -49,4 +48,4 @@ router.put('/:_id', ( req, res )=> {
         })
 })
 
-module.exports = router;
+module.exports = {router, Joint};

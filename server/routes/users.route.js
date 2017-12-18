@@ -6,6 +6,7 @@ const
     Student = require('../database/models/student.model'),
     { generateHash } = require('../utils/common.utils'),
     bcrypt = require('bcrypt'),
+    { Joint: PrefsJoint } = require('../routes/preference.route'),
     loginCallback = (req, res, next)=> {
 
         if(req.body.email) {
@@ -44,8 +45,17 @@ const
             responseParams= {
                 __v: false, fullname: false, created: false
             };
-
-            Student.findOne({rollnumber}, responseParams, recordFindCb)
+            // console.log(preferences);
+            
+            PrefsJoint.get()
+                .then(({session})=> {
+                    if(session)
+                        Student.findOne({rollnumber}, responseParams, recordFindCb)
+                    else {
+                        res.sendStatus(403);
+                        return;
+                    } 
+                })
     },
 
     registrationCallback = (req, res, next)=> {
