@@ -12,7 +12,7 @@ const
     cpuCount = require('os').cpus().length,
     http = require('http'),
     args = require('yargs').argv,
-    { mode = null } = args;
+    { mode = null, port = process.env.PORT || 3000 } = args;
 
 
 
@@ -49,9 +49,8 @@ if(cluster.isMaster && (mode == 'cluster' || mode == 'c')){
 else {
 // if(cluster.isWorker){
 //  * Get port from environment and store in Express.
-    var port = normalizePort(process.env.PORT || '3000');
     console.log(`*** NODE UP at PORT ${port}, PID ${process.pid} ***`);
-    app.set('port', port);
+    app.set('port', normalizePort( port ));
 /**
  * Create HTTP server.
  */
