@@ -5,7 +5,6 @@
     [alert-type]="'danger'" 
     [message]="'You have not answered all question.'">
 </alert-message>
-<!-- <alert-message [alert-type]="danger" [message]="'Please answer all questions.'"></alert-message> -->
 <div *ngIf="!!questions" class="questionare-body col-xs-12 col-md-offset-1 col-md-10">
     <div class="row main-form-header">
         <div class="" style="display: inline">
@@ -13,19 +12,19 @@
         </div>
         <div class="pull-right">
             <ul class="teacher-details">
-                <li>{{selectedDepartment}}</li>
-                <li>{{selectedTeacher}}</li>
-                <li>{{subject? subject: ''}}</li>
+                <li>{{ selectedDepartment }}</li>
+                <li>{{ selectedTeacher }}</li>
+                <li>{{ subject? subject: '' }}</li>
             </ul>
         </div>
     </div>
     <div class="scrollbar" id="scrollbar" style="height: 70vh; overflow-y: scroll;">
         <div>
             <course-eval-form *ngFor="let section of questions, let i=index"
-                [canComment]="section.canComment"
+                [canComment]="section['canComment']"
                 [index]="i"
-                [heading]="section.name"
-                [question]="section.queries"
+                [heading]="section['name']"
+                [question]="section['queries']"
                 (quizReplied)="optionSelected($event)"
                 (commentsReplied)="optionSelected($event)"                
             ></course-eval-form>

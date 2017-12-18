@@ -76,7 +76,7 @@ import { Component, OnInit } from '@angular/core';
         </div>`
 })  
 export class DashboardSidebarComponent implements OnInit {
-    user: Object;
+    user: string;
     constructor(private router: Router) { }
 
     ngOnInit() {

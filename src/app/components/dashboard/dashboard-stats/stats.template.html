@@ -3,50 +3,148 @@
   <div class="col-xs-3">			
     <h1>Stats</h1>
 	</div>
-  <div class="col-xs-3 form-group pull-right">
-    <select [disabled]="!showTeachersList" #teacher name="teacher" class="form-control" (change)="showSurvey(teacher.value)">
-      <option value="" name="teachers" value="0" [selected]="!teachersList">Select Teacher</option>
-      <option *ngFor="let teacher of teachersList" [ngValue]="teacher.fullname"> {{ teacher.fullname }} </option>      
+  <div 
+    class="col-xs-3 form-group pull-right"
+  >  
+    <select 
+      #teacher 
+      name="teacher" 
+      class="form-control" 
+      [disabled]="!showTeachersList" 
+      (change)="showSurvey(teacher.value)"
+    >
+      <option 
+        value="0" 
+        name="teachers" 
+        [selected]="teacher"
+      >
+        Select Teacher
+      </option>
+      <option 
+        [ngValue]="teacher.fullname"
+        *ngFor="let teacher of teachersList" 
+      > 
+        {{ teacher.fullname }} 
+      </option>      
     </select>
   </div>
-  <div class="col-xs-3 pull-right form-group">
-    <select #department name="department" class="form-control" (change)="getNextList('teachers', department.value)">
-      <!-- <option value="" name="departments" [selected]="departments">Select Department</option> -->
-      <option *ngFor="let dept of deparmentsList" [value]="dept.value"> {{ dept.name }} </option>      
+  <div 
+    class="col-xs-3 pull-right form-group"
+  >
+    <select 
+      #department 
+      name="department" 
+      class="form-control" 
+      (change)="getNextList('teachers', department.value)"
+    >
+      <option 
+        *ngFor="let dept of deparmentsList" 
+        [value]="dept.value"
+      > 
+        {{ dept.name }} 
+      </option>      
     </select>
   </div>
 </div>
-<div class="row">
-  <div class="col-xs-3 pull-right">
-      <label for="optimize" class="pull-right">Optimized</label>
-      <input type="checkbox" id="optimize" [disabled]="teacher.value == 0" [(ngModel)]="optimize" (change)="onOptimize(teacher.value)" name="optimize" class="pull-left">
-    </div>
+<div 
+  class="row"
+>
+  <div 
+    class="col-xs-3 pull-right"
+  >
+    <label 
+      for="optimize" 
+      class="pull-right"
+    >
+      Optimized
+    </label>
+    <input 
+      name        = "optimize" 
+      id          = "optimize" 
+      type        = "checkbox" 
+      [(ngModel)] = "optimize" 
+      class       = "pull-left"
+      (change)    = "showSurvey(teacher.value, $event.target.value)" 
+      [disabled]  = "!!(teacher.value === '0')" 
+    >
+  </div>
+  <div 
+    class="col-xs-3 pull-right"
+  >
+    <input 
+      #numericInput
+      min         = "1"
+      [max]       = "surveyDetails.get('maxSurveys')"
+      type        = "number" 
+      name        = "optimize" 
+      id          = "previousSurvey" 
+      class       = "form-control pull-left"
+      placeholder = "Number of survey to show"
+      [disabled]  = "!!(teacher.value === '0')"
+      (change)    = "showSurvey(teacher.value, this.optimize, $event.target.value || 1)"
+    >
+  </div>
 </div>
-  
-  <div *ngIf="null && !!options" class="row">
-      <div class="col-xs-6 pull-left">
-          <i class="fa fa-chevron-left" aria-hidden="true"></i>      
-      </div>
-      <div class="col-xs-6 pull-right">
-          <i class="pull-right fa fa-chevron-right" aria-hidden="true"></i>      
-      </div>
-  </div>
-<div class="row" style="margin-top:30px;">
-  
-  <div class="col-xs-6 col-xs-offset-2">
-    <div style="display: block;">
-      <chart [options]="options"></chart>
+
+<div 
+  class="row" 
+  style="margin-top:30px;"
+>  
+  <div 
+    class="col-xs-6 col-xs-offset-2"
+  >
+    <div 
+      style="display: block;"
+    >
+      <chart 
+        [options]="options"
+      >
+      </chart>
     </div>
   </div>
-  <div *ngIf="!!options" class="col-xs-4 col-xs-offset-4 text-center">Graph generated in {{ timeToFetch }} seconds</div>
+  <div 
+    *ngIf="!!options" 
+    class="col-xs-4 col-xs-offset-4 text-center"
+    >
+    Graph generated in {{ surveyDetails.get('timeToFetch') }} seconds
+  </div>
 </div>
 <br>
-<div *ngIf="singleSurvey" class="row">
-  <div class="col-xs-8 col-xs-offset-2">
-      <button type="button" class="btn btn-primary pull-left" (click)="downloadCSV()"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp; Download to Excel</button>                    
-      <button class="btn btn-primary pull-right" [routerLink]="['/dashboard/view-surveys', SurveyId]">View Table&nbsp;  <i class="fa fa-line-chart" aria-hidden="true"></i></button>   
+<div 
+  class="row"
+  *ngIf="singleSurvey"
+>
+  <div 
+    class="col-xs-8 col-xs-offset-2"
+  >
+    <button 
+      type="button" 
+      (click)="downloadCSV()"
+      class="btn btn-primary pull-left" 
+      >
+      <i 
+        aria-hidden="true"
+        class="fa fa-file-excel-o" 
+        >
+      </i>
+      &nbsp; Download to Excel
+    </button>                    
+    <button 
+      class="btn btn-primary pull-right" 
+      [routerLink]="['/dashboard/view-surveys', surveyDetails.get('surveyId')]"
+      >
+      View Table&nbsp;  
+      <i 
+        aria-hidden="true"
+        class="fa fa-line-chart" 
+      >
+      </i>
+    </button>   
   </div>
-  <div class="col-xs-4" style="display: none">
+  <div 
+    class="col-xs-4" 
+    style="display: none"
+  >
     Hello
   </div>
   
@@ -55,6 +153,7 @@
     <alert-message 
       [top]="'20%'"
       [alert-type]="'info'" 
-      [message]="'Please select department and teacher to view graph.'"></alert-message>
+      [message]="'Please select department and teacher to view graph.'">
+    </alert-message>
 </div>
 

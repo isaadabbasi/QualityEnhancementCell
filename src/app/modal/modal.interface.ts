@@ -1,9 +1,9 @@
 export interface modalOptionsModel {
     metaData: metaDataModel,
     header: string,
-    body:   Array<any> | Object | any,
+    body:   Array<Object> | html | {html: any} | any,
             
-    footer: any | string | Array<Object>
+    footer: string | Array<Object>
 }
 
 interface html {

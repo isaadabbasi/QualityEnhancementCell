@@ -1,25 +1,35 @@
 import { Component, ViewContainerRef, ViewChild } from '@angular/core';
+
 import { Subscribable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/every';
+
 import { each, map } from 'lodash';
 
-import { TEACHER_DETAILS_URL, Departments as DepartmentsList, TEACHER_BASE_URL } from './../../../shared/global-vars';
-
+import { TEACHER_DETAILS_URL, 
+         Departments as DepartmentsList, 
+         TEACHER_BASE_URL, 
+         ADMIN_BASE_URL, 
+         ADD_ADMIN} from './../../../shared/global-vars';
+    
 import { SharedService } from './../../../shared/shared.service';
 import { AutoUnsubscribe } from '../../../decorators/AutoUnsubscribe';
 
 import { ModalComponent } from '../../../modal/modal.component';
 import { ModalComponentFactory } from './../../../modal/modal.service';
+import { modalOptionsModel } from './../../../modal/modal.interface';
 
 @Component({
     selector: 'settings',
     templateUrl: './settings.html',
+    styleUrls: [
+        './settings.css'
+    ]
 
 })
 @AutoUnsubscribe()
 export class SettingsComponent {
-
+    allAdmins           : any;
+    enableAdminDelete   : boolean = true;
     @ViewChild('modal', {read: ViewContainerRef}) container: ViewContainerRef;
     
     topMenu = [
@@ -27,7 +37,15 @@ export class SettingsComponent {
         'teacher',
         'survey',
         'student'
-    ]
+    ];
+
+    allTeachers: Array<{
+        _id         : string, 
+        fullname    : string, 
+        operation   : string,
+        subjects    : Array<string>, 
+        departments : Array<string>
+    }>;
 
     options = {
         metaData: {
@@ -65,97 +83,136 @@ export class SettingsComponent {
                 }]
             }]
         }
-    }
+    };
 
-    allTeachers: Array<{_id, fullname, departments, subjects, operation}>;
     constructor(private sharedService: SharedService,
                 private modalCF: ModalComponentFactory
     ) {
         
     }
     ngOnInit(){
-        
+
+        this.enableAdminDelete = 
+            JSON.parse(localStorage.getItem('activeUser'))["root"]
+        this.getAdmins();        
     }
     getTeachers(){
         let 
-            teachers:Array<{_id, fullname, departments, subjects, operation}> = [];
+            teachers:Array<{
+                _id         : string, 
+                fullname    : string, 
+                operation   : string,
+                subjects    : Array<string>, 
+                departments : Array<string>
+            }> = [];
 
         this.sharedService.getCall(TEACHER_DETAILS_URL)
         .subscribe(
             next => {
-                console.log(next)
-                 
-                    
-                
                 each(next, teacher =>{
                     let {_id, fullname, departments, subjects, operation='delete'} = teacher;
                     teachers.push({_id, fullname, departments, subjects, operation})
-                })
-                this.allTeachers = teachers;
-                console.log(teachers)
-            }
-        ),
-        err => console.error(err),
-        () => {
-            
-        }
-        
-    }
-    
-    delete(teacherId){
-        
-        console.info(teacherId)
-        let modalOptions = {
-            metaData: {
-                labels: false,
-                setOnTop: true,
-                type: 'confirm'  
-            },
-            header: 'Delete Teacher',
-            body:{
-                html:{
-                    h1: [
-                        'Are you sure?'
-                    ],
-                    p: [
-                        'This will delete the teacher and all related details.',
-                        'You can not undo this action.'
-                    ],
-                }
-            },
-            footer: [{
-                type: 'button',
-                label: 'Yes, I am sure.',
-                id: 'submit',
-                icon: 'fa fa-check'
-            },{
-                type: 'button',
-                label: 'Cancel',
-                id: 'cancel',
-                icon: 'fa fa-times'
-            }]
-        }
-        this.modalCF.generateModal(this.container, modalOptions)
-            .subscribe(
-                output => {
-                    if(output.get('status') != 'cancel')
-                    this.sharedService.deleteCall(`${TEACHER_BASE_URL}/${teacherId}`)
-                        .switchMap(() => this.sharedService.getCall(TEACHER_DETAILS_URL))
-                        .subscribe(
-                            res => {
-                                this.allTeachers = res
+                });
 
-                            }
-                    )
-                }
-            )
+                this.allTeachers = teachers;
+            }
+        ),console.error
     }
     
-    modalState(value) {
-        if(!value){
-            this.getTeachers();
+    delete(whois, id, root?: boolean){
+        let activeAdminID = JSON.parse(localStorage.getItem('activeUser'))["_id"];
+        
+        if(
+            (whois.toLowerCase() === 'admin' && root) ||
+            (whois.toLowerCase() === 'admin' && 
+             id === activeAdminID) 
+        ){
+            let modalOptions: modalOptionsModel = {
+                metaData: {
+                    labels: false,
+                    setOnTop: true,
+                    type: 'confirm'  
+                },
+                header: `Delete ${whois}`,
+                body:{
+                    html:{
+                        p: [
+                            'Sorry you can not perform this action.'
+                        ],
+                    }
+                },
+                footer: [{
+                    type: 'button',
+                    label: 'Cancel',
+                    id: 'cancel',
+                    icon: 'fa fa-times'
+                }]
+            }
+            this.modalCF.generateModal(this.container, modalOptions);
         }
+        else{
+            this.enableAdminDelete = true;
+            let modalOptions: modalOptionsModel = {
+                metaData: {
+                    labels: false,
+                    setOnTop: true,
+                    type: 'confirm'  
+                },
+                header: `Delete ${whois}`,
+                body:{
+                    html:{
+                        h1: [
+                            'Are you sure?'
+                        ],
+                        p: [
+                            'This will delete the teacher and all related details.',
+                            'You can not undo this action.'
+                        ],
+                    }
+                },
+                footer: [{
+                    type: 'button',
+                    label: 'Yes, I am sure.',
+                    id: 'submit',
+                    icon: 'fa fa-check'
+                },{
+                    type: 'button',
+                    label: 'Cancel',
+                    id: 'cancel',
+                    icon: 'fa fa-times'
+                }]
+            }
+            this.modalCF.generateModal(this.container, modalOptions)
+                .subscribe(
+                    output => {
+                        if(output.get('status') != 'cancel'){
+                            let URL = 
+                                whois.toLowerCase() === 'teacher' ? 
+                                    `${TEACHER_BASE_URL}/${id}` : 
+                                    `${ADMIN_BASE_URL}/${activeAdminID}/${id}`;
+    
+                            this.sharedService.deleteCall(URL)
+                                .switchMap(
+                                    () => this.sharedService.getCall(
+                                        whois.toLowerCase() === 'teacher'? 
+                                            TEACHER_DETAILS_URL:
+                                            `${ADMIN_BASE_URL}/${activeAdminID}`
+                                    )
+                                ).subscribe(
+                                    res => {
+                                        whois.toLowerCase() === 'teacher'? 
+                                            this.allTeachers = res:
+                                            this.allAdmins = res;
+                                    }
+                            )
+                        }
+                        
+                    }
+                )
+        }
+        
     }
+    
     addTeacher(){
         let modalOptions = {
             metaData: {
@@ -209,18 +266,88 @@ export class SettingsComponent {
                         subjects: output.get('subjects').split(','),
                         departments: output.get('departments').split(',')  
                     }
-                    this.sendTeacherDetails(`${TEACHER_BASE_URL}/add`, teacher)
+                    sendTeacherDetails(`${TEACHER_BASE_URL}/add`, teacher)
                 }
           });
-    
+        
+            let sendTeacherDetails = (URL, teacher) => {
+                this.sharedService.postCall(URL, teacher)
+                    .switchMap(() => this.sharedService.getCall(TEACHER_DETAILS_URL))
+                    .subscribe(
+                        res => this.allTeachers = res
+                    ),
+                    console.error
+            }
         }
     
-    sendTeacherDetails(URL, teacher){
-        this.sharedService.postCall(URL, teacher)
-            .switchMap(() => this.sharedService.getCall(TEACHER_DETAILS_URL))
+
+    getAdmins(){
+        let URL = `${ADMIN_BASE_URL}/${JSON.parse(localStorage.getItem('activeUser'))["_id"]}`;
+        this.sharedService.getCall(URL)
+            .subscribe( next => this.allAdmins = next)
+        
+    }
+
+    addAdmin(){
+        let modalOptions = {
+            metaData: {
+              chaining: false,
+              labels: false,
+              setOnTop: true
+            },
+            header: 'Add new admin',
+            body: [{
+                    type: 'email',
+                    label: 'Email',
+                    placeholder: 'Email',
+                    id: 'email'
+                },{
+                    type: 'password',
+                    label: 'Password',
+                    placeholder: 'Password',
+                    id: 'password'
+                }
+            ],
+            footer: [{
+                    type: 'button',
+                    label: 'Submit',
+                    id: 'submit',
+                    icon: 'fa fa-check'
+                },{
+                    type: 'button',
+                    label: 'Cancel',
+                    id: 'cancel',
+                    icon: 'fa fa-times'
+                }
+            ]
+          };
+          this.modalCF.generateModal(this.container, modalOptions)
             .subscribe(
-                res => this.allTeachers = res
-            ),
-            console.error
+                output => {
+                if(output.get('status') != 'cancel'){
+                    let admin = {
+                        email: output.get('email'),
+                        password: output.get('password'),
+                    },
+                    URL = `${ADD_ADMIN}/${JSON.parse(localStorage.getItem('activeUser'))["_id"]}`;
+                    
+                    sendAdminDetails(URL , admin)
+                }
+          });
+        
+            let sendAdminDetails = (URL, admin) => {
+
+                let getURL = `${ADMIN_BASE_URL}/${JSON.parse(localStorage.getItem('activeUser'))["_id"]}`;
+                
+                this.sharedService.postCall(URL, admin)
+                    .switchMap(() => this.sharedService.getCall(getURL))
+                    .subscribe(
+                        res => this.allAdmins = res
+                    ),
+                    console.error
+            }
+    }
+    startSurvey(value){
+        console.log(value)   
     }
 }

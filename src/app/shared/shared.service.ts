@@ -3,12 +3,17 @@ import { Injectable } from "@angular/core";
 import { Http } from "@angular/http";
 import 'rxjs/add/operator/map'
 
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 
 @Injectable()
 export class SharedService{
+    data   = new BehaviorSubject({});
+    currentMessage  = this.data.asObservable();
+
     constructor(
-        private http: Http
-        ){}
+        private http: Http){
+    }
     
     getCall(url: string, options?){
         
@@ -33,4 +38,7 @@ export class SharedService{
         else return false;
     }
 
+    sendSurvey(survey: any){
+        this.data.next(survey);
+    }
 }

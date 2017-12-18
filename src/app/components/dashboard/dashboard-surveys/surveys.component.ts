@@ -1,5 +1,6 @@
 import { Component, ViewChild, Output, EventEmitter, OnInit, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
-import { map } from "lodash";
+import { map, reverse } from "lodash";
+import { Router } from "@angular/router";
 
 import { SURVEY_LIST, 
         Departments, 
@@ -9,16 +10,13 @@ import { SURVEY_LIST,
 } from './../../../shared/global-vars';
 import { SharedService } from "./../../../shared/shared.service";
 import { TeacherListItem, DeparmentsListItemModel } from './../../../shared/models';
-
+import { modalOptionsModel } from './../../../modal/modal.interface';
 import { ModalComponent } from '../../../modal/modal.component';
 @Component({
       selector: 'surveys',
       templateUrl: './surveys.template.html',
       styleUrls: [
         `./surveys.component.css`
-      ],
-      providers: [
-        SharedService
       ]
   })
   export class SurveysComponent implements OnInit {
@@ -37,7 +35,7 @@ import { ModalComponent } from '../../../modal/modal.component';
     surveyDetails         : Map<string, any>                = new Map();
     @Output('surveyId') 
       SurveyId            : EventEmitter<number>  = new EventEmitter<number>();
-    optimize;
+    optimize              :boolean;
     surveysArray;
 
     onOptimize(teacher){
@@ -46,22 +44,21 @@ import { ModalComponent } from '../../../modal/modal.component';
     ngOnInit(){
       let start = Date.now();              
       this.sharedService.getCall(SURVEY_LIST)
+      .map(res => reverse(res))
       .subscribe(
         next => {
-          console.log(this.surveysArray)
           this.surveysArray = next;
           this.length = this.surveysArray.length;
+          // this.sharedService.sendSurvey(next);
         },
-        err => console.error(err),
-        () => {
-          this.surveysArray.reverse();  
-        }
+        console.error
       );
       let end = Date.now();
       this.timeToFetch = end - start;
     }
-    constructor(private sharedService: SharedService,
-                private _cfr: ComponentFactoryResolver){
+    constructor(private _router       : Router, 
+                private sharedService : SharedService,
+                private _cfr          : ComponentFactoryResolver){
     }
     getNextList(entity: string, value: string){
       let URL = entity === 'teachers' && value != "0"? 
@@ -74,7 +71,6 @@ import { ModalComponent } from '../../../modal/modal.component';
         this.sharedService.getCall(URL)
           .subscribe(
             next => {
-              console.log(next)
               this.showTeachersList = true;
               this.teachersList = next;
             },
@@ -92,7 +88,6 @@ import { ModalComponent } from '../../../modal/modal.component';
       this.surveyDetails.set('teacher', teacherName);
       let selectedTeacher: Object = {};
       let singleSurveys = [];
-      // console.time()
       let start = Date.now()
       if(teacherName !== '0'){
         this.loaderState(true);
@@ -106,12 +101,10 @@ import { ModalComponent } from '../../../modal/modal.component';
         };
         list["optimize"] = optimize;
         this.sharedService.postCall(SURVEY_LIST, list)
+          .map(res => res.json().reverse())
           .subscribe(     
             result => {
-              // console.log(result);
-              if(result.status == 200)
-                this.surveysArray = JSON.parse(result["_body"]).reverse()
-                console.log(this.surveysArray);
+                this.surveysArray = (result)
               },
             err => {console.error(err); setTimeout(this.loaderState(false), 2500)},
             () => setTimeout(this.loaderState(false), 2500)
@@ -121,11 +114,12 @@ import { ModalComponent } from '../../../modal/modal.component';
       let end = Date.now();
       this.timeToFetch = end - start;
     }
+    
     loaderState(hidden: boolean){
       this.showLoader = hidden;
     }
     downloadCSV(){
-      let modalOptions = {
+      let modalOptions: modalOptionsModel = {
         metaData: {
           chaining: false,
           labels: false,
@@ -173,10 +167,15 @@ import { ModalComponent } from '../../../modal/modal.component';
                 let batch = !!output.get("batch") ? `&batch=${output.get("batch")}` : '',
                   subject = !!output.get("subject") ? `&subject=${output.get("subject")}`: '',
                   URL     = `${DOWNLOAD_EXCEL}?teacher=${this.surveyDetails.get("teacher")}&dept=${this.surveyDetails.get("dept")}${batch}${subject}`;  
-                  console.log(URL);
                 window.open(URL, '__blank');
             }
 
       });
+      
+    }
+
+    showSingleSurvey(survey){
+      this.sharedService.sendSurvey(survey)
+      this._router.navigate(['/dashboard/survey'])
     }
   }

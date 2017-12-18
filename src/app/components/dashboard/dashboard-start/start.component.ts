@@ -1,41 +1,50 @@
-import { ModalComponentFactory } from './../../../modal/modal.service';
+import { ElementRef } from 'angularfire2/node_modules/@angular/core/src/linker/element_ref';
 import { Router } from '@angular/router';
-import { TEACHER_DETAILS_URL, Departments } from './../../../shared/global-vars';
-import { SharedService } from './../../../shared/shared.service';
 import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { StudentModel } from "./../../../shared/models";
+
+import { StudentModel, DeparmentsListItemModel } from "./../../../shared/models";
 import { TeacherModel } from "./../../../shared/models";
+import { SharedService } from './../../../shared/shared.service';
+import { ModalComponentFactory } from './../../../modal/modal.service';
+import { TEACHER_DETAILS_URL, Departments } from './../../../shared/global-vars';
 
 @Component({
     templateUrl: './start.template.html',
     styleUrls:[ '../../login/login.component.css' ]
 })
 export class StartSurveyComponent implements OnInit {
+    
     @ViewChild('modal', {read: ViewContainerRef}) container: ViewContainerRef;    
 
-    year: number;
-    month: String;
-    teachers: boolean;
-    teachersList;
-    selectedDepartment: any = '';
-    selectedTeacher: string = '';
-    subject: string;
-    subjects: boolean;
-    subjectsList;
-    deparmentsList = Departments;
-    surveyMetaData = {
-        evaluation: "",
-        course: "",
-        teacher: ""
-    }
-    @ViewChild('dept') deptReference;  
-    months:Array<String> = ["January", "February", "March", "April", "May", "June","July","August", "September", "October", "November", "December"];
+    year                : number;
+
+    month               : String = '';
+    selectedTeacher     : string = '';
+    subject             : string = '';
+
+    teachers            : boolean;
+    subjects            : boolean;
+    
+    teachersList        : any;
+    selectedDepartment  : any = '';
+    subjectsList        : any;
+
+    deparmentsList      : Array<DeparmentsListItemModel> = Departments;
+
+    surveyMetaData      : {evaluation: string, course: string, teacher: string}
+
+    @ViewChild('dept') 
+        deptReference   : ElementRef;  
+
+    months              :Array<String> =
+        ["January", "February", "March", "April", "May", "June","July","August", "September", "October", "November", "December"];
+
     constructor(private sharedService: SharedService,
                 private router: Router,
                 private modalCF: ModalComponentFactory
             ) { 
-        this.year = new Date().getFullYear();
-        this.month = this.months[new Date().getMonth()];
+        this.year   = new Date().getFullYear();
+        this.month  = this.months[new Date().getMonth()];
         
     }
 
@@ -43,32 +52,36 @@ export class StartSurveyComponent implements OnInit {
         this.sharedService.getCall(`${TEACHER_DETAILS_URL}?department=${department}`)
             .subscribe( res => {
                 console.log(res)
-                    this.teachersList = res;
-                    this.teachers = false;
-            }, err => {
-                console.error(err);
-            });
+                    this.teachers       = false;
+                    this.teachersList   = res;
+            },
+            console.error
+        )
     }
+    
     getSubjectList(selectedTeacher){ // need to rewrite with real logic, bluffing DOM for now.
-        this.subjects = !selectedTeacher ? false : true;
-        this.selectedTeacher = selectedTeacher;
-        this.surveyMetaData.course= selectedTeacher;
-        let teacherObject = (this.teachersList).find(o => o["fullname"] === selectedTeacher) ;
-        this.subjectsList = teacherObject ? teacherObject["subjects"] : undefined;
+        this.subjects               = !selectedTeacher ? false : true;
+        this.selectedTeacher        = selectedTeacher;
+        this.surveyMetaData.course  = selectedTeacher;
+        let teacherObject           = 
+            (this.teachersList)
+                .find(o => o["fullname"] === selectedTeacher);
+        this.subjectsList           = teacherObject ? teacherObject["subjects"] : null;
     }
+
     selectedSubject(selectedSubject){
         this.subject = selectedSubject;
+    
         if(!!this.subject){
-            this.surveyMetaData.course = this.subject,
-            this.surveyMetaData.evaluation = "course",
-            this.surveyMetaData.teacher = this.selectedTeacher;
+            this.surveyMetaData.evaluation  = "course",
+            this.surveyMetaData.course      = this.subject,
+            this.surveyMetaData.teacher     = this.selectedTeacher;
         }
     }
     validate(){
-        return !!this.surveyMetaData.teacher && !!this.surveyMetaData.course;
-               
+        return !!this.surveyMetaData.teacher && !!this.surveyMetaData.course;               
     }
-    openModal = false;
+
     startSession(){
         if(this.validate()){
             
@@ -108,10 +121,11 @@ export class StartSurveyComponent implements OnInit {
                 .subscribe(
                     res => {
                         console.log(res)
-                        this.surveyMetaData.evaluation = res.get('evaluation')
-                        localStorage.setItem('surveyMetaData', JSON.stringify(this.surveyMetaData));
-                        console.log(this.surveyMetaData);
-                        this.router.navigate(['/survey'])
+                        if(res.get("status") !== 'cancel'){
+                            this.surveyMetaData.evaluation = res.get('evaluation')
+                            localStorage.setItem('surveyMetaData', JSON.stringify(this.surveyMetaData));
+                            this.router.navigate(['/survey'])
+                        }
                     }
                     
                 )
@@ -119,8 +133,11 @@ export class StartSurveyComponent implements OnInit {
     } 
     ngOnInit() {
         localStorage.removeItem('surveyMetaData');
-        let activeUser: StudentModel = JSON.parse(localStorage.getItem('activeUser'));
-        this.selectedDepartment = (this.deparmentsList.find(department => department["value"] == activeUser.department))["name"];
+        let activeUser: StudentModel    = JSON.parse(localStorage.getItem('activeUser'));
+        this.selectedDepartment         = 
+            (this.deparmentsList.
+                find(department => department["value"] == activeUser.department))["name"];
+        
         this.getDepartmentTeacherList(activeUser.department);
      }
 }

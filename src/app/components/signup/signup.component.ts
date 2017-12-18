@@ -1,5 +1,5 @@
 import { SIGNUP_URL, Departments } from './../../shared/global-vars';
-import { StudentModel } from './../../shared/models';
+import { StudentModel, DeparmentsListItemModel } from './../../shared/models';
 import { Router } from '@angular/router';
 import { SharedService } from './../../shared/shared.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -14,12 +14,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 export class SignupComponent implements OnInit{
 
-    showMessage:            boolean         = false;
-    signupErrorMessage:     string          = '';
-    signupError:            boolean         = false;
-    departments:            Array<Object>   = Departments;   
-    signUpContainer:        HTMLElement     = document.getElementById('signup-container');
-    userCredentials:        StudentModel    = { fullname: '', department: '', rollnumber: '', password: '' }
+    showMessage             : boolean         = false;
+    signupErrorMessage      : string          = '';
+    signupError             : boolean         = false;
+    departments             : Array<DeparmentsListItemModel>   
+                                              = Departments;   
+    signUpContainer         : HTMLElement     = document.getElementById('signup-container');
+    userCredentials         : StudentModel    = { fullname: '', department: '', rollnumber: '', password: '' }
     
     constructor(public router: Router,
                 private sharedService: SharedService){}
@@ -41,10 +42,8 @@ export class SignupComponent implements OnInit{
             this.sharedService.postCall(SIGNUP_URL, this.userCredentials)
                 .map(res => res.json())
                 .subscribe(res => {
-                    console.log(res);
-                    this.showMessage = true;
+                    clearFields();
                     setTimeout(()=>{
-                        this.showMessage    = false;
                         this.router.navigate(['/login']);
                     }, 3000);
                     if(res.status == 201) {
@@ -57,8 +56,14 @@ export class SignupComponent implements OnInit{
                         this.signupError    = false;
                         signUpContainer.classList.remove('wobble');
                     }, 5000);
-                    setTimeout(() => signUpContainer.classList.add('wobble') , 100);
+                    setTimeout(() => {
+                        signUpContainer.classList.add('wobble');
+                    }, 100);
+                    clearFields();
                 })
+                let clearFields = () => {
+                    this.userCredentials = { fullname: '', rollnumber: '', department: '' };
+                }
         } 
     }
 }

@@ -1,55 +1,62 @@
-import { OnInit } from '@angular/core';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { each } from 'lodash';
 
 import { BASE_URL, GET_SURVEY, SURVEY_LIST, DOWNLOAD_EXCEL } from './../../../shared/global-vars';
 import { SharedService } from './../../../shared/shared.service';
+import { AutoUnsubscribe } from '../../../decorators/AutoUnsubscribe';
 @Component({
     selector: 'dashboard-survey',
     templateUrl: './dashboard-survey.template.html',
     styleUrls: [`./dashboard-survey.css`]
 })
-export class DashboardSurveyComponent implements OnInit, OnDestroy{
-    survey: any;
-    surveyId: string;
-    date: any;
-    evaluationType: any;
-    subject: any;
-    selectedTeacher: any;
-    questions: any;
-    surveyResult: any;
-    sub: Subscription;
+@AutoUnsubscribe()
+export class DashboardSurveyComponent implements OnInit{
+
+    @Input('optimizedSurvey')
+        optimizedSurvey : Object | boolean;
+
+
+    date                : any;
+    survey              : any;
+    subject             : any;
+    questions           : any;
+    surveyResult        : any;
+    evaluationType      : any;
+    selectedTeacher     : any;
+
+    surveyId            : string;
+    selectedDepartment  : string;
+    
+    sub                 : Subscription;
     surveyResultId;
+
     constructor(private route: ActivatedRoute,
                 private sharedService: SharedService) {
         
     }
     ngOnInit(){
-        this.sub = this.route.paramMap
-            .subscribe(
-                params => {
-                    this.surveyId = params.get("id");
-                    this.getSurvey(this.surveyId);
-                }),
-            err => console.error(err)
+        this.getSurvey();
     }
-    getSurvey(id: string){
-        this.surveyResultId = id;
-        this.sharedService.getCall(`${SURVEY_LIST}/id/${id}`)
-            .subscribe(
-                result => {
-                    this.surveyResult = result;
-                    this.selectedTeacher = this.surveyResult["teacher"]
-                    this.subject = this.surveyResult["course"];
-                    this.evaluationType = this.surveyResult["evaluation"];
-                    this.date = this.surveyResult["created"];
-                    this.getForm(this.evaluationType);
+    getSurvey(){
+        this.sharedService.currentMessage
+        .subscribe(
+            result => {
+                if(Object.keys(result).length){
+                    this.surveyResult       = result;
+                    this.selectedDepartment = this.surveyResult["dept"]
+                    this.selectedTeacher    = this.surveyResult["teacher"]
+                    this.subject            = this.surveyResult["course"];
+                    this.evaluationType     = this.surveyResult["evaluation"];
+                    this.date               = this.surveyResult["created"];
+                        
                     this.survey = this.surveyResult["survey"];
+
                 }
-            ),
-            err => console.error(err),
-            () => {}
+            },
+            console.error
+        )
     }
     getForm(type: string){
         this.sharedService.getCall(GET_SURVEY + type)
@@ -58,10 +65,6 @@ export class DashboardSurveyComponent implements OnInit, OnDestroy{
                 err => console.error(err)
             );
     }
-    ngOnDestroy(){
-        this.sub.unsubscribe(); 
-    }
-
     downloadCSV(){
         window.open(`${DOWNLOAD_EXCEL}/${this.surveyId}`, '__blank');        
     }

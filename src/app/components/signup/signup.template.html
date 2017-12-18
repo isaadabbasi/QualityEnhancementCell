@@ -1,4 +1,3 @@
-<!-- <alert-message #ngIf="!!showMessage" [alert-type]="success" [message]"Your account has been created. You can now login."></alert-message> -->
 <div style="display:inline;" class="container">
     <div class="col-xs-12 col-sm-offset-2 col-sm-8 col-md-6 col-md-offset-3">
             <h1 class="text-center signup-title">Create an account</h1>
@@ -22,9 +21,6 @@
                 <div class="form-group">
                     <input type="password" class="form-control" placeholder="Password" [(ngModel)]="userCredentials.password" name="password" required>
                 </div>
-                <!--<button class="bttn-fill bttn-lg bttn-primary btn-block" (click)="signIn()">LOGIN</button>-->
-                <!--<button class="bttn-slant bttn-lg bttn-primary btn-block" (click)="signIn()">Login</button>-->
-                <!--<button class="bttn-material-flat bttn-md bttn-primary bttn-block">Login</button>-->
                 <button 
                     type="button" 
                     (click)="signUp()" 

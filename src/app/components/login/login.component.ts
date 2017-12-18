@@ -15,10 +15,10 @@ import { UserCredentialsModel } from '../../shared/models';
 
 export class LoginComponent implements OnInit{
 
-    userCredentials:    UserCredentialsModel    = { rollnumber: '', password: '', email: '' }
-    users:              Array<Object>           = [];
-    loginError:         boolean                 = false;
-    loginErrorMessage:  string                  = '';
+    userCredentials     : UserCredentialsModel    = { rollnumber: '', password: '', email: '' }
+    users               : Array<Object>           = [];
+    loginError          : boolean                 = false;
+    loginErrorMessage   : string                  = '';
     
     constructor(public router: Router,
                 private sharedService: SharedService){}
@@ -30,7 +30,6 @@ export class LoginComponent implements OnInit{
             && this.userCredentials.password;
     }
     signIn(){
-        
 
         if(this.userCredentials.rollnumber && this.userCredentials.password){
             if(this.userCredentials.rollnumber.indexOf('@') !== -1){
@@ -43,25 +42,38 @@ export class LoginComponent implements OnInit{
                 .subscribe(res => {
                     if(res.status === 200){
                         localStorage.setItem('activeUser', res["_body"])
-                        this.router.navigate(['/dashboard']);     
+                        this.router.navigate(['/dashboard']);
+                        clearFields();     
                     }
                     
                     
                 }, err => {
                     console.error(err);
                     let loginContainer: HTMLElement = document.getElementById('login-container');
-                    this.loginError = true;
-                    this.loginErrorMessage = err.status === 401?
-                        'Invalid email or password': 
-                        err.status == 0?
-                            "We can not reach our servers yet. Please contact the IT official.":
-                            err['_body'];
+                    
+                    this.loginError                 = true;
+                    this.loginErrorMessage          = 
+                        err.status === 401?
+                            'Invalid email or password': 
+                            err.status == 0?
+                                "We can not reach our servers yet. Please contact the IT official.":
+                                err['_body'];
+                    
                     setTimeout(()=>loginContainer.classList.add('wobble'), 100);
+                    clearFields();
                     setTimeout(()=>{
                         this.loginError = false
                         loginContainer.classList.remove('wobble');
                     }, 5000 );
                 })
+        }
+        
+        let clearFields = () => {
+            this.userCredentials = {
+                rollnumber: '',
+                password: '',
+                email: ''
+            }
         }
     }   
 }
