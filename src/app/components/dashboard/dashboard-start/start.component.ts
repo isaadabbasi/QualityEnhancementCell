@@ -1,4 +1,3 @@
-import { ElementRef } from 'angularfire2/node_modules/@angular/core/src/linker/element_ref';
 import { Router } from '@angular/router';
 import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 

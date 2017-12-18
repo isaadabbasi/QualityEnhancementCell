@@ -1,5 +1,3 @@
-// import { calcBindingFlags } from '@angular/core/src/view/util';
-// #!/usr/bin/env node
 
 /**
  * Module dependencies.
@@ -29,10 +27,6 @@ if(cluster.isMaster && (mode == 'cluster' || mode == 'c')){
     console.log(`SYSTEM TERMINATING...\n`);
     process.exit();
   }
-
-    // if(){
-
-    // }
 
     console.log(`==> Master running with PID ${process.pid}...`)
     for(let i=0; i< cpus; i++){
