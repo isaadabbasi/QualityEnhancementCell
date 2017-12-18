@@ -20,14 +20,17 @@ export const SIGNUP_URL           : string = `${BASE_URL}/users/register`;
 export const GET_SURVEY           : string = `${BASE_URL}/surveys/form/`;
 export const SURVEY_LIST          : string = `${BASE_URL}/surveys`;
 export const ADD_SURVEY_URL       : string = `${BASE_URL}/surveys/add`; // should be renamed 
-export const TEACHER_BASE_URL     : string = `${BASE_URL}/teachers`
+export const TEACHER_BASE_URL     : string = `${BASE_URL}/teachers`;
 export const SURVEY_START_URL     : string = `${BASE_URL}/surveys/start`;
 export const TEACHER_DETAILS_URL  : string = `${TEACHER_BASE_URL}/details`;
+export const DOWNLOAD_EXCEL       : string = `${BASE_URL}/excel`;
+export const ADMIN_BASE_URL       : string = `${BASE_URL}/admins`;
+export const ADD_ADMIN            : string = `${ADMIN_BASE_URL}/add`;    
+  
 export const 
  TEACHER_DETAILS_BY_DEPARTMENT    : string = `${TEACHER_DETAILS_URL}?department=`;
 export const 
  TEACHER_DETAILS_BY_NAME          : string = `${TEACHER_DETAILS_URL}?fullname=`; 
-export const DOWNLOAD_EXCEL       : string = `${BASE_URL}/excel`
 
 export const Departments          : Array<DeparmentsListItemModel> = [
   {value: '0', name: 'Please Select'},

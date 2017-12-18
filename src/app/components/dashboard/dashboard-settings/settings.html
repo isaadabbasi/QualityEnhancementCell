@@ -1,64 +1,59 @@
 <div #modal></div>
 <h1>Settings</h1>
 <ul style="top:0!important;" class="nav nav-tabs nav-justified">
-    <li class="active"><a role="button" data-toggle="tab" href="#admin">Admin</a></li>
+    <li class="active"><a (click)="getAdmins()" role="button" data-toggle="tab" href="#admin">Admin</a></li>
     <li><a (click)="getTeachers()" role="button" data-toggle="tab" href="#teacher">Teacher</a></li>
-    <li><a (click)="getTeachers()" role="button" data-toggle="tab" href="#prefrences">Prefrences</a></li>
+    <li><a role="button" data-toggle="tab" href="#prefrences">Prefrences</a></li>
 </ul>
 
 <div class="tab-content col-xs-8 col-xs-offset-2 text-center">
     <div id="admin" class="tab-pane fade in active">
         <h3>ADMIN</h3>
-        <app-settings-crud-table [options]="options"></app-settings-crud-table>
+        <hr>
         <table class="table table-hover table-condensed table-responsive">
             <thead>
                 <tr>
-                    <th class="text-center">Name</th>
-                    <th class="text-center">Department</th>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">Email</th>
+                    <th class="text-center">Created</th>
+                    <th class="text-center">Super User</th>
                     <th  class="text-center" colspan="2">Operations</th>   
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let teacher of allTeachers">
-                    <td class="text-center">{{ teacher.fullname }}</td>
-                    <td class="text-center"><span *ngFor="let dept of teacher.departments, let i=index">{{ i + 1 }}. {{ dept }} </span></td>
-                    <!-- <td class="text-center bg-success text-success">{{ teacher.fullname }}</td> -->
-                    <td class="text-center bg-danger"><a style="cursor: pointer" role="link" (click)="delete(teacher._id)" class="text-danger">Delete</a></td>
+                <tr *ngFor="let admin of allAdmins">
+                    <td class="text-center">
+                        {{ admin._id.slice(admin._id.length - 5, admin._id.length) }}
+                    </td>
+                    <td class="text-center">{{ admin.email }}</td>
+                    <td class="text-center">{{ admin.created | date }}</td>
+                    <td class="text-center">{{ admin.root ? 'Yes' : 'No' }}</td>
+                    <td class="text-center bg-danger">
+                        <a 
+                            role="link"
+                            [ngClass]="{
+                                'disabled': admin.root || !enableAdminDelete
+                            }" 
+                            class="text-danger text-lg"
+                            style="cursor: pointer" 
+                            (click)="delete('Admin', admin._id, admin.root)" 
+                        >
+                            Delete
+                        </a>
+                    </td>
                 </tr>
             </tbody>
             </table>
           
           <div class="row">
               <div class="col-xs-6 col-xs-offset-3">
-                  <h4 (click)="addTeacher()" class="btn btn-primary">Add a new Teacher</h4>
+                  <h4 (click)="addAdmin()" class="btn btn-primary">Add a new Admin</h4>
               </div>      
           </div>
-          <div class="row" *ngIf="null">
-            <h4>Change password</h4>
-            <div class="col-xs-8 col-xs-offset-2 form-group">
-                <input type="password" class="form-control" placeholder="Enter current password">
-            </div>
-        </div>
-        <div *ngIf="null" style="position: absolute; z-index: 1000; ">
-            <p>Sorry for inconvinence. Under active development.</p>
-            <img class="col-xs-8 col-xs-offset-2" src="http://azuretwilight.org/filedata/fetch?id=222" alt="">
-        </div>
-        <div class="row" *ngIf="null">
-                <div class="col-xs-8 col-xs-offset-2 form-group">
-                    <input type="password" class="form-control" placeholder="Enter new password">
-                </div>
-        </div>
-        <div class="row" *ngIf="null">
-                <div class="col-xs-8 col-xs-offset-2 form-group">
-                    <input type="password" class="form-control" placeholder="Enter new password again">
-                </div>
-        </div>
-        <div class="form-group" *ngIf="null">
-            <input type="button" class="btn btn-primary" value="Update password">
-        </div>
     </div>
     <div id="teacher" class="tab-pane fade in">
       <h3>TEACHER</h3>
+      <hr>
       <table class="table table-hover table-condensed table-responsive">
         <thead>
             <tr>
@@ -71,8 +66,7 @@
             <tr *ngFor="let teacher of allTeachers">
                 <td class="text-center">{{ teacher.fullname }}</td>
                 <td class="text-center"><span *ngFor="let dept of teacher.departments, let i=index">{{ i + 1 }}. {{ dept }} </span></td>
-                <!-- <td class="text-center bg-success text-success">{{ teacher.fullname }}</td> -->
-                <td class="text-center bg-danger"><a style="cursor: pointer" role="link" (click)="delete(teacher._id)" class="text-danger">Delete</a></td>
+                <td class="text-center bg-danger"><a style="cursor: pointer" role="link" (click)="delete('Teacher', teacher._id)" class="text-danger">Delete</a></td>
             </tr>
         </tbody>
         </table>
@@ -84,7 +78,27 @@
       </div>
     </div>
     <div id="prefrences" class="tab-pane fade in">
+        <h3>Start / Stop Session</h3>
+        <hr>
         
+        <div class="row">
+            <div class="col-xs-4 text-right">
+                Stop
+            </div>
+            <div class="col-xs-4 text-center">
+                <!-- Rounded switch -->
+                <label class="switch">
+                    <input
+                        name="startSurvey"
+                        (change)="startSurvey($event.target.checked)"
+                        type="checkbox"
+                     >
+                    <span class="slider round"></span>
+                </label></div>
+            <div class="col-xs-4 text-left">
+                    Start
+            </div>
+        </div>
     </div>
 
 </div>
