@@ -30,7 +30,8 @@ export class StartSurveyComponent implements OnInit {
 
     deparmentsList      : Array<DeparmentsListItemModel> = Departments;
 
-    surveyMetaData      : {evaluation: string, course: string, teacher: string}
+    surveyMetaData      : {evaluation: string, course: string, teacher: string} 
+                        = {evaluation: "", course: "", teacher: ""}
 
     @ViewChild('dept') 
         deptReference   : ElementRef;  
@@ -50,7 +51,6 @@ export class StartSurveyComponent implements OnInit {
     getDepartmentTeacherList(department){
         this.sharedService.getCall(`${TEACHER_DETAILS_URL}?department=${department}`)
             .subscribe( res => {
-                console.log(res)
                     this.teachers       = false;
                     this.teachersList   = res;
             },
@@ -62,9 +62,11 @@ export class StartSurveyComponent implements OnInit {
         this.subjects               = !selectedTeacher ? false : true;
         this.selectedTeacher        = selectedTeacher;
         this.surveyMetaData.course  = selectedTeacher;
+
         let teacherObject           = 
             (this.teachersList)
                 .find(o => o["fullname"] === selectedTeacher);
+        
         this.subjectsList           = teacherObject ? teacherObject["subjects"] : null;
     }
 
@@ -119,7 +121,6 @@ export class StartSurveyComponent implements OnInit {
             this.modalCF.generateModal(this.container, modalOptions)
                 .subscribe(
                     res => {
-                        console.log(res)
                         if(res.get("status") !== 'cancel'){
                             this.surveyMetaData.evaluation = res.get('evaluation')
                             localStorage.setItem('surveyMetaData', JSON.stringify(this.surveyMetaData));
@@ -136,7 +137,6 @@ export class StartSurveyComponent implements OnInit {
         this.selectedDepartment         = 
             (this.deparmentsList.
                 find(department => department["value"] == activeUser.department))["name"];
-        
         this.getDepartmentTeacherList(activeUser.department);
      }
 }
