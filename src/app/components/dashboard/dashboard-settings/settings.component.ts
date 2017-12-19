@@ -358,6 +358,7 @@ export class SettingsComponent {
         )
     }
     getSessionStatus(){
+        
         this.sharedService.getCall(PREFERENCES)
         .subscribe(next => {
             this.sessionDetails
