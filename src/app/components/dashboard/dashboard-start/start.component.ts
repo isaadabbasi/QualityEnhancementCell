@@ -30,13 +30,8 @@ export class StartSurveyComponent implements OnInit {
 
     deparmentsList      : Array<DeparmentsListItemModel> = Departments;
 
-<<<<<<< HEAD
     surveyMetaData      : {evaluation: string, course: string, teacher: string}
         = {evaluation: "", course: "", teacher: ""};
-=======
-    surveyMetaData      : {evaluation: string, course: string, teacher: string} 
-                        = {evaluation: "", course: "", teacher: ""}
->>>>>>> 1262263f40af9552244642ab9a9a297500a0a6ca
 
     @ViewChild('dept') 
         deptReference   : ElementRef;  
