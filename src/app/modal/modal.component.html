@@ -8,6 +8,11 @@
         <h2 class="text-center" *ngFor="let h2 of div.html.h2">{{ h2 }}</h2>
         <p *ngFor="let para of div.html.p">{{ para }}</p>
       </div>
+<<<<<<< HEAD
+=======
+      <h1 class="text-center" *ngFor="let heading of options.body.html?.h1">{{ heading }}</h1>
+      <p *ngFor="let para of options.body.html?.p">{{ para }}</p>
+>>>>>>> 33e772a94cc98cd1c96aeb53c65f7e981900a525
     </div>
     
     <form *ngIf="options.metaData.type != 'confirm'" class="form-signin">

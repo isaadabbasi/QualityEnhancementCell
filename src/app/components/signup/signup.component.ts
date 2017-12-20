@@ -14,12 +14,17 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 export class SignupComponent implements OnInit{
 
-    showMessage             : boolean         = false;
+    errorClass              : string          = "text-danger";
     signupErrorMessage      : string          = '';
+
+    showMessage             : boolean         = false;
     signupError             : boolean         = false;
+    
     departments             : Array<DeparmentsListItemModel>   
                                               = Departments;   
+
     signUpContainer         : HTMLElement     = document.getElementById('signup-container');
+
     userCredentials         : StudentModel    = { fullname: '', department: '', rollnumber: '', password: '' }
     
     constructor(public router: Router,
@@ -40,15 +45,17 @@ export class SignupComponent implements OnInit{
     signUp(){
         if(this.validateCredentials){
             this.sharedService.postCall(SIGNUP_URL, this.userCredentials)
-                .map(res => res.json())
                 .subscribe(res => {
                     clearFields();
-                    setTimeout(()=>{
-                        this.router.navigate(['/login']);
-                    }, 3000);
                     if(res.status == 201) {
+                        this.errorClass         = "text-success";
+                        this.signupError        = true;
+                        this.signupErrorMessage = "Account Created. You can now login.";
+                        
+                        setTimeout( () => this.router.navigate(['/login']), 1500);
                     }
                 }, err => {
+                    this.errorClass = "text-danger";
                     let signUpContainer: HTMLElement    = document.getElementById('signup-container');
                     this.signupError        = true;
                     this.signupErrorMessage = err['_body'];
