@@ -128,11 +128,7 @@ export class MainFormComponent implements OnInit{
                 body: [{
                     html:{
                         h2: [
-<<<<<<< HEAD
-                            'Are you sure to send?'
-=======
                             'Are you sure to submit form?'
->>>>>>> 33e772a94cc98cd1c96aeb53c65f7e981900a525
                         ],
                         p: [
                             'You can not undo this action.'
