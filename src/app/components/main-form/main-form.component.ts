@@ -127,11 +127,10 @@ export class MainFormComponent implements OnInit{
                 header: 'Submit form',
                 body: [{
                     html:{
-                        h1: [
-                            'Are you sure?'
+                        h2: [
+                            'Are you sure to send?'
                         ],
                         p: [
-                            'This will delete the teacher and all related details.',
                             'You can not undo this action.'
                         ],
                     }
