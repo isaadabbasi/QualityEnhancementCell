@@ -30,8 +30,8 @@ export class StartSurveyComponent implements OnInit {
 
     deparmentsList      : Array<DeparmentsListItemModel> = Departments;
 
-    surveyMetaData      : {evaluation: string, course: string, teacher: string} 
-                        = {evaluation: "", course: "", teacher: ""}
+    surveyMetaData      : {evaluation: string, course: string, teacher: string}
+        = {evaluation: "", course: "", teacher: ""};
 
     @ViewChild('dept') 
         deptReference   : ElementRef;  
@@ -124,7 +124,8 @@ export class StartSurveyComponent implements OnInit {
                         if(res.get("status") !== 'cancel'){
                             this.surveyMetaData.evaluation = res.get('evaluation')
                             localStorage.setItem('surveyMetaData', JSON.stringify(this.surveyMetaData));
-                            this.router.navigate(['/survey'])
+                            if(res.get('evaluation'))
+                                this.router.navigate(['/survey'])
                         }
                     }
                     

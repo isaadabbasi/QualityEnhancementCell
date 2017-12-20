@@ -28,7 +28,7 @@
                     class="btn btn-block btn-primary btn-lg" 
                     >Signup</button>
                 
-                <h4 *ngIf="signupError" class="text-center text-danger bold">{{ signupErrorMessage }}</h4>
+                <h4 *ngIf="signupError" class="text-center {{errorClass}} bold">{{ signupErrorMessage }}</h4>
                 <a href="" class="pull-right need-help">Need help? </a>
                 <span class="clearfix"></span>
                 </form>
