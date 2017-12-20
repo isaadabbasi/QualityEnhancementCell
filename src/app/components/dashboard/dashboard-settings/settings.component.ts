@@ -123,9 +123,9 @@ export class SettingsComponent {
     
     delete(whois, id, root?: boolean){
         let activeAdminID = JSON.parse(localStorage.getItem('activeUser'))["_id"];
-        
+
         if(
-            (whois.toLowerCase() === 'admin' && root) ||
+            whois.toLowerCase() === 'admin' && root ||
             (whois.toLowerCase() === 'admin' && 
              id === activeAdminID) 
         ){
@@ -136,13 +136,13 @@ export class SettingsComponent {
                     type: 'confirm'  
                 },
                 header: `Delete ${whois}`,
-                body:{
+                body:[{
                     html:{
                         p: [
                             'Sorry you can not perform this action.'
                         ],
                     }
-                },
+                }],
                 footer: [{
                     type: 'button',
                     label: 'Cancel',
@@ -150,6 +150,8 @@ export class SettingsComponent {
                     icon: 'fa fa-times'
                 }]
             }
+
+            
             this.modalCF.generateModal(this.container, modalOptions);
         }
         else{
@@ -161,17 +163,17 @@ export class SettingsComponent {
                     type: 'confirm'  
                 },
                 header: `Delete ${whois}`,
-                body:{
+                body:[{
                     html:{
                         h1: [
                             'Are you sure?'
                         ],
                         p: [
-                            'This will delete the teacher and all related details.',
+                            `This will delete the ${whois.toLowerCase()} and all related details.`,
                             'You can not undo this action.'
                         ],
                     }
-                },
+                }],
                 footer: [{
                     type: 'button',
                     label: 'Yes, I am sure.',
