@@ -4,22 +4,20 @@ const
     teacherJoint = require('../joints/teachers.joint'),
     surveyJoint = require('../joints/survey.joint'),
     fs = require('fs'),
-    join = require('path').join,
+    join = require('path').join,    
     through$ = require('through2'),
 
     getSurveyByIdCb = function(req, res, next){
         console.log(`gettings params.surveyId ${req.params._id}`);
-        let 
-            _id = req.params._id;
-
-            surveyJoint.getSurveyById(_id)
-                .then( prores => {
-                    res.status(prores.status).send(prores.body);
-                })
-                .catch(err=>{
-                    // console.log(err);
-                    res.status(err.status).send(err.body);
-                })
+        let _id = req.params._id;
+        surveyJoint.getSurveyById(_id)
+            .then( prores => {
+                res.status(prores.status).send(prores.body);
+            })
+            .catch(err=>{
+                // console.log(err);
+                res.status(err.status).send(err.body);
+            })
     },
 
     getSurveyByParams = (req, res) => {
@@ -132,16 +130,16 @@ const
             .pipe(res);
     },
         
-    optimizeParallel = (req, res) => {
-        let testMethod = surveyJoint.test;
-        surveyJoint.getAllSurveys({})
-            .then(surveys => {
-                surveyJoint.optimizeParallel(surveys.body)
-                    .then(finalizedSurveys => {
-                        res.status(200).send(finalizedSurveys.value);
-                    })            
-            })
-    },
+    // optimizeParallel = (req, res) => {
+    //     let testMethod = surveyJoint.test;
+    //     surveyJoint.getAllSurveys({})
+    //         .then(surveys => {
+    //             surveyJoint.optimizeParallel(surveys.body)
+    //                 .then(finalizedSurveys => {
+    //                     res.status(200).send(finalizedSurveys.value);
+    //                 })            
+    //         })
+    // },
 
     optimize = (req, res) => {
         surveyJoint.getAllSurveys({})
@@ -167,6 +165,6 @@ router.route('/')
 router.post('/add', addSurveyCb);
 router.get('/id/:_id', getSurveyByIdCb);
 router.get('/form/:name', getTeacherEvaluationForm);
-router.get('/optimizep', optimizeParallel);
+// router.get('/optimizep', optimizeParallel);
 router.get('/testopt', optimize);
 module.exports = router;

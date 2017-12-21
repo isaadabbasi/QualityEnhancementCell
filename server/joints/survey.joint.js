@@ -1,10 +1,10 @@
 const 
     Surveys = require('../database/models/survey.model')
-    napajs = require('napajs'),
+    // napajs = require('napajs'),
     fs = require('fs'),
     execFile = require('child_process').execFile,
-    cores = require('os').cpus().length -1 , 
-    NapaZone = napajs.zone.create('cores',{ workers: cores });
+    cores = require('os').cpus().length -1; 
+    // NapaZone = napajs.zone.create('cores',{ workers: cores });
 
 class SurveyJoint {
     constructor(){}
@@ -92,60 +92,60 @@ class SurveyJoint {
         });
     }
 
-    optimizeParallel(surveysArgs){
+    // optimizeParallel(surveysArgs){
         
-        function mergeSurveys(surveys){
-            let 
-            combined = [],
-            // surveys = surveysArgs,
-            totalSurveys = surveys.length;
+    //     function mergeSurveys(surveys){
+    //         let 
+    //         combined = [],
+    //         // surveys = surveysArgs,
+    //         totalSurveys = surveys.length;
                 
-            for(let survey of surveys) {
-                let date = new Date(survey.created),
-                    target = `${date.getMonth()},${date.getDate()},${date.getYear()}`,
-                    // target = `${date.getDate()}`,
-                    matchFound = false;
+    //         for(let survey of surveys) {
+    //             let date = new Date(survey.created),
+    //                 target = `${date.getMonth()},${date.getDate()},${date.getYear()}`,
+    //                 // target = `${date.getDate()}`,
+    //                 matchFound = false;
                 
-                    survey.dated = target;
-                // console.log(survey.dated);
+    //                 survey.dated = target;
+    //             // console.log(survey.dated);
                 
-                if(!combined.length){
-                    combined.push(survey);
-                } else {
-                    for(let i=0; i<combined.length; i++){
-                        if(combined[i].dated === survey.dated){
-                            matchFound = true;
-                            let merged = mergeSurvey(combined[i], survey);
-                            combined[i] = merged;
-                        }
-                    }
-                    if(!matchFound)
-                        combined.push(survey);
-                }
-            }
+    //             if(!combined.length){
+    //                 combined.push(survey);
+    //             } else {
+    //                 for(let i=0; i<combined.length; i++){
+    //                     if(combined[i].dated === survey.dated){
+    //                         matchFound = true;
+    //                         let merged = mergeSurvey(combined[i], survey);
+    //                         combined[i] = merged;
+    //                     }
+    //                 }
+    //                 if(!matchFound)
+    //                     combined.push(survey);
+    //             }
+    //         }
     
-            function mergeSurvey(_stored, {survey: curr}){
-                // console.log('stored dated: ', _stored.dated)
-                // TODO; what to choose for length;
-                let stored = _stored.survey;
-                for (let i=0; i<stored.length; i++){
-                    if(!(typeof stored[i].id === 'string'))
-                    stored[i].value = +( (stored[i].value + curr[i].value)/2 ).toPrecision(3);
-                }
-                // console.log('combine method end');
-                _stored.survey = stored;
-                return _stored;
-            }
+    //         function mergeSurvey(_stored, {survey: curr}){
+    //             // console.log('stored dated: ', _stored.dated)
+    //             // TODO; what to choose for length;
+    //             let stored = _stored.survey;
+    //             for (let i=0; i<stored.length; i++){
+    //                 if(!(typeof stored[i].id === 'string'))
+    //                 stored[i].value = +( (stored[i].value + curr[i].value)/2 ).toPrecision(3);
+    //             }
+    //             // console.log('combine method end');
+    //             _stored.survey = stored;
+    //             return _stored;
+    //         }
             
-            return combined;
-        }
-            NapaZone.broadcast( mergeSurveys.toString() );
-            return  NapaZone.execute(
-                (surveys)=> {
-                    return global.mergeSurveys(surveys);
-                },
-                [surveysArgs]);
-    }
+    //         return combined;
+    //     }
+    //         NapaZone.broadcast( mergeSurveys.toString() );
+    //         return  NapaZone.execute(
+    //             (surveys)=> {
+    //                 return global.mergeSurveys(surveys);
+    //             },
+    //             [surveysArgs]);
+    // }
 
     optimize(surveys, optimizeType = 'batch'){
         let 
