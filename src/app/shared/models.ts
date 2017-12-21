@@ -1,9 +1,9 @@
 export interface StudentModel {
     id?:        string
     fullname?:  string,
-    password?:  string
+    password?:  string,
     rollnumber: string,
-    department: string,
+    department?: string,
 }
 
 export interface TeacherModel {

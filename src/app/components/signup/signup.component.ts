@@ -25,7 +25,7 @@ export class SignupComponent implements OnInit{
 
     signUpContainer         : HTMLElement     = document.getElementById('signup-container');
 
-    userCredentials         : StudentModel    = { fullname: '', department: '', rollnumber: '', password: '' }
+    userCredentials         : StudentModel    = { fullname: '', rollnumber: '', department: '', password: '' }
     
     constructor(public router: Router,
                 private sharedService: SharedService){}
@@ -39,11 +39,12 @@ export class SignupComponent implements OnInit{
     
     validateCredentials(){
         return this.userCredentials.fullname    && this.userCredentials.department != "0"
-            && this.userCredentials.rollnumber  && this.userCredentials.password;
+            && this.userCredentials.password;
     }
     
     signUp(){
         if(this.validateCredentials){
+            this.userCredentials.department = this.addDept(this.userCredentials.rollnumber);
             this.sharedService.postCall(SIGNUP_URL, this.userCredentials)
                 .subscribe(res => {
                     clearFields();
@@ -69,8 +70,14 @@ export class SignupComponent implements OnInit{
                     clearFields();
                 })
                 let clearFields = () => {
-                    this.userCredentials = { fullname: '', rollnumber: '', department: '' };
+                    this.userCredentials = { fullname: '', rollnumber: '', password: '' };
                 }
         } 
+    }
+    addDept(rollnumber){
+        rollnumber  = rollnumber.split('-');
+        let dept    = rollnumber[2]; 
+        console.log(dept)
+        return dept;
     }
 }
