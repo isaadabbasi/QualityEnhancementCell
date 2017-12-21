@@ -8,14 +8,8 @@
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Full name" [(ngModel)]="userCredentials.fullname" name="fullname" required autofocus>
                 </div>
-                
                 <div class="form-group">
-                    <select #depart (change)="loging(depart.value)" class="form-control" name="department" id="department">
-                        <option *ngFor="let dept of departments" [value]="dept.value"> {{ dept.name }} </option>      
-                    </select>
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Roll No" [(ngModel)]="userCredentials.rollnumber" name="rollno." required autofocus>
+                    <input type="text" class="form-control" placeholder="Roll No" [(ngModel)]="userCredentials.rollnumber" (focusout)="addDept($event.target.value)" name="rollno." required autofocus>
                 </div>
 
                 <div class="form-group">
