@@ -59,7 +59,7 @@ const
     },
 
     registrationCallback = (req, res, next)=> {
-        // console.log(req.body);
+        console.log(req.body);
         let 
             fullname = req.body.fullname.trim(),
             department = req.body.department.trim(),
@@ -79,12 +79,16 @@ const
                         fullname, department, rollnumber, password: hash
                     }),
                     saveStudentCb = err => {
-                        if(err)
-                            // console.log(err.message)
-                            res.status(409).send("Account Already Exists");
+                        console.log(err);
+                        if(err){
+                            res.status(409).send("Rollnumber Already Exists");
+                            return;
+                        }
 
-                        if(!err)
+                        if(!err){
                             res.status(201).send("Account Created");
+                            return;
+                        }
                     }
                     student.save(saveStudentCb);
                 }).catch(err=>{
