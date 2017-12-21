@@ -63,3 +63,35 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+.scrollbar {
+  width: 95%; 
+	float: left;
+  height: 45vh; 
+  padding: 0 2.5%; 
+	margin-left: 30px;
+  overflow-y: scroll;
+	overflow-y: scroll;
+	margin-bottom: 25px;
+	background: #F5F5F5;
+}
+#scrollbar::-webkit-scrollbar-track
+{
+  border-radius: 10px;
+  background-color: #F5F5F5;
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);    
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+#scrollbar::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+#scrollbar::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #555;
+}

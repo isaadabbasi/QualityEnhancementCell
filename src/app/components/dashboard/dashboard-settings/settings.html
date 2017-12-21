@@ -10,40 +10,44 @@
     <div id="admin" class="tab-pane fade in active">
         <h3>ADMIN</h3>
         <hr>
-        <table class="table table-hover table-condensed table-responsive">
-            <thead>
-                <tr>
-                    <th class="text-center">ID</th>
-                    <th class="text-center">Email</th>
-                    <th class="text-center">Created</th>
-                    <th class="text-center">Super User</th>
-                    <th  class="text-center" colspan="2">Operations</th>   
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let admin of allAdmins">
-                    <td class="text-center">
-                        {{ admin._id.slice(admin._id.length - 5, admin._id.length) }}
-                    </td>
-                    <td class="text-center">{{ admin.email }}</td>
-                    <td class="text-center">{{ admin.created | date }}</td>
-                    <td class="text-center">{{ admin.root ? 'Yes' : 'No' }}</td>
-                    <td class="text-center bg-danger">
-                        <a 
-                            role="link"
-                            [ngClass]="{
-                                'disabled': admin.root || !enableAdminDelete
-                            }" 
-                            class="text-danger text-lg"
-                            style="cursor: pointer" 
-                            (click)="delete('Admin', admin._id, admin.root)" 
-                        >
-                            Delete
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
-            </table>
+        <div class="scrollbar" id="scrollbar">
+            <div class="table-scroll">
+                <table class="table table-hover table-condensed table-responsive">
+                        <thead>
+                            <tr>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Email</th>
+                                <th class="text-center">Created</th>
+                                <th class="text-center">Super User</th>
+                                <th  class="text-center" colspan="2">Operations</th>   
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let admin of allAdmins">
+                                <td class="text-center">
+                                    {{ admin._id.slice(admin._id.length - 5, admin._id.length) }}
+                                </td>
+                                <td class="text-center">{{ admin.email }}</td>
+                                <td class="text-center">{{ admin.created | date }}</td>
+                                <td class="text-center">{{ admin.root ? 'Yes' : 'No' }}</td>
+                                <td class="text-center bg-danger">
+                                    <a 
+                                        role="link"
+                                        [ngClass]="{
+                                            'disabled': admin.root || !enableAdminDelete
+                                        }" 
+                                        class="text-danger text-lg"
+                                        style="cursor: pointer" 
+                                        (click)="delete('Admin', admin._id, admin.root)" 
+                                    >
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+        </div>
           
           <div class="row">
               <div class="col-xs-6 col-xs-offset-3">
@@ -54,23 +58,24 @@
     <div id="teacher" class="tab-pane fade in">
       <h3>TEACHER</h3>
       <hr>
-      <table class="table table-hover table-condensed table-responsive">
-        <thead>
-            <tr>
-                <th class="text-center">Name</th>
-                <th class="text-center">Department</th>
-                <th  class="text-center" colspan="2">Operations</th>   
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let teacher of allTeachers">
-                <td class="text-center">{{ teacher.fullname }}</td>
-                <td class="text-center"><span *ngFor="let dept of teacher.departments, let i=index">{{ i + 1 }}. {{ dept }} </span></td>
-                <td class="text-center bg-danger"><a style="cursor: pointer" role="link" (click)="delete('Teacher', teacher._id)" class="text-danger">Delete</a></td>
-            </tr>
-        </tbody>
+      <div class="scrollbar" id="scrollbar">
+        <table class="table table-hover table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th class="text-center">Name</th>
+                    <th class="text-center">Department</th>
+                    <th  class="text-center" colspan="2">Operations</th>   
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let teacher of allTeachers">
+                    <td class="text-center">{{ teacher.fullname }}</td>
+                    <td class="text-center"><span *ngFor="let dept of teacher.departments, let i=index">{{ i + 1 }}. {{ dept }} </span></td>
+                    <td class="text-center bg-danger"><a style="cursor: pointer" role="link" (click)="delete('Teacher', teacher._id)" class="text-danger">Delete</a></td>
+                </tr>
+            </tbody>
         </table>
-      
+      </div>
       <div class="row">
           <div class="col-xs-6 col-xs-offset-3">
               <h4 (click)="addTeacher()" class="btn btn-primary">Add a new Teacher</h4>
