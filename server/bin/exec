@@ -45,25 +45,22 @@ if(cluster.isMaster && (mode == 'cluster' || mode == 'c')){
 else {
 // if(cluster.isWorker){
 //  * Get port from environment and store in Express.
-    console.log(`*** NODE UP at PORT ${port}, PID ${process.pid} ***`);
     app.set('port', normalizePort( port ));
     /**
      * Create HTTP server.
      */
-    var server = https.createServer({
+    var server = http.createServer(app).listen('3100');
+    var httpsServer = https.createServer({
       key: fs.readFileSync('key.pem'),
       cert: fs.readFileSync('cert.pem')
     }, app)
 
-    // var privateKey  = fs.readFileSync('./key.pem', 'utf8');
-    // var certificate = fs.readFileSync('./cert.pem', 'utf8');
-    // var credentials = {key: privateKey, cert: certificate};
-    // var server = https.createServer(credentials, app);
-
 /**
  * Listen on provided port, on all network interfaces.
  */
-    server.listen(port);
+    httpsServer.listen(port, ()=>{
+      console.log(`*** NODE UP at PORT ${port}, PID ${app.get('port')} ***`);
+    });
     server.on('error', onError);
     server.on('listening', onListening);
 }
