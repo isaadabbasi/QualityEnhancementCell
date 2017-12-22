@@ -9,6 +9,8 @@ const
     debug = require('debug')('server:server'),
     cpuCount = require('os').cpus().length,
     http = require('http'),
+    https = require('https'),
+    fs = require('fs'),
     args = require('yargs').argv,
     { mode = null, port = process.env.PORT || 3000 } = args;
 
@@ -45,10 +47,19 @@ else {
 //  * Get port from environment and store in Express.
     console.log(`*** NODE UP at PORT ${port}, PID ${process.pid} ***`);
     app.set('port', normalizePort( port ));
-/**
- * Create HTTP server.
- */
-    var server = http.createServer(app);
+    /**
+     * Create HTTP server.
+     */
+    var server = https.createServer({
+      key: fs.readFileSync('key.pem'),
+      cert: fs.readFileSync('cert.pem')
+    }, app)
+
+    // var privateKey  = fs.readFileSync('./key.pem', 'utf8');
+    // var certificate = fs.readFileSync('./cert.pem', 'utf8');
+    // var credentials = {key: privateKey, cert: certificate};
+    // var server = https.createServer(credentials, app);
+
 /**
  * Listen on provided port, on all network interfaces.
  */
