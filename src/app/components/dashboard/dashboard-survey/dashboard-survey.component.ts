@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { each } from 'lodash';
 
-import { BASE_URL, GET_SURVEY, SURVEY_LIST, DOWNLOAD_EXCEL } from './../../../shared/global-vars';
+import { GET_SURVEY, SURVEY_LIST, DOWNLOAD_EXCEL } from './../../../shared/global-vars';
 import { SharedService } from './../../../shared/shared.service';
 import { AutoUnsubscribe } from '../../../decorators/AutoUnsubscribe';
 @Component({

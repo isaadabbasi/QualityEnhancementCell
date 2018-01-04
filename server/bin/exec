@@ -49,16 +49,16 @@ else {
     /**
      * Create HTTP server.
      */
-    var server = http.createServer(app).listen('3100');
-    var httpsServer = https.createServer({
-      key: fs.readFileSync('key.pem'),
-      cert: fs.readFileSync('cert.pem')
-    }, app)
+    var server = http.createServer(app);
+    // var httpsServer = https.createServer({
+    //   key: fs.readFileSync('key.pem'),
+    //   cert: fs.readFileSync('cert.pem')
+    // }, app)
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-    httpsServer.listen(port, ()=>{
+    server.listen(port, ()=>{
       console.log(`*** NODE UP at PORT ${port}, PID ${app.get('port')} ***`);
     });
     server.on('error', onError);

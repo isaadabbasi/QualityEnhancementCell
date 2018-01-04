@@ -13,20 +13,19 @@
 import { LoginComponent } from './../components/login/login.component';
 import { DeparmentsListItemModel } from './models';
 
-export const BASE_URL             : string = `http://localhost:3000`  //Will be updated on deployment
 
-export const SIGNIN_URL           : string = `${BASE_URL}/users/login`; // should be renamed 
-export const SIGNUP_URL           : string = `${BASE_URL}/users/register`;
-export const GET_SURVEY           : string = `${BASE_URL}/surveys/form/`;
-export const SURVEY_LIST          : string = `${BASE_URL}/surveys`;
-export const ADD_SURVEY_URL       : string = `${BASE_URL}/surveys/add`; // should be renamed 
-export const TEACHER_BASE_URL     : string = `${BASE_URL}/teachers`;
-export const SURVEY_START_URL     : string = `${BASE_URL}/surveys/start`;
-export const TEACHER_DETAILS_URL  : string = `${TEACHER_BASE_URL}/details`;
-export const DOWNLOAD_EXCEL       : string = `${BASE_URL}/excel`;
-export const ADMIN_BASE_URL       : string = `${BASE_URL}/admins`;
-export const ADD_ADMIN            : string = `${ADMIN_BASE_URL}/add`;    
-export const PREFERENCES          : string = `${BASE_URL}/prefs`
+export const SIGNIN_URL           : string = `/users/login`; // should be renamed 
+export const SIGNUP_URL           : string = `/users/register`;
+export const GET_SURVEY           : string = `/surveys/form/`;
+export const SURVEY_LIST          : string = `/surveys`;
+export const ADD_SURVEY_URL       : string = `/surveys/add`; // should be renamed 
+export const TEACHER_BASE_URL     : string = `/teachers`;
+export const SURVEY_START_URL     : string = `/surveys/start`;
+export const TEACHER_DETAILS_URL  : string = `/details`;
+export const DOWNLOAD_EXCEL       : string = `/excel`;
+export const ADMIN_BASE_URL       : string = `/admins`;
+export const ADD_ADMIN            : string = `/add`;    
+export const PREFERENCES          : string = `/prefs`
 export const 
  TEACHER_DETAILS_BY_DEPARTMENT    : string = `${TEACHER_DETAILS_URL}?department=`;
 export const 
