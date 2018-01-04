@@ -32,3 +32,16 @@
     right: 0;
     margin: 0 auto;
 }
+section{
+	position:absolute;
+	bottom:10%;
+	right:25%;
+	left:50%;
+	margin-left:-150px;
+	-webkit-box-shadow: 10px 7px 37px -14px rgba(0,0,0,0.75);
+	-moz-box-shadow: 10px 7px 37px -14px rgba(0,0,0,0.75);
+	box-shadow: 10px 7px 37px -14px rgba(0,0,0,0.75);
+}
+section > a:visited{
+	text-decoration: none;
+}

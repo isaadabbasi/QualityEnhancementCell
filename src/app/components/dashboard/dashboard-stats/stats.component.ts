@@ -12,9 +12,8 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { SURVEY_LIST, 
          Departments, 
-         TEACHER_DETAILS_BY_DEPARTMENT, 
-         BASE_URL,
          DOWNLOAD_EXCEL, 
+         TEACHER_DETAILS_BY_DEPARTMENT, 
          GET_SURVEY} from './../../../shared/global-vars';
 
 import { AutoUnsubscribe } from "./../../../decorators/AutoUnsubscribe";         
@@ -149,7 +148,7 @@ export class StatsComponent implements OnInit{
   
   downloadCSV(){
     console.log(this.surveyDetails.get('surveyId'))
-    window.open(`${BASE_URL}/excel/${this.surveyDetails.get('surveyId')}`, '__blank');
+    window.open(`/excel/${this.surveyDetails.get('surveyId')}`, '__blank');
   }
 
   showSingleSurvey(survey){
